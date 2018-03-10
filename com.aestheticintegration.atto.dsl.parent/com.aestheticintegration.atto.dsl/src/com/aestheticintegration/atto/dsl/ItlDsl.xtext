@@ -1,0 +1,146 @@
+grammar com.aestheticintegration.atto.ItlDsl hidden(WS, ML_COMMENT, SL_COMMENT)
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+generate itlDsl "http://www.aestheticintegration.com/atto/dsl/ItlDsl"
+
+Model:
+	(imports += DefImport)*
+	(datatypes += DefDataType)*
+	(datavalues += DefDataValue)*
+	(functions += DefFunction)*
+	(tests += DefTest)*
+;
+DefImport:
+	'import' name=QualifiedName
+;
+DefDataType:
+	'datatype' name=ID '{' (fields+=InputParam)* '}'
+;
+DefDataValue:
+	'datavalue' name=ID '=' dataTypeInstance=DataTypeInstance
+;
+DataTypeInstance:
+	defDataType=[DefDataType] '(' (literals+=Literal (',' literals+=Literal)*)*  ')'
+;
+DefFunction:
+	'function' name=QualifiedName2 '(' (inputParams+=InputParam (','inputParams+=InputParam)*)? ')' ':' outputDataType=DataType'{'
+		functionBody=FunctionBody
+	'}'
+;
+//ClassName:
+//	'className' className=ID ('.' ID)*
+//;
+InputParam:
+	name=ID ':' inputDataType=DataType
+;
+DataType :
+	boolean 	   = 'boolean'
+|	booleanObj = 'Boolean'	// Primitive DataType
+//|	BYTE='byte'
+//|	BYTEOBJ='Byte'
+//|	CHAR='char'
+//|	CHARACTER='Character'
+
+|	short	= 'short'
+|	shortObj= 'Short'
+|	int		= 'int'
+|	integer	= 'Integer'		// Primitive DataType
+|	long		= 'long'
+|	longObj	= 'Long'
+
+|	float		='float'
+|	floatObj		='Float'			// Primitive DataType
+|	double		='double'
+|	doubleObj	='Double'
+
+|	string	='String'			// Primitive DataType
+
+|	defDataType=[DefDataType]
+;
+FunctionBody :
+	{FunctionBody} (statement+=Statement)*
+;
+Statement :
+	ifStatement=IfStatement
+|	outputExpression=OutputExpression
+;
+IfStatement:
+    'if' '(' inputBoolExpression+=BoolExpression (sign+=('&&' | '||')  inputBoolExpression+=BoolExpression)* ')'
+    	'then' thenExpOrIfStatement=ExpOrIfStatement
+    'else' elseExpOrIfStatement=ExpOrIfStatement
+    	'endif'
+;
+ExpOrIfStatement:
+	outputExpression=OutputExpression 
+|	ifStatement=IfStatement
+;
+BoolExpression:
+	literalLeft=Literal (sign=('<=' | '>=' | '>' | '<' | '=' | '<>') literalRight=Literal)?
+;
+Literal:
+	variable=QualifiedName
+|	primary=Primary
+;
+QualifiedName:
+	ID('.' ID)*
+;
+QualifiedName2:
+	ID('.' ID)+
+;
+Literal2:
+	variable=QualifiedName
+|	primary=Primary
+;
+// Constqnts in BoolExpression
+Primary:
+	{Boolean} valueBoolean=BOOLEAN
+|	{Integer} valueInteger=INTEGER
+|	{Float}   valueFloat=FLOAT
+|	{String}  valueString=STRING
+;
+
+OutputExpression:
+	{Boolean} valueBoolean=BOOLEAN
+|	{Integer} valueInteger=INTEGER	
+|	{Float}   valueFloat=FLOAT	
+|	{String}  valueString=STRING	
+|	{DataTypeInstance} dataTypeInstance=DataTypeInstance
+|	{DefDataValue} valueDataValue = [DefDataValue]
+|	{Exception} 'Exception' '(' valueException=STRING ')'
+;
+DefTest:
+	'test' name=ID '=' defFunc=[DefFunction | QualifiedName] '(' (dataTypeValues+=DataTypeValue (',' dataTypeValues+=DataTypeValue)*)? ')' ':' outputExpression=OutputExpression
+;
+DataTypeValue:
+	primary=Primary
+|	dataTypeInstance=DataTypeInstance
+|	defDataValue=[DefDataValue]
+;
+// OCaml build-in types
+enum Primitives:
+	BOOLEAN = 'bool'
+|	INTEGER = 'int'
+|	FLOAT	= 'float'
+|	STRING	= 'string'
+|	EXCEPTION='exception'
+;
+
+// Java types
+terminal BOOLEAN returns ecore::EBooleanObject: ('false' | 'true');
+//terminal BYTE returns ecore::EByteObject: ('0'..'9')+;
+//terminal CHARACTER returns ecore::EIntegerObject: ('0'..'9')+;
+terminal INTEGER returns ecore::EIntegerObject: ('0'..'9')+;
+terminal FLOAT returns ecore::EFloatObject: (('0'..'9')+ '.') | ('.' ('0'..'9')+) | (('0'..'9')+'.'('0'..'9')+);
+terminal STRING returns ecore::EString: 
+	'"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"' 
+//|	"'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'"
+;
+
+terminal ID  		: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+
+terminal ML_COMMENT	: '/*' -> '*/';
+terminal SL_COMMENT 	: '//' !('\n'|'\r')* ('\r'? '\n')?;
+
+terminal WS			: (' '|'\t'|'\r'|'\n')+;
+
+terminal ANY_OTHER: .;

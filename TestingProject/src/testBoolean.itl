@@ -1,0 +1,129 @@
+import com.aestheticintegration.realjava.SimpleProg
+
+function SimpleProg.myFunc2(param1: boolean, param2: boolean): Boolean {
+	if (param1 = param2)  
+	then true 
+	else false 
+	endif   
+}
+
+// It does not work in the testgen
+function SimpleProg.myFunc2a(param1: int, param2: String, param3: Boolean): Boolean {
+	if (param1 = 123)  
+	then true
+	else
+		if (param2 = "abc") 
+		then true
+		else 
+			if (param3)
+			then true
+			else false
+			endif
+		endif 
+	endif
+}
+/* 
+docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
+
+let simpleProg_myFunc2 (param1, param2: bool * bool): bool =
+	if param1  = param2 
+	then true
+	else false
+;;  
+
+let rs = Decompose.top "simpleProg_myFunc2";; 
+Reflect.Mode.program ();;
+Extract.to_file ~signature:"simpleProg_myFunc2" ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+let tcs = List.map Mex.of_region rs;;
+
+// Call function for each region
+qwe {Mex.???}
+
+
+let simpleProg_myFunc2a (param1, param2, param3 : int * string * bool): bool =
+	if param1  = 123 
+	then true
+	else if param2  = "abc" 
+	then true
+	else if param3 
+	then true
+	else false
+;;
+let rs = Decompose.top "f";; 
+Reflect.Mode.program ();;
+Extract.to_file ~signature:"f" ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+let tcs = List.map Mex.of_region rs;;
+
+*/
+
+/* 
+let simpleProg_myFunc2 param1 param2 =
+	if param1  = param2 
+	then true
+	else false
+;;
+let simpleProg_myFunc2b param1 param2 param3 =
+	if param1  = 123 
+	then true
+	else if param2  = strQWE
+	then true
+	else if param3 
+	then true
+	else false
+;;
+
+:load_ocaml /home/imandra/temp/prBoolean_myFunc2.ml;;
+ 
+:testgen simpleProg_myFunc2 with_printer prBoolean_myFunc2;;
+// :testgen simpleProg_myFunc2a with_printer prBoolean_myFunc2a;;
+
+// works
+let f1 (n:int) = n + 1;;
+
+let g (x:int) (y:int) = x + y;;
+
+let g2 ((x:int), (y:int)) = x + y;;
+
+
+let simpleProg_myFunc2z (param1, param2 : bool * bool) : bool =
+	if param1  = param2 
+	then true
+	else false
+;;
+
+type string_1 = {
+	str: string;
+}
+;;
+let strQWE = {str="QWE"};; 
+
+
+let r2 (param1:bool) (param2: bool) =
+	if param1  = param2 then true else false
+;; 
+let rq2 = Decompose.top "r2";; 
+
+let r3 (param1:bool) (param2: bool) =
+	if param1  = param2 then 1 else 2
+;; 
+let rq3 = Decompose.top "r3";; 
+
+let r4 (param1:bool) (param2: bool) =
+	if param1  = param2 then 1.0 else 2.0
+;; 
+let rq4 = Decompose.top "r4";; 
+
+let r5 (param1:bool) (param2: bool) =
+	if param1  = param2 then 1 else 0
+;; 
+let rq5 = Decompose.top "r5";; 
+
+
+
+
+*/
+

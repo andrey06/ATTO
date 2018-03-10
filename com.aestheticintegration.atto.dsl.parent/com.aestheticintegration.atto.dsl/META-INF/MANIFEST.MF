@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: com.aestheticintegration.atto.dsl
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: com.aestheticintegration.atto.dsl; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.common
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: com.aestheticintegration.atto.itlDsl.impl,
+ com.aestheticintegration.atto.parser.antlr.internal,
+ com.aestheticintegration.atto.generator,
+ com.aestheticintegration.atto.serializer,
+ com.aestheticintegration.atto.validation,
+ com.aestheticintegration.atto.parser.antlr,
+ com.aestheticintegration.atto.scoping,
+ com.aestheticintegration.atto.services,
+ com.aestheticintegration.atto.itlDsl.util,
+ com.aestheticintegration.atto,
+ com.aestheticintegration.atto.itlDsl
+Import-Package: org.apache.log4j

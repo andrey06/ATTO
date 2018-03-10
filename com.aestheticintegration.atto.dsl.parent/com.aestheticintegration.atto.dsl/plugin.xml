@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package 
+			uri = "http://www.aestheticintegration.com/atto/dsl/ItlDsl"
+			class = "com.aestheticintegration.atto.itlDsl.ItlDslPackage"
+			genModel = "model/generated/ItlDsl.genmodel" />
+	</extension>
+</plugin>

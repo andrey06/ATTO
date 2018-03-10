@@ -1,0 +1,154 @@
+datatype RefreshInputDONoCmf {
+	cNumber: String
+	logon: String
+	orderBy: String
+	formId: Integer
+	blockQty: Integer
+	globalInstall: Boolean
+}
+datatype RefreshOutputDONoCmf {
+	returnCode: String
+	formId: Integer
+}
+datatype FormsLu {
+	intCntrctNmbrType: Integer
+	fkFormStatusId: Integer
+}
+//datatype LendersLu {
+	
+//}
+//datatype LenderFormConstant {
+	
+//}
+// LenderFormConstant.CONTRACT_NUMBER_TYPE_SEQUENTIAL_DATA
+// LenderFormConstant.ACTIVE_MAPPED
+// LenderFormConstant.DELETE_REQUESTED
+ 
+//function FormsLuDao.findFormsById(formId: Integer): FormsLu {
+	
+//}    
+//function LenderAccountDao.findLendersUserById(lenderId: Integer): LendersLu {
+	
+//} 
+datavalue refreshOutputDONoCmf1 = RefreshOutputDONoCmf("RET_CODE", 4)
+
+function ReplinishBO.validateAndCreateRefreshOrder(refreshInputDO: RefreshInputDONoCmf, formsLu: FormsLu) : RefreshOutputDONoCmf {
+	if (refreshInputDO.cNumber = "")
+	then Exception("lf.rest.refresh.param.missed cNumber")
+	else  
+ 
+	if (refreshInputDO.logon = "")   
+	then Exception("lf.rest.refresh.param.missed logon")
+	else
+	
+	if (refreshInputDO.orderBy = "") 
+	then Exception("lf.rest.refresh.param.missed orderBy")
+	else
+
+	if (refreshInputDO.formId <= 0)
+	then Exception("lf.rest.refresh.param.missed formId")
+	else
+
+//	formsLu = FormsLuDao.findFprmsById(refreshInputDO.formId)
+ 	
+//	if (formsLu = Exception("lf.tech.db.error"))
+//	then Exception("lf.tech.db.error") 
+	 
+//	if (formsLu = null) 
+//	then Exception("lf.rest.refresh.form.notexist formId")
+	
+	if (formsLu.intCntrctNmbrType <> 3)
+	then Exception("lf.rest.refresh.form.notrefreshable formID")
+	else
+	 
+	if (formsLu.fkFormStatusId <> 1) 
+	then Exception("lf.rest.refresh.form.notactivemappedNotdeletereq formID ")
+	else
+
+	if (refreshInputDO.blockQty = 0 || refreshInputDO.blockQty <= 0)
+	then Exception("lf.rest.refresh.blockqty.wrong blockQty ")
+	else
+/*	
+//	cmf = OrderDetailsLuDao.findCMFByFormidCnumberLogon(formsLu.formID, refreshInputDO.cNumber, refreshInputDO.logon)
+//	if (cmf == "")
+//	then Exception("lf.rest.refresh.noorders.found cNumber, formID.  logon");
+
+	dealershipsLu = DealershipAccountDao.findDealerAccountByCmf(cmf)
+	
+	if (dealershipsLu = Exception("lf.tech.db.error"))
+	then Exception("lf.tech.db.error") 
+	   
+	if (dealershipsLu == null)  
+	then Exception("lf.rest.refresh.cmf.wrong cmf")
+*/ 
+
+	RefreshOutputDONoCmf("RET_CODE", refreshInputDO.formId)
+//	RefreshOutputDONoCmf("RET_CODE", 2)
+
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+}
+
+/*
+type refreshinputdonocmf = {
+	cNumber: string;
+	logon: string;
+	orderBy: string;
+	formId: int;
+	blockQty: int;
+	globalInstall: bool;
+}
+;;
+type refreshoutputdonocmf = {
+	returnCode: string;
+	formId: int;
+}
+;;
+type formslu = {
+	intCntrctNmbrType: int;
+	fkFormStatusId: int;
+}
+;;
+let refreshOutputDONoCmf1 = {returnCode="RET_CODE"; formId=4}
+;;
+type build_in_ext = 
+	EXCEPTION of string
+|	NO_EXN_BOOL of bool
+|	NO_EXN_INTEGER of int
+|	NO_EXN_FLOAT of float
+|	NO_EXN_STRING of string
+|	NO_EXN_REFRESHINPUTDONOCMF of refreshinputdonocmf
+|	NO_EXN_REFRESHOUTPUTDONOCMF of refreshoutputdonocmf
+|	NO_EXN_FORMSLU of formslu
+;;
+let replinishBO_validateAndCreateRefreshOrder (refreshInputDO:refreshinputdonocmf) (formsLu:formslu) =
+	if refreshInputDO.cNumber = ""		
+	then EXCEPTION "lf.rest.refresh.param.missed cNumber"
+	else if refreshInputDO.logon = ""		
+	then EXCEPTION "lf.rest.refresh.param.missed logon"
+	else if refreshInputDO.orderBy = ""		
+	then EXCEPTION "lf.rest.refresh.param.missed orderBy"
+	else if refreshInputDO.formId <= 0		
+	then EXCEPTION "lf.rest.refresh.param.missed formId"
+	else if formsLu.intCntrctNmbrType != 3		
+	then EXCEPTION "lf.rest.refresh.form.notrefreshable formID"
+	else if formsLu.fkFormStatusId != 1		
+	then EXCEPTION "lf.rest.refresh.form.notactivemappedNotdeletereq formID "
+	else if refreshInputDO.blockQty = 0 || refreshInputDO.blockQty <= 0		
+	then EXCEPTION "lf.rest.refresh.blockqty.wrong blockQty "
+	else NO_EXN_REFRESHOUTPUTDONOCMF {returnCode="RET_CODE"; formId=refreshInputDO.formId}
+;;
+
+let rs = Decompose.top "replinishBO_validateAndCreateRefreshOrder";; 
+Reflect.Mode.program ();;
+Extract.to_file ~signature:"replinishBO_validateAndCreateRefreshOrder" ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+let tcs = List.map Mex.of_region rs;;
+
+*/

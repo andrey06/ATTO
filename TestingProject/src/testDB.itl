@@ -1,0 +1,107 @@
+datatype RecordDB {
+	id: Integer
+	code: Integer
+	name: String
+}
+function Class1.test1(formId: Integer, recordDB: RecordDB): Integer {
+	if (formId = 1)
+	then 2
+	else
+		if (recordDB.code = 123)
+		then 3
+		else 4
+		endif
+	endif 
+}
+
+/*
+type CodeType =
+	123
+|	456 
+;;
+
+type RecordDB = {
+	id: int;
+	let code = [1;2];
+};; 
+ 
+
+type recordDb2 = {id:int; code=[1;2]};;
+
+type r = {i:int; c: int list};;
+ 
+ 
+type r = {i:int; c: int list};;
+let ww=[2;3];;
+
+let r2 = {i=345; c=[2334;44]};;
+
+
+// OLD
+let f1 (par1: int) =
+	if (0 < par1)
+	then 1
+	else 2
+;;
+
+let f1c (par1: int) =
+	5 < par1
+;;
+
+:decompose f1 assuming f1c;;
+
+//////
+let rec get_nth mylist index = match mylist with
+    | [] -> raise (Failure "empty list")
+    | first::rest -> 
+        if index = 0 then first 
+        else get_nth rest (index-1)
+;;
+
+type ENUM =
+	
+type rectype = {
+	number: int list
+};;
+let recvalue = {number=[10; 11; 12]};;
+
+let f2 (par1: rectype) =
+	if (par1.number = get_nth 10)
+	then 0
+	else 
+		if (par1.number = 11)
+		then 1 
+		else 2
+;;
+
+let f1c (par1: int) =
+	5 < par1
+;;
+
+:decompose f1 assuming f1c;;
+///////
+let rec get_nth mylist index = match mylist with
+    | [] -> raise (Failure "empty list")
+    | first::rest -> 
+        if index = 0 then first 
+        else get_nth rest (index-1)
+;;
+
+let rec get_nth = function
+	| NIL -> raise (Failure "get_nth")
+    | [], _ -> raise (Failure "get_nth")
+    | _, n when n < 0 -> raise (Invalid_argument "get_nth")
+    | x::_, 0 -> x
+    | x::xs, n -> get_nth(xs, n-1)
+;;
+
+type sign3 = Positive | Zero | Neg ;;
+type signww = Positive | Zero | Negative;;
+
+
+
+
+
+
+
+*/

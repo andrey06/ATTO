@@ -1,0 +1,283 @@
+import com.aestheticintegration.realjava.SimpleProg
+
+function SimpleProg.myTest1(param1: int, param2: boolean): long {
+	if (param1 = 0)
+	then 88  
+	else 
+		if (param2 = true)
+		then 44
+		else 33
+		endif
+	endif
+}
+
+function SimpleProg.myTest1a(cityTemp: int): long {
+	if (cityTemp = 0)
+	then Exception("Wrong input for this function")
+	else 33
+	endif  
+}
+
+function SimpleProg.myTest1b(param1: int): long {
+	if (param1 = 0)
+	then Exception("Wrong input for this function")
+	else 
+		if (param1 = 1)
+		then Exception("Do not use this input")
+		else 33
+		endif
+	endif 
+}   
+
+test test13 = SimpleProg.myTest1(0, true): 88
+test test14 = SimpleProg.myTest1(23, false): 33
+test test15 = SimpleProg.myTest1b(1): Exception("Do not use this input")
+ 
+/* 
+type build_in_ext = 
+	EXCEPTION of string
+|	NO_EXN_BOOL of bool  
+|	NO_EXN_INTEGER of int  
+|	NO_EXN_FLOAT of float
+|	NO_EXN_STRING of string    
+;;  
+let simpleProg_myTest1 (param1:int) (param2:bool) =
+	if param1 = 0		
+	then NO_EXN_INTEGER 88
+	else if param2 = true		
+	then NO_EXN_INTEGER 44
+	else NO_EXN_INTEGER 33
+;;
+let simpleProg_myTest2 (param21:float) (param22:bool) =
+	if param21 <= 0.0		
+	then NO_EXN_INTEGER (-1)
+	else if param22 = true		
+	then NO_EXN_INTEGER 2
+	else NO_EXN_INTEGER 3
+;;
+  
+Reflect.Mode.program ();;
+* FUNCTION 1
+let prep_simpleProg_myTest1 (param1:int) (param2: bool) = [("param1", `Int param1); ("param2", `Bool param2)];;
+
+let func_name = "simpleProg_myTest1";; 
+let rs = Decompose.top func_name;; 
+Extract.to_file ~signature:func_name ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+let tcs = List.map Mex.of_region rs;;
+*******  
+let index_region = 0;;
+let params_json = `Assoc (prep_simpleProg_myTest1 ((List.nth tcs index_region).Mex.param1) ((List.nth tcs index_region).Mex.param2));;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+ 
+let index_region = 1;;
+let params_json = `Assoc (prep_simpleProg_myTest1 ((List.nth tcs index_region).Mex.param1) ((List.nth tcs index_region).Mex.param2));;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+
+let index_region = 2;;
+let params_json = `Assoc (prep_simpleProg_myTest1 ((List.nth tcs index_region).Mex.param1) ((List.nth tcs index_region).Mex.param2));;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+*******
+* FUNCTION 2
+let prep_simpleProg_myTest2 (param21:float) (param22:bool) = [("param21", `Float param21); ("param22", `Bool param22)];;
+ 
+let func_name = "simpleProg_myTest2";;
+let rs = Decompose.top func_name;; 
+Extract.to_file ~signature:func_name ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+let tcs = List.map Mex.of_region rs;;
+
+let index_region = 0;;
+let params_json = `Assoc (prep_simpleProg_myTest2 ((List.nth tcs index_region).Mex.param21) ((List.nth tcs index_region).Mex.param22));;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+
+let index_region = 1;;
+let params_json = `Assoc (prep_simpleProg_myTest2 ((List.nth tcs index_region).Mex.param21) ((List.nth tcs index_region).Mex.param22));;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+
+let index_region = 2;;
+let params_json = `Assoc (prep_simpleProg_myTest2 ((List.nth tcs index_region).Mex.param21) ((List.nth tcs index_region).Mex.param22));;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+*******  
+
+ 
+
+
+let params_to_json (param1: int) (param2: bool) = `Assoc prep_to_json;;
+let params_to_json2  = `Assoc prep_to_json;;
+
+
+let zz = params_json |> member "param1";;
+* 
+// Function 1
+let params_to_json (param1: int) (param2: bool) = `Assoc [("param1", `Int param1); ("param2", `Bool param2)];;
+let rs1 = Decompose.top "simpleProg_myTest1";; 
+Extract.to_file ~signature:"simpleProg_myTest1" ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs1;;
+
+let tcs1 = List.map Mex.of_region rs1;;
+
+let params_json = params_to_json ((List.nth tcs1 0).Mex.param1) ((List.nth tcs1 0).Mex.param2);;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+
+let params_json2 = params_to_json2 ((List.nth tcs1 0).Mex.param1) ((List.nth tcs1 0).Mex.param2);;
+Yojson.Basic.pretty_to_channel stdout params_json2;; 
+
+ 
+
+let params_json = params_to_json ((List.nth tcs1 1).Mex.param1) ((List.nth tcs1 1).Mex.param2);;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+let params_json = params_to_json ((List.nth tcs1 2).Mex.param1) ((List.nth tcs1 2).Mex.param2);;
+Yojson.Basic.pretty_to_channel stdout params_json;; 
+
+
+*******
+let params_to_json params = `Assoc params;;
+let p3 = params_to_json (prep_to_json ((List.nth tcs1 1).Mex.param1) ((List.nth tcs1 1).Mex.param2));;
+Yojson.Basic.pretty_to_channel stdout p3;; 
+
+
+let p4 = `Assoc (prep_to_json ((List.nth tcs1 1).Mex.param1) ((List.nth tcs1 1).Mex.param2));;
+Yojson.Basic.pretty_to_channel stdout p4;; 
+
+
+
+
+*******************************************
+
+ 
+Yojson.Basic.pretty_to_channel stdout person3;;
+
+let j22 (t1:t)= `Assoc [("x", `Int t1.x); ("y", `Int t1.y)];;  
+let t1 :t = {x=11;y=31};;
+let w22 = j22 t1;;
+Yojson.Basic.pretty_to_channel stdout w22;;
+
+
+*******
+ 
+
+
+docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
+
+let simpleProg_myTest1 (cityTemp : int): int =
+	if cityTemp  = 0 
+	then 88
+	else 44
+;;
+simpleProg_myTest1 0
+;; 
+simpleProg_myTest1 23
+;;
+
+let rs = Decompose.top "simpleProg_myTest1";; 
+Reflect.Mode.program ();;
+Extract.to_file ~signature:"simpleProg_myTest1" ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+let tcs = List.map Mex.of_region rs;;
+
+
+
+docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
+
+exception App_exception of string;;
+let f (param: int): int =
+	if param  = 0 
+	then raise (App_exception "Wrong input for this function")
+	else 44
+;;
+let rs = Decompose.top "f";; 
+Reflect.Mode.program ();;
+Extract.to_file ~signature:"f" ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+let tcs = List.map Mex.of_region rs;;
+
+let g (param: int): int =
+	if param  = 0 
+	then raise Division_by_zero
+	else 44
+;;
+let rs2 = Decompose.top "g";; 
+
+
+***********************************
+
+module Ex = struct
+  type t = {
+    x : int;
+    y : int;
+  }
+  let f (x1 : t) (x2: int) =
+    if x1.x > 10 then x1.x
+    else if x2 > 10 then x1.y
+    else x2
+end
+;;
+
+let rs = Decompose.top "f";; 
+Reflect.Mode.program ();;
+Extract.to_file ~signature:"f" ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+
+// Constraints and Invariants
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+
+// Test-cases
+let tcs = List.map Mex.of_region rs;;
+
+// Call function for each region
+qwe {Mex.???}
+**************
+*/
+
+/*
+docker run -it -v /Users/AndreyIgnatovich/runtime-EclipseXtext/Test1/printers:/home/imandra/temp eu.gcr.io/imandra-core-env/imandra_bin
+
+let simpleProg_myTest1 (cityTemp: int): int =
+	if cityTemp  = 0 
+	then 88
+	else 44
+;;
+simpleProg_myTest1(0)
+;;
+simpleProg_myTest1(23) 
+;;
+   
+:load_ocaml /home/imandra/temp/prInteger_myTest1.ml;;
+ 
+:testgen simpleProg_myTest1 with_printer prInteger_myTest1;;
+   
+   
+   Extract.to_file ~signature:"qwe" ~filename:"mex.ml" ();;
+
+module Ex = struct
+  type t = {
+    x : int;
+    y : int;
+  }
+  let f (x1 : t) (x2: int) =
+    if x1.x > 10 then x1.x
+    else if x2 > 10 then x1.y
+    else x2
+end
+;;
+
+let rs = Decompose.top "Ex.f";; 
+Reflect.Mode.program ();;
+Extract.to_file ~signature:"Ex.f" ~filename:"mex.ml" ();;
+System.mod_use "mex.ml";;
+
+List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
+let tcs = List.map Mex.of_region rs;;
+
+
+
+*/ 
+ 
+   
