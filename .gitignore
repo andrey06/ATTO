@@ -10,8 +10,8 @@ target/
 .springBeans
 .tern-project
 
-src-gen
-xtend-gen
+src-gen/
+xtend-gen/
 
 ### IntelliJ IDEA ###
 .idea
