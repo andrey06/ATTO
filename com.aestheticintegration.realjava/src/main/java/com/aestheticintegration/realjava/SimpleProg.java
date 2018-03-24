@@ -1,0 +1,81 @@
+package com.aestheticintegration.realjava;
+
+import com.aestheticintegration.realjava.dataobject.Animal;
+import com.aestheticintegration.realjava.dataobject.Pet;
+
+public class SimpleProg {
+	private Animal animal1 = new Animal("My Dog", 10.0f);
+	private Animal animal2 = new Animal("My Cat", 1.22f);
+	
+	// Boolean
+	public Boolean myFunc2(boolean param1, boolean param2) {
+		return (param1 == param2);
+	}
+	public Boolean myFunc2a(int param1, String  param2, Boolean param3) {
+		return (param1 == 123 ? true :
+				param2.equals("abc") ? true :
+				param3 ? true : false);
+	}
+
+	// Datatype
+	public Animal myTest5(Animal animal) {
+		return (animal.getAge() >= 2.0 ? this.animal1 : new Animal("Your Cat", 1.0f));
+	}
+	public String myTest5a(Pet pet) {
+		return (pet.getOwner().equals("Uncle Sam") ? "USA" : "UK");
+	}
+	public Animal myTest5b(int param) throws Exception {
+		if (param == 0) {
+			throw new Exception("Wrong_param");
+		} else if (param == 1) {
+			return new Animal("Your Cat", 1.0f);
+		}
+		return this.animal2;
+	}
+	
+	// Float
+	public float myFunc3(int value) {
+		if (value==123) {
+			return 4.44f;
+		} else if (value==321) {
+			return 88.f;
+		}
+		return 3.22f;
+	}
+	public float myFunc3a(Boolean value) {
+		if (value) {
+			if (33 == 321) return 88.f;
+			return 3.22f;
+		}
+		return 0f;
+	}
+	// Integer
+	public long myTest1(int param1, boolean param2) {
+		return (param1 == 0 ? 88 : (param2 ? 44 : 33));
+	}
+	public long myTest1a(int cityTemp) throws Exception {
+		if (cityTemp == 0) {
+			throw new Exception("Wrong input for this function");
+		}
+		return 33;
+	}
+	public long myTest1b(int param1) throws Exception {
+		if (param1 == 0) {
+			throw new Exception("Wrong input for this function");
+		} else if (param1 == 1) {
+			throw new Exception("Do not use this input");
+		}
+		return 33;
+	}
+	
+	// String
+	public String myFunc4(String value) {
+		return (value.equals("ABC") ? "AAA" : "BBBBB");
+	}
+	public String myFunc4a(int value) {
+		return (value == 123 ? "QWE111" : "QWE222");
+	}
+	public String myFunc4b(Boolean value1, Integer value2, Float value3) {
+		return (value1 == true ? (value2 == 1 ? "QWE111" : (value3 <= 0.0 ? "KU" : "AGU")) : "QWE222");
+	}
+}

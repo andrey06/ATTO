@@ -51,7 +51,7 @@ public class GeneratorOcaml {
 		;;
 		let rs = Decompose.top func_name
 		;; 
-		Extract.to_file ~signature:func_name ~filename:"mex.ml" ()
+		Extract.to_file ~signature:(Event.DB.fun_id_of_str func_name) ~filename:"mex.ml" ()
 		;;
 		System.mod_use "mex.ml"
 		;;

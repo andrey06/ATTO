@@ -37,13 +37,13 @@ function SimpleProg.myTest5b(param: int): Animal {
 	endif  
 }  
  
-test test1 = SimpleProg.myTest5(Animal("My Dog Cat", 5.))
-test test2 = SimpleProg.myTest5a(Pet1)
-test test3 = SimpleProg.myTest5a(Pet2)
+test test1 = SimpleProg.myTest5(Animal("My Dog Cat", 5.)): animal1
+test test2 = SimpleProg.myTest5a(Pet1): "USA"
+test test3 = SimpleProg.myTest5a(Pet2): "UK"
 
-test test4 = SimpleProg.myTest5b(0)
-test test5 = SimpleProg.myTest5b(1)
-test test6a = SimpleProg.myTest5b(2)
+test test4 = SimpleProg.myTest5b(0): Exception("Wrong_param") 
+test test5 = SimpleProg.myTest5b(1): Animal("Your Cat", 1.)
+test test6a = SimpleProg.myTest5b(2): animal2
 
 /*     
 docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
@@ -95,7 +95,5 @@ Extract.to_file ~signature:"simpleProg_myTest5a" ~filename:"mex.ml" ();;
 System.mod_use "mex.ml";;
 List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
 let tcs = List.map Mex.of_region rs;;
-
-
 
  */

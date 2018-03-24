@@ -10,7 +10,7 @@ function SimpleProg.myTest1(param1: int, param2: boolean): long {
 		endif
 	endif
 }
-
+ 
 function SimpleProg.myTest1a(cityTemp: int): long {
 	if (cityTemp = 0)
 	then Exception("Wrong input for this function")
@@ -57,12 +57,14 @@ let simpleProg_myTest2 (param21:float) (param22:bool) =
 ;;
   
 Reflect.Mode.program ();;
-* FUNCTION 1
+* FUNCTION 1 
 let prep_simpleProg_myTest1 (param1:int) (param2: bool) = [("param1", `Int param1); ("param2", `Bool param2)];;
 
 let func_name = "simpleProg_myTest1";; 
 let rs = Decompose.top func_name;; 
-Extract.to_file ~signature:func_name ~filename:"mex.ml" ();;
+* New
+Extract.to_file ~signature:(Event.DB.fun_id_of_str func_name) ~filename:"mex.ml" ()
+
 System.mod_use "mex.ml";;
 List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
 let tcs = List.map Mex.of_region rs;;
@@ -84,7 +86,9 @@ let prep_simpleProg_myTest2 (param21:float) (param22:bool) = [("param21", `Float
  
 let func_name = "simpleProg_myTest2";;
 let rs = Decompose.top func_name;; 
-Extract.to_file ~signature:func_name ~filename:"mex.ml" ();;
+
+Extract.to_file ~signature:(Event.DB.fun_id_of_str func_name) ~filename:"mex.ml" ()
+
 System.mod_use "mex.ml";;
 List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
 let tcs = List.map Mex.of_region rs;;
