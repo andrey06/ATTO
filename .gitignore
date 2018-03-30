@@ -10,8 +10,14 @@ target/
 .springBeans
 .tern-project
 
-*/src-gen/*
-*/xtend-gen/*
+bin/
+build/
+generated/
+generated-sources/
+src-gen/
+xtend-gen/
+.DS_Store
+*.xml_gen
 
 ### IntelliJ IDEA ###
 .idea
