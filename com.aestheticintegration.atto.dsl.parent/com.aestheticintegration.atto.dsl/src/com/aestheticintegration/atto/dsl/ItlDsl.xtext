@@ -27,7 +27,7 @@ DefFunction:
 		functionBody=FunctionBody
 	'}'
 ;
-//ClassName:
+//ClassName: 
 //	'className' className=ID ('.' ID)*
 //;
 InputParam:
