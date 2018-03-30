@@ -12,17 +12,21 @@ import com.aestheticintegration.atto.itlDsl.ExpOrIfStatement;
 import com.aestheticintegration.atto.itlDsl.IfStatement;
 import com.aestheticintegration.atto.itlDsl.InputParam;
 import com.aestheticintegration.atto.itlDsl.Literal;
+import com.aestheticintegration.atto.itlDsl.Null;
 import com.aestheticintegration.atto.itlDsl.OutputExpression;
 import com.aestheticintegration.atto.itlDsl.Primary;
 import com.aestheticintegration.atto.itlDsl.Primitives;
 import com.aestheticintegration.atto.itlDsl.Statement;
 import com.aestheticintegration.atto.itlDsl.impl.BooleanImpl;
+import com.aestheticintegration.atto.itlDsl.impl.DataTypeInstanceImpl;
+import com.aestheticintegration.atto.itlDsl.impl.DefDataValueImpl;
 import com.aestheticintegration.atto.itlDsl.impl.DefFunctionImpl;
 import com.aestheticintegration.atto.itlDsl.impl.ExceptionImpl;
 import com.aestheticintegration.atto.itlDsl.impl.FloatImpl;
 import com.aestheticintegration.atto.itlDsl.impl.IfStatementImpl;
 import com.aestheticintegration.atto.itlDsl.impl.IntegerImpl;
 import com.aestheticintegration.atto.itlDsl.impl.ModelImpl;
+import com.aestheticintegration.atto.itlDsl.impl.NullImpl;
 import com.aestheticintegration.atto.itlDsl.impl.StringImpl;
 import com.google.common.base.Objects;
 import org.eclipse.emf.common.util.EList;
@@ -57,8 +61,8 @@ public class AttoUtil {
             if (_tripleNotEquals_4) {
               str = "int";
             } else {
-              String _integer = dataType.getInteger();
-              boolean _tripleNotEquals_5 = (_integer != null);
+              String _intObj = dataType.getIntObj();
+              boolean _tripleNotEquals_5 = (_intObj != null);
               if (_tripleNotEquals_5) {
                 str = "Integer";
               } else {
@@ -120,27 +124,92 @@ public class AttoUtil {
   
   public String convertDataTypeToPrimitive(final DataType dataType) {
     String dataTypeOut = null;
-    if (((dataType.getBoolean() != null) || (dataType.getBooleanObj() != null))) {
-      dataTypeOut = Primitives.BOOLEAN.getLiteral();
+    String _boolean = dataType.getBoolean();
+    boolean _tripleNotEquals = (_boolean != null);
+    if (_tripleNotEquals) {
+      dataTypeOut = Primitives.BOOL.getLiteral();
     } else {
-      if (((((((dataType.getShort() != null) || (dataType.getShortObj() != null)) || 
-        (dataType.getInt() != null)) || (dataType.getInteger() != null)) || 
-        (dataType.getLong() != null)) || (dataType.getLongObj() != null))) {
-        dataTypeOut = Primitives.INTEGER.getLiteral();
+      String _booleanObj = dataType.getBooleanObj();
+      boolean _tripleNotEquals_1 = (_booleanObj != null);
+      if (_tripleNotEquals_1) {
+        dataTypeOut = Primitives.BOOLOPT.getLiteral();
       } else {
-        if (((((dataType.getFloat() != null) || (dataType.getFloatObj() != null)) || 
-          (dataType.getDouble() != null)) || (dataType.getDoubleObj() != null))) {
-          dataTypeOut = Primitives.FLOAT.getLiteral();
+        if ((((dataType.getShort() != null) || (dataType.getInt() != null)) || (dataType.getLong() != null))) {
+          dataTypeOut = Primitives.INT.getLiteral();
         } else {
-          String _string = dataType.getString();
-          boolean _tripleNotEquals = (_string != null);
-          if (_tripleNotEquals) {
-            dataTypeOut = Primitives.STRING.getLiteral();
+          if ((((dataType.getShortObj() != null) || (dataType.getIntObj() != null)) || (dataType.getLongObj() != null))) {
+            dataTypeOut = Primitives.INTOPT.getLiteral();
           } else {
-            DefDataType _defDataType = dataType.getDefDataType();
-            boolean _tripleNotEquals_1 = (_defDataType != null);
-            if (_tripleNotEquals_1) {
-              dataTypeOut = dataType.getDefDataType().getName().toLowerCase();
+            if (((dataType.getFloat() != null) || (dataType.getDouble() != null))) {
+              dataTypeOut = Primitives.FLOAT.getLiteral();
+            } else {
+              if (((dataType.getFloatObj() != null) || (dataType.getDoubleObj() != null))) {
+                dataTypeOut = Primitives.FLOATOPT.getLiteral();
+              } else {
+                String _string = dataType.getString();
+                boolean _tripleNotEquals_2 = (_string != null);
+                if (_tripleNotEquals_2) {
+                  dataTypeOut = Primitives.STRINGOPT.getLiteral();
+                } else {
+                  DefDataType _defDataType = dataType.getDefDataType();
+                  boolean _tripleNotEquals_3 = (_defDataType != null);
+                  if (_tripleNotEquals_3) {
+                    dataTypeOut = dataType.getDefDataType().getName();
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return dataTypeOut;
+  }
+  
+  public String convertDataTypeToOption(final DataType dataType) {
+    String dataTypeOut = null;
+    String _boolean = dataType.getBoolean();
+    boolean _tripleNotEquals = (_boolean != null);
+    if (_tripleNotEquals) {
+      dataTypeOut = Primitives.BOOL.getLiteral();
+    } else {
+      String _booleanObj = dataType.getBooleanObj();
+      boolean _tripleNotEquals_1 = (_booleanObj != null);
+      if (_tripleNotEquals_1) {
+        String _literal = Primitives.BOOL.getLiteral();
+        String _plus = (_literal + " objOpt");
+        dataTypeOut = _plus;
+      } else {
+        if ((((dataType.getShort() != null) || (dataType.getInt() != null)) || (dataType.getLong() != null))) {
+          dataTypeOut = Primitives.INT.getLiteral();
+        } else {
+          if ((((dataType.getShortObj() != null) || (dataType.getIntObj() != null)) || (dataType.getLongObj() != null))) {
+            String _literal_1 = Primitives.INT.getLiteral();
+            String _plus_1 = (_literal_1 + " objOpt");
+            dataTypeOut = _plus_1;
+          } else {
+            if (((dataType.getFloat() != null) || (dataType.getDouble() != null))) {
+              dataTypeOut = Primitives.FLOAT.getLiteral();
+            } else {
+              if (((dataType.getFloatObj() != null) || (dataType.getDoubleObj() != null))) {
+                String _literal_2 = Primitives.FLOAT.getLiteral();
+                String _plus_2 = (_literal_2 + " objOpt");
+                dataTypeOut = _plus_2;
+              } else {
+                String _string = dataType.getString();
+                boolean _tripleNotEquals_2 = (_string != null);
+                if (_tripleNotEquals_2) {
+                  String _literal_3 = Primitives.STRING.getLiteral();
+                  String _plus_3 = (_literal_3 + " objOpt");
+                  dataTypeOut = _plus_3;
+                } else {
+                  DefDataType _defDataType = dataType.getDefDataType();
+                  boolean _tripleNotEquals_3 = (_defDataType != null);
+                  if (_tripleNotEquals_3) {
+                    dataTypeOut = dataType.getDefDataType().getName();
+                  }
+                }
+              }
             }
           }
         }
@@ -200,16 +269,20 @@ public class AttoUtil {
   public String convertPrimaryToPrimitive(final Primary primary) {
     String primaryType = null;
     if ((primary instanceof BooleanImpl)) {
-      primaryType = Primitives.BOOLEAN.getLiteral();
+      primaryType = Primitives.BOOL.getLiteral();
     } else {
       if ((primary instanceof IntegerImpl)) {
-        primaryType = Primitives.INTEGER.getLiteral();
+        primaryType = Primitives.INT.getLiteral();
       } else {
         if ((primary instanceof FloatImpl)) {
           primaryType = Primitives.FLOAT.getLiteral();
         } else {
           if ((primary instanceof StringImpl)) {
-            primaryType = Primitives.STRING.getLiteral();
+            primaryType = Primitives.STRINGOPT.getLiteral();
+          } else {
+            if ((primary instanceof NullImpl)) {
+              primaryType = Primitives.NULL.getLiteral();
+            }
           }
         }
       }
@@ -288,6 +361,10 @@ public class AttoUtil {
             String _plus = ("\"" + _valueString);
             String _plus_1 = (_plus + "\"");
             primaryValue = _plus_1;
+          } else {
+            if ((primary instanceof NullImpl)) {
+              primaryValue = Primitives.NULL.getLiteral();
+            }
           }
         }
       }
@@ -296,69 +373,48 @@ public class AttoUtil {
   }
   
   public String getOutputExpressionValueAsString(final OutputExpression outputExpression) {
-    boolean exceptFlag = true;
-    String spec = "";
     String outputExpressionValue = "";
-    if ((outputExpression instanceof BooleanImpl)) {
-      if (exceptFlag) {
-        spec = "NO_EXN_BOOL ";
-      }
-      String _string = ((BooleanImpl) outputExpression).getValueBoolean().toString();
-      String _plus = (spec + _string);
-      outputExpressionValue = _plus;
+    if ((outputExpression instanceof ExceptionImpl)) {
+      String _valueException = ((ExceptionImpl) outputExpression).getValueException();
+      String _plus = (("Exception " + "\"") + _valueException);
+      String _plus_1 = (_plus + "\"");
+      outputExpressionValue = _plus_1;
     } else {
-      if ((outputExpression instanceof IntegerImpl)) {
-        if (exceptFlag) {
-          spec = "NO_EXN_INTEGER ";
-        }
-        String _string_1 = ((IntegerImpl) outputExpression).getValueInteger().toString();
-        String _plus_1 = (spec + _string_1);
-        outputExpressionValue = _plus_1;
+      if ((outputExpression instanceof NullImpl)) {
+        outputExpressionValue = "Nothing";
       } else {
-        if ((outputExpression instanceof FloatImpl)) {
-          if (exceptFlag) {
-            spec = "NO_EXN_FLOAT ";
-          }
-          String _string_2 = ((FloatImpl) outputExpression).getValueFloat().toString();
-          String _plus_2 = (spec + _string_2);
-          outputExpressionValue = _plus_2;
+        if ((outputExpression instanceof StringImpl)) {
+          String _valueString = ((StringImpl) outputExpression).getValueString();
+          String _plus_2 = ("\"" + _valueString);
+          String _plus_3 = (_plus_2 + "\"");
+          outputExpressionValue = _plus_3;
         } else {
-          if ((outputExpression instanceof StringImpl)) {
-            if (exceptFlag) {
-              spec = "NO_EXN_STRING ";
-            }
-            String _valueString = ((StringImpl) outputExpression).getValueString();
-            String _plus_3 = ((spec + "\"") + _valueString);
-            String _plus_4 = (_plus_3 + "\"");
+          String some = "Something ";
+          if ((outputExpression instanceof BooleanImpl)) {
+            String _string = ((BooleanImpl) outputExpression).getValueBoolean().toString();
+            String _plus_4 = (some + _string);
             outputExpressionValue = _plus_4;
           } else {
-            if ((outputExpression instanceof DataTypeInstance)) {
-              if (exceptFlag) {
-                String _upperCase = ((DataTypeInstance) outputExpression).getDataTypeInstance().getDefDataType().getName().toUpperCase();
-                String _plus_5 = ("NO_EXN_" + _upperCase);
-                String _plus_6 = (_plus_5 + " ");
-                spec = _plus_6;
-              }
-              String _ocamlValue = this.toOcamlValue(((DataTypeInstance) outputExpression).getDataTypeInstance());
-              String _plus_7 = (spec + _ocamlValue);
-              outputExpressionValue = _plus_7;
+            if ((outputExpression instanceof IntegerImpl)) {
+              String _string_1 = ((IntegerImpl) outputExpression).getValueInteger().toString();
+              String _plus_5 = (some + _string_1);
+              outputExpressionValue = _plus_5;
             } else {
-              if ((outputExpression instanceof DefDataValue)) {
-                if (exceptFlag) {
-                  String _upperCase_1 = ((DefDataValue) outputExpression).getValueDataValue().getDataTypeInstance().getDefDataType().getName().toUpperCase();
-                  String _plus_8 = ("NO_EXN_" + _upperCase_1);
-                  String _plus_9 = (_plus_8 + " ");
-                  spec = _plus_9;
-                }
-                String _name = ((DefDataValue) outputExpression).getValueDataValue().getName();
-                String _plus_10 = (spec + _name);
-                outputExpressionValue = _plus_10;
+              if ((outputExpression instanceof FloatImpl)) {
+                String _string_2 = ((FloatImpl) outputExpression).getValueFloat().toString();
+                String _plus_6 = (some + _string_2);
+                outputExpressionValue = _plus_6;
               } else {
-                if ((outputExpression instanceof ExceptionImpl)) {
-                  String _valueException = ((ExceptionImpl) outputExpression).getValueException();
-                  String _plus_11 = (("EXCEPTION " + "\"") + _valueException);
-                  String _plus_12 = (_plus_11 + "\"");
-                  outputExpressionValue = _plus_12;
+                if ((outputExpression instanceof DataTypeInstance)) {
+                  String _ocamlValue = this.toOcamlValue(((DataTypeInstance) outputExpression).getDataTypeInstance());
+                  String _plus_7 = (some + _ocamlValue);
+                  outputExpressionValue = _plus_7;
+                } else {
+                  if ((outputExpression instanceof DefDataValue)) {
+                    String _name = ((DefDataValue) outputExpression).getValueDataValue().getName();
+                    String _plus_8 = (some + _name);
+                    outputExpressionValue = _plus_8;
+                  }
                 }
               }
             }
@@ -367,6 +423,69 @@ public class AttoUtil {
       }
     }
     return outputExpressionValue;
+  }
+  
+  public String convertOutputExpressionToPrimitive(final OutputExpression outputExpression) {
+    String dataTypeOut = null;
+    if ((outputExpression instanceof BooleanImpl)) {
+      dataTypeOut = Primitives.BOOL.getLiteral();
+    } else {
+      if ((outputExpression instanceof IntegerImpl)) {
+        dataTypeOut = Primitives.INT.getLiteral();
+      } else {
+        if ((outputExpression instanceof FloatImpl)) {
+          dataTypeOut = Primitives.FLOAT.getLiteral();
+        } else {
+          if ((outputExpression instanceof StringImpl)) {
+            dataTypeOut = Primitives.STRINGOPT.getLiteral();
+          } else {
+            if ((outputExpression instanceof NullImpl)) {
+              dataTypeOut = Primitives.NULL.getLiteral();
+            } else {
+              if ((outputExpression instanceof DataTypeInstanceImpl)) {
+                dataTypeOut = ((DataTypeInstanceImpl) outputExpression).getDataTypeInstance().getDefDataType().getName();
+              } else {
+                if ((outputExpression instanceof DefDataValueImpl)) {
+                  EList<DefDataValue> datavalues = this.getAllDefDataValues(outputExpression);
+                  if (((datavalues != null) && (datavalues.size() != 0))) {
+                    for (final DefDataValue defDataValue : datavalues) {
+                      String _name = defDataValue.getName();
+                      String _name_1 = ((DefDataValueImpl) outputExpression).getValueDataValue().getName();
+                      boolean _equals = Objects.equal(_name, _name_1);
+                      if (_equals) {
+                        dataTypeOut = defDataValue.getDataTypeInstance().getDefDataType().getName();
+                      }
+                    }
+                  }
+                } else {
+                  if ((outputExpression instanceof ExceptionImpl)) {
+                    dataTypeOut = Primitives.EXCEPTION.getLiteral();
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return dataTypeOut;
+  }
+  
+  public String toOcamlType(final DataTypeInstance dataTypeInstance) {
+    String str = "{";
+    EList<InputParam> dataTypeFields = dataTypeInstance.getDefDataType().getFields();
+    String comma = "";
+    for (int index = 0; (index < dataTypeFields.size()); index++) {
+      {
+        String fieldName = dataTypeFields.get(index).getName();
+        String fieldValue = this.convertDataTypeToOption(dataTypeFields.get(index).getInputDataType());
+        str = ((((str + comma) + fieldName) + "=") + fieldValue);
+        comma = "; ";
+      }
+    }
+    String _str = str;
+    str = (_str + "}");
+    return str;
   }
   
   public String toOcamlValue(final DataTypeInstance dataTypeInstance) {
@@ -504,13 +623,38 @@ public class AttoUtil {
               str = (str + "}");
             } else {
               if ((outputExpression instanceof DefDataValue)) {
-                str = ((DefDataValue)outputExpression).getValueDataValue().getName().toLowerCase();
+                DataTypeInstance dataTypeInstance = ((DefDataValue) outputExpression).getValueDataValue().getDataTypeInstance();
+                String _name = ((DefDataValue)outputExpression).getValueDataValue().getName();
+                String _plus_2 = ("{ \"name\": \"" + _name);
+                String _plus_3 = (_plus_2 + "\", ");
+                String _plus_4 = (_plus_3 + 
+                  "\"datatype\": \"");
+                String _name_1 = dataTypeInstance.getDefDataType().getName();
+                String _plus_5 = (_plus_4 + _name_1);
+                String _plus_6 = (_plus_5 + "\", ");
+                String _plus_7 = (_plus_6 + 
+                  "\"fields\": [");
+                str = _plus_7;
+                for (int index2 = 0; (index2 < dataTypeInstance.getLiterals().size()); index2++) {
+                  {
+                    String _literalValueAsString = this.getLiteralValueAsString(dataTypeInstance.getLiterals().get(index2));
+                    String _plus_8 = (str + _literalValueAsString);
+                    str = _plus_8;
+                    int _size = dataTypeInstance.getLiterals().size();
+                    int _minus = (_size - 1);
+                    boolean _tripleNotEquals = (index2 != _minus);
+                    if (_tripleNotEquals) {
+                      str = (str + " , ");
+                    }
+                  }
+                }
+                str = ((str + "]") + "}");
               } else {
                 if ((outputExpression instanceof ExceptionImpl)) {
                   String _valueException = ((ExceptionImpl) outputExpression).getValueException();
-                  String _plus_2 = (("\"EXCEPTION " + "\\\"") + _valueException);
-                  String _plus_3 = (_plus_2 + "\\\"\"");
-                  str = _plus_3;
+                  String _plus_8 = (("\"Exception " + "\\\"") + _valueException);
+                  String _plus_9 = (_plus_8 + "\\\"\"");
+                  str = _plus_9;
                 }
               }
             }
@@ -597,9 +741,34 @@ public class AttoUtil {
       String _sign = boolExpression.getSign();
       String _plus = ((str + " ") + _sign);
       String _plus_1 = (_plus + " ");
+      String _some = this.getSome(boolExpression, str);
+      String _plus_2 = (_plus_1 + _some);
       String _literalValueAsString = this.getLiteralValueAsString(boolExpression.getLiteralRight());
-      String _plus_2 = (_plus_1 + _literalValueAsString);
-      str = _plus_2;
+      String _plus_3 = (_plus_2 + _literalValueAsString);
+      str = _plus_3;
+    }
+    return str;
+  }
+  
+  public String getSome(final BoolExpression boolExpression, final String paramName) {
+    String str = "";
+    if ((((boolExpression.getLiteralRight() != null) && 
+      (boolExpression.getLiteralRight().getPrimary() != null)) && 
+      (boolExpression.getLiteralRight().getPrimary() instanceof Null))) {
+      return str;
+    }
+    DefFunction defFunction = this.getDefFunction(boolExpression);
+    EList<InputParam> inputParams = defFunction.getInputParams();
+    for (final InputParam inputParam : inputParams) {
+      boolean _equals = inputParam.getName().equals(paramName);
+      if (_equals) {
+        String dataTypeName = this.convertDataTypeToPrimitive(inputParam.getInputDataType());
+        boolean _endsWith = dataTypeName.endsWith("Opt");
+        if (_endsWith) {
+          str = "Something ";
+        }
+        return str;
+      }
     }
     return str;
   }
@@ -618,15 +787,15 @@ public class AttoUtil {
       String _name = inputParams.get(index).getName();
       String _plus = ((str + " (") + _name);
       String _plus_1 = (_plus + ":");
-      String _convertDataTypeToPrimitive = this.convertDataTypeToPrimitive(inputParams.get(index).getInputDataType());
-      String _plus_2 = (_plus_1 + _convertDataTypeToPrimitive);
+      String _convertDataTypeToOption = this.convertDataTypeToOption(inputParams.get(index).getInputDataType());
+      String _plus_2 = (_plus_1 + _convertDataTypeToOption);
       String _plus_3 = (_plus_2 + ")");
       str = _plus_3;
     }
     return str;
   }
   
-  public String buildPrepToJson(final DefFunction defFunction) {
+  public String buildPrepToJson_DEL_ME(final DefFunction defFunction) {
     EList<InputParam> inputParams = defFunction.getInputParams();
     String comma = "";
     String _nameToOcaml = this.nameToOcaml(defFunction.getName());
@@ -661,7 +830,7 @@ public class AttoUtil {
       dataTypeOut = "`Bool";
     } else {
       if (((((((dataType.getShort() != null) || (dataType.getShortObj() != null)) || 
-        (dataType.getInt() != null)) || (dataType.getInteger() != null)) || 
+        (dataType.getInt() != null)) || (dataType.getIntObj() != null)) || 
         (dataType.getLong() != null)) || (dataType.getLongObj() != null))) {
         dataTypeOut = "`Int";
       } else {

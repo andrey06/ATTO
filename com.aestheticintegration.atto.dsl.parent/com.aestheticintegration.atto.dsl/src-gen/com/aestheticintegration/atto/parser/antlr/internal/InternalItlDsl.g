@@ -734,15 +734,15 @@ ruleDataType returns [EObject current=null]
 		    |
 		(
 			(
-				lv_integer_5_0='Integer'
+				lv_intObj_5_0='Integer'
 				{
-					newLeafNode(lv_integer_5_0, grammarAccess.getDataTypeAccess().getIntegerIntegerKeyword_5_0());
+					newLeafNode(lv_intObj_5_0, grammarAccess.getDataTypeAccess().getIntObjIntegerKeyword_5_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getDataTypeRule());
 					}
-					setWithLastConsumed($current, "integer", lv_integer_5_0, "Integer");
+					setWithLastConsumed($current, "intObj", lv_intObj_5_0, "Integer");
 				}
 			)
 		)
@@ -1572,6 +1572,34 @@ rulePrimary returns [EObject current=null]
 				)
 			)
 		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getPrimaryAccess().getNullAction_4_0(),
+						$current);
+				}
+			)
+			(
+				(
+					lv_valueNull_9_0=RULE_NULL
+					{
+						newLeafNode(lv_valueNull_9_0, grammarAccess.getPrimaryAccess().getValueNullNULLTerminalRuleCall_4_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getPrimaryRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"valueNull",
+							lv_valueNull_9_0,
+							"com.aestheticintegration.atto.ItlDsl.NULL");
+					}
+				)
+			)
+		)
 	)
 ;
 
@@ -1707,16 +1735,44 @@ ruleOutputExpression returns [EObject current=null]
 			(
 				{
 					$current = forceCreateModelElement(
-						grammarAccess.getOutputExpressionAccess().getDataTypeInstanceAction_4_0(),
+						grammarAccess.getOutputExpressionAccess().getNullAction_4_0(),
+						$current);
+				}
+			)
+			(
+				(
+					lv_valueNull_9_0=RULE_NULL
+					{
+						newLeafNode(lv_valueNull_9_0, grammarAccess.getOutputExpressionAccess().getValueNullNULLTerminalRuleCall_4_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getOutputExpressionRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"valueNull",
+							lv_valueNull_9_0,
+							"com.aestheticintegration.atto.ItlDsl.NULL");
+					}
+				)
+			)
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getOutputExpressionAccess().getDataTypeInstanceAction_5_0(),
 						$current);
 				}
 			)
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getOutputExpressionAccess().getDataTypeInstanceDataTypeInstanceParserRuleCall_4_1_0());
+						newCompositeNode(grammarAccess.getOutputExpressionAccess().getDataTypeInstanceDataTypeInstanceParserRuleCall_5_1_0());
 					}
-					lv_dataTypeInstance_9_0=ruleDataTypeInstance
+					lv_dataTypeInstance_11_0=ruleDataTypeInstance
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getOutputExpressionRule());
@@ -1724,7 +1780,7 @@ ruleOutputExpression returns [EObject current=null]
 						set(
 							$current,
 							"dataTypeInstance",
-							lv_dataTypeInstance_9_0,
+							lv_dataTypeInstance_11_0,
 							"com.aestheticintegration.atto.ItlDsl.DataTypeInstance");
 						afterParserOrEnumRuleCall();
 					}
@@ -1736,7 +1792,7 @@ ruleOutputExpression returns [EObject current=null]
 			(
 				{
 					$current = forceCreateModelElement(
-						grammarAccess.getOutputExpressionAccess().getDefDataValueAction_5_0(),
+						grammarAccess.getOutputExpressionAccess().getDefDataValueAction_6_0(),
 						$current);
 				}
 			)
@@ -1747,9 +1803,9 @@ ruleOutputExpression returns [EObject current=null]
 							$current = createModelElement(grammarAccess.getOutputExpressionRule());
 						}
 					}
-					otherlv_11=RULE_ID
+					otherlv_13=RULE_ID
 					{
-						newLeafNode(otherlv_11, grammarAccess.getOutputExpressionAccess().getValueDataValueDefDataValueCrossReference_5_1_0());
+						newLeafNode(otherlv_13, grammarAccess.getOutputExpressionAccess().getValueDataValueDefDataValueCrossReference_6_1_0());
 					}
 				)
 			)
@@ -1759,23 +1815,23 @@ ruleOutputExpression returns [EObject current=null]
 			(
 				{
 					$current = forceCreateModelElement(
-						grammarAccess.getOutputExpressionAccess().getExceptionAction_6_0(),
+						grammarAccess.getOutputExpressionAccess().getExceptionAction_7_0(),
 						$current);
 				}
 			)
-			otherlv_13='Exception'
+			otherlv_15='Exception'
 			{
-				newLeafNode(otherlv_13, grammarAccess.getOutputExpressionAccess().getExceptionKeyword_6_1());
+				newLeafNode(otherlv_15, grammarAccess.getOutputExpressionAccess().getExceptionKeyword_7_1());
 			}
-			otherlv_14='('
+			otherlv_16='('
 			{
-				newLeafNode(otherlv_14, grammarAccess.getOutputExpressionAccess().getLeftParenthesisKeyword_6_2());
+				newLeafNode(otherlv_16, grammarAccess.getOutputExpressionAccess().getLeftParenthesisKeyword_7_2());
 			}
 			(
 				(
-					lv_valueException_15_0=RULE_STRING
+					lv_valueException_17_0=RULE_STRING
 					{
-						newLeafNode(lv_valueException_15_0, grammarAccess.getOutputExpressionAccess().getValueExceptionSTRINGTerminalRuleCall_6_3_0());
+						newLeafNode(lv_valueException_17_0, grammarAccess.getOutputExpressionAccess().getValueExceptionSTRINGTerminalRuleCall_7_3_0());
 					}
 					{
 						if ($current==null) {
@@ -1784,14 +1840,14 @@ ruleOutputExpression returns [EObject current=null]
 						setWithLastConsumed(
 							$current,
 							"valueException",
-							lv_valueException_15_0,
+							lv_valueException_17_0,
 							"com.aestheticintegration.atto.ItlDsl.STRING");
 					}
 				)
 			)
-			otherlv_16=')'
+			otherlv_18=')'
 			{
-				newLeafNode(otherlv_16, grammarAccess.getOutputExpressionAccess().getRightParenthesisKeyword_6_4());
+				newLeafNode(otherlv_18, grammarAccess.getOutputExpressionAccess().getRightParenthesisKeyword_7_4());
 			}
 		)
 	)
@@ -2006,6 +2062,8 @@ ruleDataTypeValue returns [EObject current=null]
 		)
 	)
 ;
+
+RULE_NULL : ('null'|'NULL');
 
 RULE_BOOLEAN : ('false'|'true');
 

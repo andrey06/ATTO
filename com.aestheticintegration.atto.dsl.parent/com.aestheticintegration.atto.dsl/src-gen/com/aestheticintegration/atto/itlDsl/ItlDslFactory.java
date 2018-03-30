@@ -231,6 +231,15 @@ public interface ItlDslFactory extends EFactory
   String createString();
 
   /**
+   * Returns a new object of class '<em>Null</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Null</em>'.
+   * @generated
+   */
+  Null createNull();
+
+  /**
    * Returns a new object of class '<em>Exception</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

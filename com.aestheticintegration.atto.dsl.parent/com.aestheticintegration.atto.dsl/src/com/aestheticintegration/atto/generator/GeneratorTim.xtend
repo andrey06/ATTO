@@ -56,17 +56,20 @@ public class GeneratorTim {
 	def compile3(EList<DefDataValue> datavalues) '''
 		"datavalues": [
 		«FOR index : 0 ..< datavalues.size»
-		{ "name": "«datavalues.get(index).name»",
-		  "datatype": "«datavalues.get(index).dataTypeInstance.defDataType.name»",
-		  "fields": [
-			«FOR index2 : 0 ..< datavalues.get(index).dataTypeInstance.literals.size»
-		       «this.attoUtil.getLiteralValueAsString(datavalues.get(index).dataTypeInstance.literals.get(index2))»«IF index2 !== datavalues.get(index).dataTypeInstance.literals.size -1 » , «ENDIF»
-			«ENDFOR»
-		   ]
-		}«IF index !== datavalues.size -1 » , «ENDIF»
+			«datavalues.get(index).compile3a»
+			«IF index !== datavalues.size -1 » , «ENDIF»
 		«ENDFOR»
 		],
 	'''
+	def compile3a(DefDataValue datavalue) '''
+		{ "name": "«datavalue.name»",
+		  "datatype": "«datavalue.dataTypeInstance.defDataType.name»",
+		  "fields": [
+			«FOR index2 : 0 ..< datavalue.dataTypeInstance.literals.size»
+		       «this.attoUtil.getLiteralValueAsString(datavalue.dataTypeInstance.literals.get(index2))»«IF index2 !== datavalue.dataTypeInstance.literals.size -1 » , «ENDIF»
+			«ENDFOR»
+		   ]
+		}	'''
 	def compile4(EList<DefFunction> functions) '''
 		"functions": [
 		«FOR index : 0 ..< functions.size»

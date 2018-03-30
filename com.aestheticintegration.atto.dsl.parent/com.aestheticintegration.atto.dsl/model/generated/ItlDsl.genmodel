@@ -7,11 +7,16 @@
   <genPackages prefix="ItlDsl" basePackage="com.aestheticintegration.atto" disposableProviderFactory="true"
       fileExtensions="itl" ecorePackage="ItlDsl.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="ItlDsl.ecore#//Primitives">
-      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/BOOLEAN"/>
-      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/INTEGER"/>
+      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/BOOL"/>
+      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/BOOLOPT"/>
+      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/INT"/>
+      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/INTOPT"/>
       <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/FLOAT"/>
+      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/FLOATOPT"/>
       <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/STRING"/>
+      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/STRINGOPT"/>
       <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/EXCEPTION"/>
+      <genEnumLiterals ecoreEnumLiteral="ItlDsl.ecore#//Primitives/NULL"/>
     </genEnums>
     <genClasses ecoreClass="ItlDsl.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ItlDsl.ecore#//Model/imports"/>
@@ -53,7 +58,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//DataType/short"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//DataType/shortObj"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//DataType/int"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//DataType/integer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//DataType/intObj"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//DataType/long"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//DataType/longObj"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//DataType/float"/>
@@ -117,6 +122,9 @@
     </genClasses>
     <genClasses ecoreClass="ItlDsl.ecore#//String">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//String/valueString"/>
+    </genClasses>
+    <genClasses ecoreClass="ItlDsl.ecore#//Null">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//Null/valueNull"/>
     </genClasses>
     <genClasses ecoreClass="ItlDsl.ecore#//Exception">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ItlDsl.ecore#//Exception/valueException"/>

@@ -375,8 +375,8 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cShortObjShortKeyword_3_0 = (Keyword)cShortObjAssignment_3.eContents().get(0);
 		private final Assignment cIntAssignment_4 = (Assignment)cAlternatives.eContents().get(4);
 		private final Keyword cIntIntKeyword_4_0 = (Keyword)cIntAssignment_4.eContents().get(0);
-		private final Assignment cIntegerAssignment_5 = (Assignment)cAlternatives.eContents().get(5);
-		private final Keyword cIntegerIntegerKeyword_5_0 = (Keyword)cIntegerAssignment_5.eContents().get(0);
+		private final Assignment cIntObjAssignment_5 = (Assignment)cAlternatives.eContents().get(5);
+		private final Keyword cIntObjIntegerKeyword_5_0 = (Keyword)cIntObjAssignment_5.eContents().get(0);
 		private final Assignment cLongAssignment_6 = (Assignment)cAlternatives.eContents().get(6);
 		private final Keyword cLongLongKeyword_6_0 = (Keyword)cLongAssignment_6.eContents().get(0);
 		private final Assignment cLongObjAssignment_7 = (Assignment)cAlternatives.eContents().get(7);
@@ -406,7 +406,7 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		//	| short='short'
 		//	| shortObj='Short'
 		//	| int='int'
-		//	| integer='Integer' // Primitive DataType
+		//	| intObj='Integer' // Primitive DataType
 		//	| long='long'
 		//	| longObj='Long'
 		//	| float='float'
@@ -423,7 +423,7 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		////|	BYTEOBJ='Byte'
 		////|	CHAR='char'
 		////|	CHARACTER='Character'
-		//| short='short' | shortObj='Short' | int='int' | integer='Integer' // Primitive DataType
+		//| short='short' | shortObj='Short' | int='int' | intObj='Integer' // Primitive DataType
 		//| long='long' | longObj='Long' | float='float' | floatObj='Float' // Primitive DataType
 		//| double='double' | doubleObj='Double' | string='String' // Primitive DataType
 		//| defDataType=[DefDataType]
@@ -459,11 +459,11 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		//'int'
 		public Keyword getIntIntKeyword_4_0() { return cIntIntKeyword_4_0; }
 		
-		//integer='Integer'
-		public Assignment getIntegerAssignment_5() { return cIntegerAssignment_5; }
+		//intObj='Integer'
+		public Assignment getIntObjAssignment_5() { return cIntObjAssignment_5; }
 		
 		//'Integer'
-		public Keyword getIntegerIntegerKeyword_5_0() { return cIntegerIntegerKeyword_5_0; }
+		public Keyword getIntObjIntegerKeyword_5_0() { return cIntObjIntegerKeyword_5_0; }
 		
 		//long='long'
 		public Assignment getLongAssignment_6() { return cLongAssignment_6; }
@@ -878,16 +878,22 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cStringAction_3_0 = (Action)cGroup_3.eContents().get(0);
 		private final Assignment cValueStringAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cValueStringSTRINGTerminalRuleCall_3_1_0 = (RuleCall)cValueStringAssignment_3_1.eContents().get(0);
+		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
+		private final Action cNullAction_4_0 = (Action)cGroup_4.eContents().get(0);
+		private final Assignment cValueNullAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final RuleCall cValueNullNULLTerminalRuleCall_4_1_0 = (RuleCall)cValueNullAssignment_4_1.eContents().get(0);
 		
 		//// Constqnts in BoolExpression
 		//Primary:
 		//	{Boolean} valueBoolean=BOOLEAN
 		//	| {Integer} valueInteger=INTEGER
 		//	| {Float} valueFloat=FLOAT
-		//	| {String} valueString=STRING;
+		//	| {String} valueString=STRING
+		//	| {Null} valueNull=NULL;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{Boolean} valueBoolean=BOOLEAN | {Integer} valueInteger=INTEGER | {Float} valueFloat=FLOAT | {String} valueString=STRING
+		//| {Null} valueNull=NULL
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//{Boolean} valueBoolean=BOOLEAN
@@ -937,6 +943,18 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//STRING
 		public RuleCall getValueStringSTRINGTerminalRuleCall_3_1_0() { return cValueStringSTRINGTerminalRuleCall_3_1_0; }
+		
+		//{Null} valueNull=NULL
+		public Group getGroup_4() { return cGroup_4; }
+		
+		//{Null}
+		public Action getNullAction_4_0() { return cNullAction_4_0; }
+		
+		//valueNull=NULL
+		public Assignment getValueNullAssignment_4_1() { return cValueNullAssignment_4_1; }
+		
+		//NULL
+		public RuleCall getValueNullNULLTerminalRuleCall_4_1_0() { return cValueNullNULLTerminalRuleCall_4_1_0; }
 	}
 	public class OutputExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.aestheticintegration.atto.ItlDsl.OutputExpression");
@@ -958,34 +976,39 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cValueStringAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cValueStringSTRINGTerminalRuleCall_3_1_0 = (RuleCall)cValueStringAssignment_3_1.eContents().get(0);
 		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
-		private final Action cDataTypeInstanceAction_4_0 = (Action)cGroup_4.eContents().get(0);
-		private final Assignment cDataTypeInstanceAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final RuleCall cDataTypeInstanceDataTypeInstanceParserRuleCall_4_1_0 = (RuleCall)cDataTypeInstanceAssignment_4_1.eContents().get(0);
+		private final Action cNullAction_4_0 = (Action)cGroup_4.eContents().get(0);
+		private final Assignment cValueNullAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final RuleCall cValueNullNULLTerminalRuleCall_4_1_0 = (RuleCall)cValueNullAssignment_4_1.eContents().get(0);
 		private final Group cGroup_5 = (Group)cAlternatives.eContents().get(5);
-		private final Action cDefDataValueAction_5_0 = (Action)cGroup_5.eContents().get(0);
-		private final Assignment cValueDataValueAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
-		private final CrossReference cValueDataValueDefDataValueCrossReference_5_1_0 = (CrossReference)cValueDataValueAssignment_5_1.eContents().get(0);
-		private final RuleCall cValueDataValueDefDataValueIDTerminalRuleCall_5_1_0_1 = (RuleCall)cValueDataValueDefDataValueCrossReference_5_1_0.eContents().get(1);
+		private final Action cDataTypeInstanceAction_5_0 = (Action)cGroup_5.eContents().get(0);
+		private final Assignment cDataTypeInstanceAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
+		private final RuleCall cDataTypeInstanceDataTypeInstanceParserRuleCall_5_1_0 = (RuleCall)cDataTypeInstanceAssignment_5_1.eContents().get(0);
 		private final Group cGroup_6 = (Group)cAlternatives.eContents().get(6);
-		private final Action cExceptionAction_6_0 = (Action)cGroup_6.eContents().get(0);
-		private final Keyword cExceptionKeyword_6_1 = (Keyword)cGroup_6.eContents().get(1);
-		private final Keyword cLeftParenthesisKeyword_6_2 = (Keyword)cGroup_6.eContents().get(2);
-		private final Assignment cValueExceptionAssignment_6_3 = (Assignment)cGroup_6.eContents().get(3);
-		private final RuleCall cValueExceptionSTRINGTerminalRuleCall_6_3_0 = (RuleCall)cValueExceptionAssignment_6_3.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_6_4 = (Keyword)cGroup_6.eContents().get(4);
+		private final Action cDefDataValueAction_6_0 = (Action)cGroup_6.eContents().get(0);
+		private final Assignment cValueDataValueAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final CrossReference cValueDataValueDefDataValueCrossReference_6_1_0 = (CrossReference)cValueDataValueAssignment_6_1.eContents().get(0);
+		private final RuleCall cValueDataValueDefDataValueIDTerminalRuleCall_6_1_0_1 = (RuleCall)cValueDataValueDefDataValueCrossReference_6_1_0.eContents().get(1);
+		private final Group cGroup_7 = (Group)cAlternatives.eContents().get(7);
+		private final Action cExceptionAction_7_0 = (Action)cGroup_7.eContents().get(0);
+		private final Keyword cExceptionKeyword_7_1 = (Keyword)cGroup_7.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_7_2 = (Keyword)cGroup_7.eContents().get(2);
+		private final Assignment cValueExceptionAssignment_7_3 = (Assignment)cGroup_7.eContents().get(3);
+		private final RuleCall cValueExceptionSTRINGTerminalRuleCall_7_3_0 = (RuleCall)cValueExceptionAssignment_7_3.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_7_4 = (Keyword)cGroup_7.eContents().get(4);
 		
 		//OutputExpression:
 		//	{Boolean} valueBoolean=BOOLEAN
 		//	| {Integer} valueInteger=INTEGER
 		//	| {Float} valueFloat=FLOAT
 		//	| {String} valueString=STRING
+		//	| {Null} valueNull=NULL
 		//	| {DataTypeInstance} dataTypeInstance=DataTypeInstance
 		//	| {DefDataValue} valueDataValue=[DefDataValue] | {Exception} 'Exception' '(' valueException=STRING ')';
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{Boolean} valueBoolean=BOOLEAN | {Integer} valueInteger=INTEGER | {Float} valueFloat=FLOAT | {String} valueString=STRING
-		//| {DataTypeInstance} dataTypeInstance=DataTypeInstance | {DefDataValue} valueDataValue=[DefDataValue] | {Exception}
-		//'Exception' '(' valueException=STRING ')'
+		//| {Null} valueNull=NULL | {DataTypeInstance} dataTypeInstance=DataTypeInstance | {DefDataValue}
+		//valueDataValue=[DefDataValue] | {Exception} 'Exception' '(' valueException=STRING ')'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//{Boolean} valueBoolean=BOOLEAN
@@ -1036,53 +1059,65 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getValueStringSTRINGTerminalRuleCall_3_1_0() { return cValueStringSTRINGTerminalRuleCall_3_1_0; }
 		
-		//{DataTypeInstance} dataTypeInstance=DataTypeInstance
+		//{Null} valueNull=NULL
 		public Group getGroup_4() { return cGroup_4; }
 		
-		//{DataTypeInstance}
-		public Action getDataTypeInstanceAction_4_0() { return cDataTypeInstanceAction_4_0; }
+		//{Null}
+		public Action getNullAction_4_0() { return cNullAction_4_0; }
 		
-		//dataTypeInstance=DataTypeInstance
-		public Assignment getDataTypeInstanceAssignment_4_1() { return cDataTypeInstanceAssignment_4_1; }
+		//valueNull=NULL
+		public Assignment getValueNullAssignment_4_1() { return cValueNullAssignment_4_1; }
 		
-		//DataTypeInstance
-		public RuleCall getDataTypeInstanceDataTypeInstanceParserRuleCall_4_1_0() { return cDataTypeInstanceDataTypeInstanceParserRuleCall_4_1_0; }
+		//NULL
+		public RuleCall getValueNullNULLTerminalRuleCall_4_1_0() { return cValueNullNULLTerminalRuleCall_4_1_0; }
 		
-		//{DefDataValue} valueDataValue=[DefDataValue]
+		//{DataTypeInstance} dataTypeInstance=DataTypeInstance
 		public Group getGroup_5() { return cGroup_5; }
 		
-		//{DefDataValue}
-		public Action getDefDataValueAction_5_0() { return cDefDataValueAction_5_0; }
+		//{DataTypeInstance}
+		public Action getDataTypeInstanceAction_5_0() { return cDataTypeInstanceAction_5_0; }
 		
-		//valueDataValue=[DefDataValue]
-		public Assignment getValueDataValueAssignment_5_1() { return cValueDataValueAssignment_5_1; }
+		//dataTypeInstance=DataTypeInstance
+		public Assignment getDataTypeInstanceAssignment_5_1() { return cDataTypeInstanceAssignment_5_1; }
 		
-		//[DefDataValue]
-		public CrossReference getValueDataValueDefDataValueCrossReference_5_1_0() { return cValueDataValueDefDataValueCrossReference_5_1_0; }
+		//DataTypeInstance
+		public RuleCall getDataTypeInstanceDataTypeInstanceParserRuleCall_5_1_0() { return cDataTypeInstanceDataTypeInstanceParserRuleCall_5_1_0; }
 		
-		//ID
-		public RuleCall getValueDataValueDefDataValueIDTerminalRuleCall_5_1_0_1() { return cValueDataValueDefDataValueIDTerminalRuleCall_5_1_0_1; }
-		
-		//{Exception} 'Exception' '(' valueException=STRING ')'
+		//{DefDataValue} valueDataValue=[DefDataValue]
 		public Group getGroup_6() { return cGroup_6; }
 		
+		//{DefDataValue}
+		public Action getDefDataValueAction_6_0() { return cDefDataValueAction_6_0; }
+		
+		//valueDataValue=[DefDataValue]
+		public Assignment getValueDataValueAssignment_6_1() { return cValueDataValueAssignment_6_1; }
+		
+		//[DefDataValue]
+		public CrossReference getValueDataValueDefDataValueCrossReference_6_1_0() { return cValueDataValueDefDataValueCrossReference_6_1_0; }
+		
+		//ID
+		public RuleCall getValueDataValueDefDataValueIDTerminalRuleCall_6_1_0_1() { return cValueDataValueDefDataValueIDTerminalRuleCall_6_1_0_1; }
+		
+		//{Exception} 'Exception' '(' valueException=STRING ')'
+		public Group getGroup_7() { return cGroup_7; }
+		
 		//{Exception}
-		public Action getExceptionAction_6_0() { return cExceptionAction_6_0; }
+		public Action getExceptionAction_7_0() { return cExceptionAction_7_0; }
 		
 		//'Exception'
-		public Keyword getExceptionKeyword_6_1() { return cExceptionKeyword_6_1; }
+		public Keyword getExceptionKeyword_7_1() { return cExceptionKeyword_7_1; }
 		
 		//'('
-		public Keyword getLeftParenthesisKeyword_6_2() { return cLeftParenthesisKeyword_6_2; }
+		public Keyword getLeftParenthesisKeyword_7_2() { return cLeftParenthesisKeyword_7_2; }
 		
 		//valueException=STRING
-		public Assignment getValueExceptionAssignment_6_3() { return cValueExceptionAssignment_6_3; }
+		public Assignment getValueExceptionAssignment_7_3() { return cValueExceptionAssignment_7_3; }
 		
 		//STRING
-		public RuleCall getValueExceptionSTRINGTerminalRuleCall_6_3_0() { return cValueExceptionSTRINGTerminalRuleCall_6_3_0; }
+		public RuleCall getValueExceptionSTRINGTerminalRuleCall_7_3_0() { return cValueExceptionSTRINGTerminalRuleCall_7_3_0; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_6_4() { return cRightParenthesisKeyword_6_4; }
+		public Keyword getRightParenthesisKeyword_7_4() { return cRightParenthesisKeyword_7_4; }
 	}
 	public class DefTestElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.aestheticintegration.atto.ItlDsl.DefTest");
@@ -1218,57 +1253,103 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 	public class PrimitivesElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "com.aestheticintegration.atto.ItlDsl.Primitives");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final EnumLiteralDeclaration cBOOLEANEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
-		private final Keyword cBOOLEANBoolKeyword_0_0 = (Keyword)cBOOLEANEnumLiteralDeclaration_0.eContents().get(0);
-		private final EnumLiteralDeclaration cINTEGEREnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
-		private final Keyword cINTEGERIntKeyword_1_0 = (Keyword)cINTEGEREnumLiteralDeclaration_1.eContents().get(0);
-		private final EnumLiteralDeclaration cFLOATEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
-		private final Keyword cFLOATFloatKeyword_2_0 = (Keyword)cFLOATEnumLiteralDeclaration_2.eContents().get(0);
-		private final EnumLiteralDeclaration cSTRINGEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
-		private final Keyword cSTRINGStringKeyword_3_0 = (Keyword)cSTRINGEnumLiteralDeclaration_3.eContents().get(0);
-		private final EnumLiteralDeclaration cEXCEPTIONEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
-		private final Keyword cEXCEPTIONExceptionKeyword_4_0 = (Keyword)cEXCEPTIONEnumLiteralDeclaration_4.eContents().get(0);
+		private final EnumLiteralDeclaration cBOOLEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cBOOLBoolKeyword_0_0 = (Keyword)cBOOLEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cBOOLOPTEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cBOOLOPTBoolOptKeyword_1_0 = (Keyword)cBOOLOPTEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cINTEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cINTIntKeyword_2_0 = (Keyword)cINTEnumLiteralDeclaration_2.eContents().get(0);
+		private final EnumLiteralDeclaration cINTOPTEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
+		private final Keyword cINTOPTIntOptKeyword_3_0 = (Keyword)cINTOPTEnumLiteralDeclaration_3.eContents().get(0);
+		private final EnumLiteralDeclaration cFLOATEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
+		private final Keyword cFLOATFloatKeyword_4_0 = (Keyword)cFLOATEnumLiteralDeclaration_4.eContents().get(0);
+		private final EnumLiteralDeclaration cFLOATOPTEnumLiteralDeclaration_5 = (EnumLiteralDeclaration)cAlternatives.eContents().get(5);
+		private final Keyword cFLOATOPTFloatOptKeyword_5_0 = (Keyword)cFLOATOPTEnumLiteralDeclaration_5.eContents().get(0);
+		private final EnumLiteralDeclaration cSTRINGEnumLiteralDeclaration_6 = (EnumLiteralDeclaration)cAlternatives.eContents().get(6);
+		private final Keyword cSTRINGStringKeyword_6_0 = (Keyword)cSTRINGEnumLiteralDeclaration_6.eContents().get(0);
+		private final EnumLiteralDeclaration cSTRINGOPTEnumLiteralDeclaration_7 = (EnumLiteralDeclaration)cAlternatives.eContents().get(7);
+		private final Keyword cSTRINGOPTStringOptKeyword_7_0 = (Keyword)cSTRINGOPTEnumLiteralDeclaration_7.eContents().get(0);
+		private final EnumLiteralDeclaration cEXCEPTIONEnumLiteralDeclaration_8 = (EnumLiteralDeclaration)cAlternatives.eContents().get(8);
+		private final Keyword cEXCEPTIONExceptionKeyword_8_0 = (Keyword)cEXCEPTIONEnumLiteralDeclaration_8.eContents().get(0);
+		private final EnumLiteralDeclaration cNULLEnumLiteralDeclaration_9 = (EnumLiteralDeclaration)cAlternatives.eContents().get(9);
+		private final Keyword cNULLNothingKeyword_9_0 = (Keyword)cNULLEnumLiteralDeclaration_9.eContents().get(0);
 		
 		//enum Primitives:
-		//	BOOLEAN='bool'
-		//	| INTEGER='int'
+		//	BOOL='bool'
+		//	| BOOLOPT='boolOpt'
+		//	| INT='int'
+		//	| INTOPT='intOpt'
 		//	| FLOAT='float'
+		//	| FLOATOPT='floatOpt'
 		//	| STRING='string'
-		//	| EXCEPTION='exception';
+		//	| STRINGOPT='stringOpt'
+		//	| EXCEPTION='exception'
+		//	| NULL='Nothing';
 		public EnumRule getRule() { return rule; }
 		
-		//BOOLEAN='bool' | INTEGER='int' | FLOAT='float' | STRING='string' | EXCEPTION='exception'
+		//BOOL='bool' | BOOLOPT='boolOpt' | INT='int' | INTOPT='intOpt' | FLOAT='float' | FLOATOPT='floatOpt' | STRING='string' |
+		//STRINGOPT='stringOpt' | EXCEPTION='exception' | NULL='Nothing'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//BOOLEAN='bool'
-		public EnumLiteralDeclaration getBOOLEANEnumLiteralDeclaration_0() { return cBOOLEANEnumLiteralDeclaration_0; }
+		//BOOL='bool'
+		public EnumLiteralDeclaration getBOOLEnumLiteralDeclaration_0() { return cBOOLEnumLiteralDeclaration_0; }
 		
 		//'bool'
-		public Keyword getBOOLEANBoolKeyword_0_0() { return cBOOLEANBoolKeyword_0_0; }
+		public Keyword getBOOLBoolKeyword_0_0() { return cBOOLBoolKeyword_0_0; }
 		
-		//INTEGER='int'
-		public EnumLiteralDeclaration getINTEGEREnumLiteralDeclaration_1() { return cINTEGEREnumLiteralDeclaration_1; }
+		//BOOLOPT='boolOpt'
+		public EnumLiteralDeclaration getBOOLOPTEnumLiteralDeclaration_1() { return cBOOLOPTEnumLiteralDeclaration_1; }
+		
+		//'boolOpt'
+		public Keyword getBOOLOPTBoolOptKeyword_1_0() { return cBOOLOPTBoolOptKeyword_1_0; }
+		
+		//INT='int'
+		public EnumLiteralDeclaration getINTEnumLiteralDeclaration_2() { return cINTEnumLiteralDeclaration_2; }
 		
 		//'int'
-		public Keyword getINTEGERIntKeyword_1_0() { return cINTEGERIntKeyword_1_0; }
+		public Keyword getINTIntKeyword_2_0() { return cINTIntKeyword_2_0; }
+		
+		//INTOPT='intOpt'
+		public EnumLiteralDeclaration getINTOPTEnumLiteralDeclaration_3() { return cINTOPTEnumLiteralDeclaration_3; }
+		
+		//'intOpt'
+		public Keyword getINTOPTIntOptKeyword_3_0() { return cINTOPTIntOptKeyword_3_0; }
 		
 		//FLOAT='float'
-		public EnumLiteralDeclaration getFLOATEnumLiteralDeclaration_2() { return cFLOATEnumLiteralDeclaration_2; }
+		public EnumLiteralDeclaration getFLOATEnumLiteralDeclaration_4() { return cFLOATEnumLiteralDeclaration_4; }
 		
 		//'float'
-		public Keyword getFLOATFloatKeyword_2_0() { return cFLOATFloatKeyword_2_0; }
+		public Keyword getFLOATFloatKeyword_4_0() { return cFLOATFloatKeyword_4_0; }
+		
+		//FLOATOPT='floatOpt'
+		public EnumLiteralDeclaration getFLOATOPTEnumLiteralDeclaration_5() { return cFLOATOPTEnumLiteralDeclaration_5; }
+		
+		//'floatOpt'
+		public Keyword getFLOATOPTFloatOptKeyword_5_0() { return cFLOATOPTFloatOptKeyword_5_0; }
 		
 		//STRING='string'
-		public EnumLiteralDeclaration getSTRINGEnumLiteralDeclaration_3() { return cSTRINGEnumLiteralDeclaration_3; }
+		public EnumLiteralDeclaration getSTRINGEnumLiteralDeclaration_6() { return cSTRINGEnumLiteralDeclaration_6; }
 		
 		//'string'
-		public Keyword getSTRINGStringKeyword_3_0() { return cSTRINGStringKeyword_3_0; }
+		public Keyword getSTRINGStringKeyword_6_0() { return cSTRINGStringKeyword_6_0; }
+		
+		//STRINGOPT='stringOpt'
+		public EnumLiteralDeclaration getSTRINGOPTEnumLiteralDeclaration_7() { return cSTRINGOPTEnumLiteralDeclaration_7; }
+		
+		//'stringOpt'
+		public Keyword getSTRINGOPTStringOptKeyword_7_0() { return cSTRINGOPTStringOptKeyword_7_0; }
 		
 		//EXCEPTION='exception'
-		public EnumLiteralDeclaration getEXCEPTIONEnumLiteralDeclaration_4() { return cEXCEPTIONEnumLiteralDeclaration_4; }
+		public EnumLiteralDeclaration getEXCEPTIONEnumLiteralDeclaration_8() { return cEXCEPTIONEnumLiteralDeclaration_8; }
 		
 		//'exception'
-		public Keyword getEXCEPTIONExceptionKeyword_4_0() { return cEXCEPTIONExceptionKeyword_4_0; }
+		public Keyword getEXCEPTIONExceptionKeyword_8_0() { return cEXCEPTIONExceptionKeyword_8_0; }
+		
+		//NULL='Nothing'
+		public EnumLiteralDeclaration getNULLEnumLiteralDeclaration_9() { return cNULLEnumLiteralDeclaration_9; }
+		
+		//'Nothing'
+		public Keyword getNULLNothingKeyword_9_0() { return cNULLNothingKeyword_9_0; }
 	}
 	
 	private final ModelElements pModel;
@@ -1293,6 +1374,7 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 	private final DefTestElements pDefTest;
 	private final DataTypeValueElements pDataTypeValue;
 	private final PrimitivesElements ePrimitives;
+	private final TerminalRule tNULL;
 	private final TerminalRule tBOOLEAN;
 	private final TerminalRule tINTEGER;
 	private final TerminalRule tFLOAT;
@@ -1330,6 +1412,7 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 		this.pDefTest = new DefTestElements();
 		this.pDataTypeValue = new DataTypeValueElements();
 		this.ePrimitives = new PrimitivesElements();
+		this.tNULL = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "com.aestheticintegration.atto.ItlDsl.NULL");
 		this.tBOOLEAN = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "com.aestheticintegration.atto.ItlDsl.BOOLEAN");
 		this.tINTEGER = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "com.aestheticintegration.atto.ItlDsl.INTEGER");
 		this.tFLOAT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "com.aestheticintegration.atto.ItlDsl.FLOAT");
@@ -1455,7 +1538,7 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 	//	| short='short'
 	//	| shortObj='Short'
 	//	| int='int'
-	//	| integer='Integer' // Primitive DataType
+	//	| intObj='Integer' // Primitive DataType
 	//	| long='long'
 	//	| longObj='Long'
 	//	| float='float'
@@ -1575,7 +1658,8 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 	//	{Boolean} valueBoolean=BOOLEAN
 	//	| {Integer} valueInteger=INTEGER
 	//	| {Float} valueFloat=FLOAT
-	//	| {String} valueString=STRING;
+	//	| {String} valueString=STRING
+	//	| {Null} valueNull=NULL;
 	public PrimaryElements getPrimaryAccess() {
 		return pPrimary;
 	}
@@ -1589,6 +1673,7 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 	//	| {Integer} valueInteger=INTEGER
 	//	| {Float} valueFloat=FLOAT
 	//	| {String} valueString=STRING
+	//	| {Null} valueNull=NULL
 	//	| {DataTypeInstance} dataTypeInstance=DataTypeInstance
 	//	| {DefDataValue} valueDataValue=[DefDataValue] | {Exception} 'Exception' '(' valueException=STRING ')';
 	public OutputExpressionElements getOutputExpressionAccess() {
@@ -1623,17 +1708,28 @@ public class ItlDslGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//enum Primitives:
-	//	BOOLEAN='bool'
-	//	| INTEGER='int'
+	//	BOOL='bool'
+	//	| BOOLOPT='boolOpt'
+	//	| INT='int'
+	//	| INTOPT='intOpt'
 	//	| FLOAT='float'
+	//	| FLOATOPT='floatOpt'
 	//	| STRING='string'
-	//	| EXCEPTION='exception';
+	//	| STRINGOPT='stringOpt'
+	//	| EXCEPTION='exception'
+	//	| NULL='Nothing';
 	public PrimitivesElements getPrimitivesAccess() {
 		return ePrimitives;
 	}
 	
 	public EnumRule getPrimitivesRule() {
 		return getPrimitivesAccess().getRule();
+	}
+	
+	//terminal NULL:
+	//	'null' | 'NULL';
+	public TerminalRule getNULLRule() {
+		return tNULL;
 	}
 	
 	//terminal BOOLEAN returns ecore::EBooleanObject:

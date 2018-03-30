@@ -23,24 +23,44 @@ import org.eclipse.emf.common.util.Enumerator;
 public enum Primitives implements Enumerator
 {
   /**
-   * The '<em><b>BOOLEAN</b></em>' literal object.
+   * The '<em><b>BOOL</b></em>' literal object.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #BOOLEAN_VALUE
+   * @see #BOOL_VALUE
    * @generated
    * @ordered
    */
-  BOOLEAN(0, "BOOLEAN", "bool"),
+  BOOL(0, "BOOL", "bool"),
 
   /**
-   * The '<em><b>INTEGER</b></em>' literal object.
+   * The '<em><b>BOOLOPT</b></em>' literal object.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #INTEGER_VALUE
+   * @see #BOOLOPT_VALUE
    * @generated
    * @ordered
    */
-  INTEGER(1, "INTEGER", "int"),
+  BOOLOPT(1, "BOOLOPT", "boolOpt"),
+
+  /**
+   * The '<em><b>INT</b></em>' literal object.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #INT_VALUE
+   * @generated
+   * @ordered
+   */
+  INT(2, "INT", "int"),
+
+  /**
+   * The '<em><b>INTOPT</b></em>' literal object.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #INTOPT_VALUE
+   * @generated
+   * @ordered
+   */
+  INTOPT(3, "INTOPT", "intOpt"),
 
   /**
    * The '<em><b>FLOAT</b></em>' literal object.
@@ -50,7 +70,17 @@ public enum Primitives implements Enumerator
    * @generated
    * @ordered
    */
-  FLOAT(2, "FLOAT", "float"),
+  FLOAT(4, "FLOAT", "float"),
+
+  /**
+   * The '<em><b>FLOATOPT</b></em>' literal object.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #FLOATOPT_VALUE
+   * @generated
+   * @ordered
+   */
+  FLOATOPT(5, "FLOATOPT", "floatOpt"),
 
   /**
    * The '<em><b>STRING</b></em>' literal object.
@@ -60,7 +90,17 @@ public enum Primitives implements Enumerator
    * @generated
    * @ordered
    */
-  STRING(3, "STRING", "string"),
+  STRING(6, "STRING", "string"),
+
+  /**
+   * The '<em><b>STRINGOPT</b></em>' literal object.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #STRINGOPT_VALUE
+   * @generated
+   * @ordered
+   */
+  STRINGOPT(7, "STRINGOPT", "stringOpt"),
 
   /**
    * The '<em><b>EXCEPTION</b></em>' literal object.
@@ -70,37 +110,77 @@ public enum Primitives implements Enumerator
    * @generated
    * @ordered
    */
-  EXCEPTION(4, "EXCEPTION", "exception");
+  EXCEPTION(8, "EXCEPTION", "exception"),
 
   /**
-   * The '<em><b>BOOLEAN</b></em>' literal value.
+   * The '<em><b>NULL</b></em>' literal object.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #NULL_VALUE
+   * @generated
+   * @ordered
+   */
+  NULL(9, "NULL", "Nothing");
+
+  /**
+   * The '<em><b>BOOL</b></em>' literal value.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of '<em><b>BOOLEAN</b></em>' literal object isn't clear,
+   * If the meaning of '<em><b>BOOL</b></em>' literal object isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @see #BOOLEAN
+   * @see #BOOL
    * @model literal="bool"
    * @generated
    * @ordered
    */
-  public static final int BOOLEAN_VALUE = 0;
+  public static final int BOOL_VALUE = 0;
 
   /**
-   * The '<em><b>INTEGER</b></em>' literal value.
+   * The '<em><b>BOOLOPT</b></em>' literal value.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of '<em><b>INTEGER</b></em>' literal object isn't clear,
+   * If the meaning of '<em><b>BOOLOPT</b></em>' literal object isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @see #INTEGER
+   * @see #BOOLOPT
+   * @model literal="boolOpt"
+   * @generated
+   * @ordered
+   */
+  public static final int BOOLOPT_VALUE = 1;
+
+  /**
+   * The '<em><b>INT</b></em>' literal value.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of '<em><b>INT</b></em>' literal object isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @see #INT
    * @model literal="int"
    * @generated
    * @ordered
    */
-  public static final int INTEGER_VALUE = 1;
+  public static final int INT_VALUE = 2;
+
+  /**
+   * The '<em><b>INTOPT</b></em>' literal value.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of '<em><b>INTOPT</b></em>' literal object isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @see #INTOPT
+   * @model literal="intOpt"
+   * @generated
+   * @ordered
+   */
+  public static final int INTOPT_VALUE = 3;
 
   /**
    * The '<em><b>FLOAT</b></em>' literal value.
@@ -115,7 +195,22 @@ public enum Primitives implements Enumerator
    * @generated
    * @ordered
    */
-  public static final int FLOAT_VALUE = 2;
+  public static final int FLOAT_VALUE = 4;
+
+  /**
+   * The '<em><b>FLOATOPT</b></em>' literal value.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of '<em><b>FLOATOPT</b></em>' literal object isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @see #FLOATOPT
+   * @model literal="floatOpt"
+   * @generated
+   * @ordered
+   */
+  public static final int FLOATOPT_VALUE = 5;
 
   /**
    * The '<em><b>STRING</b></em>' literal value.
@@ -130,7 +225,22 @@ public enum Primitives implements Enumerator
    * @generated
    * @ordered
    */
-  public static final int STRING_VALUE = 3;
+  public static final int STRING_VALUE = 6;
+
+  /**
+   * The '<em><b>STRINGOPT</b></em>' literal value.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of '<em><b>STRINGOPT</b></em>' literal object isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @see #STRINGOPT
+   * @model literal="stringOpt"
+   * @generated
+   * @ordered
+   */
+  public static final int STRINGOPT_VALUE = 7;
 
   /**
    * The '<em><b>EXCEPTION</b></em>' literal value.
@@ -145,7 +255,22 @@ public enum Primitives implements Enumerator
    * @generated
    * @ordered
    */
-  public static final int EXCEPTION_VALUE = 4;
+  public static final int EXCEPTION_VALUE = 8;
+
+  /**
+   * The '<em><b>NULL</b></em>' literal value.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of '<em><b>NULL</b></em>' literal object isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @see #NULL
+   * @model literal="Nothing"
+   * @generated
+   * @ordered
+   */
+  public static final int NULL_VALUE = 9;
 
   /**
    * An array of all the '<em><b>Primitives</b></em>' enumerators.
@@ -156,11 +281,16 @@ public enum Primitives implements Enumerator
   private static final Primitives[] VALUES_ARRAY =
     new Primitives[]
     {
-      BOOLEAN,
-      INTEGER,
+      BOOL,
+      BOOLOPT,
+      INT,
+      INTOPT,
       FLOAT,
+      FLOATOPT,
       STRING,
+      STRINGOPT,
       EXCEPTION,
+      NULL,
     };
 
   /**
@@ -225,11 +355,16 @@ public enum Primitives implements Enumerator
   {
     switch (value)
     {
-      case BOOLEAN_VALUE: return BOOLEAN;
-      case INTEGER_VALUE: return INTEGER;
+      case BOOL_VALUE: return BOOL;
+      case BOOLOPT_VALUE: return BOOLOPT;
+      case INT_VALUE: return INT;
+      case INTOPT_VALUE: return INTOPT;
       case FLOAT_VALUE: return FLOAT;
+      case FLOATOPT_VALUE: return FLOATOPT;
       case STRING_VALUE: return STRING;
+      case STRINGOPT_VALUE: return STRINGOPT;
       case EXCEPTION_VALUE: return EXCEPTION;
+      case NULL_VALUE: return NULL;
     }
     return null;
   }

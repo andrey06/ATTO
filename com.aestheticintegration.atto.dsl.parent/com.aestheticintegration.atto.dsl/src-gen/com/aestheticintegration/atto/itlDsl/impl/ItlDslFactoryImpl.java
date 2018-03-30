@@ -21,6 +21,7 @@ import com.aestheticintegration.atto.itlDsl.ItlDslPackage;
 import com.aestheticintegration.atto.itlDsl.Literal;
 import com.aestheticintegration.atto.itlDsl.Literal2;
 import com.aestheticintegration.atto.itlDsl.Model;
+import com.aestheticintegration.atto.itlDsl.Null;
 import com.aestheticintegration.atto.itlDsl.OutputExpression;
 import com.aestheticintegration.atto.itlDsl.Primary;
 import com.aestheticintegration.atto.itlDsl.Primitives;
@@ -110,6 +111,7 @@ public class ItlDslFactoryImpl extends EFactoryImpl implements ItlDslFactory
       case ItlDslPackage.INTEGER: return createInteger();
       case ItlDslPackage.FLOAT: return createFloat();
       case ItlDslPackage.STRING: return createString();
+      case ItlDslPackage.NULL: return createNull();
       case ItlDslPackage.EXCEPTION: return createException();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -401,6 +403,17 @@ public class ItlDslFactoryImpl extends EFactoryImpl implements ItlDslFactory
   {
     StringImpl string = new StringImpl();
     return string;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Null createNull()
+  {
+    NullImpl null_ = new NullImpl();
+    return null_;
   }
 
   /**

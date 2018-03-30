@@ -448,13 +448,13 @@ public interface ItlDslPackage extends EPackage
   int DATA_TYPE__INT = 4;
 
   /**
-   * The feature id for the '<em><b>Integer</b></em>' attribute.
+   * The feature id for the '<em><b>Int Obj</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int DATA_TYPE__INTEGER = 5;
+  int DATA_TYPE__INT_OBJ = 5;
 
   /**
    * The feature id for the '<em><b>Long</b></em>' attribute.
@@ -1047,6 +1047,34 @@ public interface ItlDslPackage extends EPackage
   int STRING_FEATURE_COUNT = PRIMARY_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link com.aestheticintegration.atto.itlDsl.impl.NullImpl <em>Null</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.aestheticintegration.atto.itlDsl.impl.NullImpl
+   * @see com.aestheticintegration.atto.itlDsl.impl.ItlDslPackageImpl#getNull()
+   * @generated
+   */
+  int NULL = 23;
+
+  /**
+   * The feature id for the '<em><b>Value Null</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NULL__VALUE_NULL = PRIMARY_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Null</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NULL_FEATURE_COUNT = PRIMARY_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link com.aestheticintegration.atto.itlDsl.impl.ExceptionImpl <em>Exception</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1054,7 +1082,7 @@ public interface ItlDslPackage extends EPackage
    * @see com.aestheticintegration.atto.itlDsl.impl.ItlDslPackageImpl#getException()
    * @generated
    */
-  int EXCEPTION = 23;
+  int EXCEPTION = 24;
 
   /**
    * The feature id for the '<em><b>Value Exception</b></em>' attribute.
@@ -1082,7 +1110,7 @@ public interface ItlDslPackage extends EPackage
    * @see com.aestheticintegration.atto.itlDsl.impl.ItlDslPackageImpl#getPrimitives()
    * @generated
    */
-  int PRIMITIVES = 24;
+  int PRIMITIVES = 25;
 
 
   /**
@@ -1441,15 +1469,15 @@ public interface ItlDslPackage extends EPackage
   EAttribute getDataType_Int();
 
   /**
-   * Returns the meta object for the attribute '{@link com.aestheticintegration.atto.itlDsl.DataType#getInteger <em>Integer</em>}'.
+   * Returns the meta object for the attribute '{@link com.aestheticintegration.atto.itlDsl.DataType#getIntObj <em>Int Obj</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Integer</em>'.
-   * @see com.aestheticintegration.atto.itlDsl.DataType#getInteger()
+   * @return the meta object for the attribute '<em>Int Obj</em>'.
+   * @see com.aestheticintegration.atto.itlDsl.DataType#getIntObj()
    * @see #getDataType()
    * @generated
    */
-  EAttribute getDataType_Integer();
+  EAttribute getDataType_IntObj();
 
   /**
    * Returns the meta object for the attribute '{@link com.aestheticintegration.atto.itlDsl.DataType#getLong <em>Long</em>}'.
@@ -1987,6 +2015,27 @@ public interface ItlDslPackage extends EPackage
   EAttribute getString_ValueString();
 
   /**
+   * Returns the meta object for class '{@link com.aestheticintegration.atto.itlDsl.Null <em>Null</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Null</em>'.
+   * @see com.aestheticintegration.atto.itlDsl.Null
+   * @generated
+   */
+  EClass getNull();
+
+  /**
+   * Returns the meta object for the attribute '{@link com.aestheticintegration.atto.itlDsl.Null#getValueNull <em>Value Null</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value Null</em>'.
+   * @see com.aestheticintegration.atto.itlDsl.Null#getValueNull()
+   * @see #getNull()
+   * @generated
+   */
+  EAttribute getNull_ValueNull();
+
+  /**
    * Returns the meta object for class '{@link com.aestheticintegration.atto.itlDsl.Exception <em>Exception</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2321,12 +2370,12 @@ public interface ItlDslPackage extends EPackage
     EAttribute DATA_TYPE__INT = eINSTANCE.getDataType_Int();
 
     /**
-     * The meta object literal for the '<em><b>Integer</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Int Obj</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute DATA_TYPE__INTEGER = eINSTANCE.getDataType_Integer();
+    EAttribute DATA_TYPE__INT_OBJ = eINSTANCE.getDataType_IntObj();
 
     /**
      * The meta object literal for the '<em><b>Long</b></em>' attribute feature.
@@ -2757,6 +2806,24 @@ public interface ItlDslPackage extends EPackage
      * @generated
      */
     EAttribute STRING__VALUE_STRING = eINSTANCE.getString_ValueString();
+
+    /**
+     * The meta object literal for the '{@link com.aestheticintegration.atto.itlDsl.impl.NullImpl <em>Null</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.aestheticintegration.atto.itlDsl.impl.NullImpl
+     * @see com.aestheticintegration.atto.itlDsl.impl.ItlDslPackageImpl#getNull()
+     * @generated
+     */
+    EClass NULL = eINSTANCE.getNull();
+
+    /**
+     * The meta object literal for the '<em><b>Value Null</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NULL__VALUE_NULL = eINSTANCE.getNull_ValueNull();
 
     /**
      * The meta object literal for the '{@link com.aestheticintegration.atto.itlDsl.impl.ExceptionImpl <em>Exception</em>}' class.

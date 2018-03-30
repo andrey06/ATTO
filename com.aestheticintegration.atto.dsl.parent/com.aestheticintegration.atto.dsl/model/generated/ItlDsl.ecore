@@ -55,7 +55,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="short" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="shortObj" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="int" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="integer" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="intObj" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="long" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="longObj" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="float" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -126,11 +126,16 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="defDataValue" eType="#//DefDataValue"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Primitives">
-    <eLiterals name="BOOLEAN" literal="bool"/>
-    <eLiterals name="INTEGER" value="1" literal="int"/>
-    <eLiterals name="FLOAT" value="2" literal="float"/>
-    <eLiterals name="STRING" value="3" literal="string"/>
-    <eLiterals name="EXCEPTION" value="4" literal="exception"/>
+    <eLiterals name="BOOL" literal="bool"/>
+    <eLiterals name="BOOLOPT" value="1" literal="boolOpt"/>
+    <eLiterals name="INT" value="2" literal="int"/>
+    <eLiterals name="INTOPT" value="3" literal="intOpt"/>
+    <eLiterals name="FLOAT" value="4" literal="float"/>
+    <eLiterals name="FLOATOPT" value="5" literal="floatOpt"/>
+    <eLiterals name="STRING" value="6" literal="string"/>
+    <eLiterals name="STRINGOPT" value="7" literal="stringOpt"/>
+    <eLiterals name="EXCEPTION" value="8" literal="exception"/>
+    <eLiterals name="NULL" value="9" literal="Nothing"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Boolean" eSuperTypes="#//Primary #//OutputExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueBoolean" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
@@ -143,6 +148,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="String" eSuperTypes="#//Primary #//OutputExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Null" eSuperTypes="#//Primary #//OutputExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueNull" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Exception" eSuperTypes="#//OutputExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueException" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

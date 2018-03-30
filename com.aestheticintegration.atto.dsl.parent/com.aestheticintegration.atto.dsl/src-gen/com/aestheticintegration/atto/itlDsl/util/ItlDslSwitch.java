@@ -20,6 +20,7 @@ import com.aestheticintegration.atto.itlDsl.ItlDslPackage;
 import com.aestheticintegration.atto.itlDsl.Literal;
 import com.aestheticintegration.atto.itlDsl.Literal2;
 import com.aestheticintegration.atto.itlDsl.Model;
+import com.aestheticintegration.atto.itlDsl.Null;
 import com.aestheticintegration.atto.itlDsl.OutputExpression;
 import com.aestheticintegration.atto.itlDsl.Primary;
 import com.aestheticintegration.atto.itlDsl.Statement;
@@ -260,6 +261,15 @@ public class ItlDslSwitch<T> extends Switch<T>
         T result = caseString(string);
         if (result == null) result = casePrimary(string);
         if (result == null) result = caseOutputExpression(string);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ItlDslPackage.NULL:
+      {
+        Null null_ = (Null)theEObject;
+        T result = caseNull(null_);
+        if (result == null) result = casePrimary(null_);
+        if (result == null) result = caseOutputExpression(null_);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -639,6 +649,22 @@ public class ItlDslSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseString(com.aestheticintegration.atto.itlDsl.String object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Null</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Null</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNull(Null object)
   {
     return null;
   }

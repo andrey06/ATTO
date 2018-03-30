@@ -20,6 +20,7 @@ import com.aestheticintegration.atto.itlDsl.ItlDslPackage;
 import com.aestheticintegration.atto.itlDsl.Literal;
 import com.aestheticintegration.atto.itlDsl.Literal2;
 import com.aestheticintegration.atto.itlDsl.Model;
+import com.aestheticintegration.atto.itlDsl.Null;
 import com.aestheticintegration.atto.itlDsl.OutputExpression;
 import com.aestheticintegration.atto.itlDsl.Primary;
 import com.aestheticintegration.atto.itlDsl.Statement;
@@ -208,6 +209,11 @@ public class ItlDslAdapterFactory extends AdapterFactoryImpl
       public Adapter caseString(com.aestheticintegration.atto.itlDsl.String object)
       {
         return createStringAdapter();
+      }
+      @Override
+      public Adapter caseNull(Null object)
+      {
+        return createNullAdapter();
       }
       @Override
       public Adapter caseException(com.aestheticintegration.atto.itlDsl.Exception object)
@@ -577,6 +583,21 @@ public class ItlDslAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createStringAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.aestheticintegration.atto.itlDsl.Null <em>Null</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.aestheticintegration.atto.itlDsl.Null
+   * @generated
+   */
+  public Adapter createNullAdapter()
   {
     return null;
   }

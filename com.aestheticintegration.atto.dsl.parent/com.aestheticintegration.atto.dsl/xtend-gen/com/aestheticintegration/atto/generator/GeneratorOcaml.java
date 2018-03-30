@@ -4,7 +4,6 @@ import com.aestheticintegration.atto.itlDsl.BoolExpression;
 import com.aestheticintegration.atto.itlDsl.DefDataType;
 import com.aestheticintegration.atto.itlDsl.DefDataValue;
 import com.aestheticintegration.atto.itlDsl.DefFunction;
-import com.aestheticintegration.atto.itlDsl.DefTest;
 import com.aestheticintegration.atto.itlDsl.ExpOrIfStatement;
 import com.aestheticintegration.atto.itlDsl.FunctionBody;
 import com.aestheticintegration.atto.itlDsl.IfStatement;
@@ -17,7 +16,6 @@ import javax.inject.Inject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 
 @SuppressWarnings("all")
 public class GeneratorOcaml {
@@ -34,6 +32,9 @@ public class GeneratorOcaml {
     StringConcatenation _builder = new StringConcatenation();
     {
       if ((model != null)) {
+        CharSequence _createTypeBuildInExt = this.createTypeBuildInExt(model);
+        _builder.append(_createTypeBuildInExt);
+        _builder.newLineIfNotEmpty();
         {
           EList<DefDataType> _datatypes = model.getDatatypes();
           for(final DefDataType defDataType : _datatypes) {
@@ -50,9 +51,6 @@ public class GeneratorOcaml {
             _builder.newLineIfNotEmpty();
           }
         }
-        CharSequence _createTypeBuildInExt = this.createTypeBuildInExt(model);
-        _builder.append(_createTypeBuildInExt);
-        _builder.newLineIfNotEmpty();
         {
           EList<DefFunction> _functions = model.getFunctions();
           for(final DefFunction defFunction : _functions) {
@@ -80,11 +78,6 @@ public class GeneratorOcaml {
   
   public CharSequence compileExtra(final DefFunction defFunction) {
     StringConcatenation _builder = new StringConcatenation();
-    String _buildPrepToJson = this.attoUtil.buildPrepToJson(defFunction);
-    _builder.append(_buildPrepToJson);
-    _builder.newLineIfNotEmpty();
-    _builder.append(";;");
-    _builder.newLine();
     _builder.append("let func_name = \"");
     String _nameToOcaml = this.attoUtil.nameToOcaml(defFunction.getName());
     _builder.append(_nameToOcaml);
@@ -96,7 +89,7 @@ public class GeneratorOcaml {
     _builder.newLine();
     _builder.append(";; ");
     _builder.newLine();
-    _builder.append("Extract.to_file ~signature:func_name ~filename:\"mex.ml\" ()");
+    _builder.append("Extract.to_file ~signature:(Event.DB.fun_id_of_str func_name) ~filename:\"mex.ml\" ()");
     _builder.newLine();
     _builder.append(";;");
     _builder.newLine();
@@ -104,7 +97,7 @@ public class GeneratorOcaml {
     _builder.newLine();
     _builder.append(";;");
     _builder.newLine();
-    _builder.append("List.iter (fun r -> print_string (Decompose.string_of_region r)) rs");
+    _builder.append("Caml.List.iter (fun r -> print_string (Decompose.string_of_region r)) rs");
     _builder.newLine();
     _builder.append(";;");
     _builder.newLine();
@@ -129,8 +122,8 @@ public class GeneratorOcaml {
         String _name = inputParam.getName();
         _builder.append(_name, "\t");
         _builder.append(": ");
-        String _lowerCase_1 = this.attoUtil.convertDataTypeToPrimitive(inputParam.getInputDataType()).toLowerCase();
-        _builder.append(_lowerCase_1, "\t");
+        String _convertDataTypeToOption = this.attoUtil.convertDataTypeToOption(inputParam.getInputDataType());
+        _builder.append(_convertDataTypeToOption, "\t");
         _builder.append(";");
         _builder.newLineIfNotEmpty();
       }
@@ -171,42 +164,6 @@ public class GeneratorOcaml {
     _builder.newLineIfNotEmpty();
     _builder.append(";;");
     _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence compile(final DefTest test) {
-    StringConcatenation _builder = new StringConcatenation();
-    String _nameToOcaml = this.attoUtil.nameToOcaml(test.getDefFunc().getName());
-    _builder.append(_nameToOcaml);
-    _builder.append(" ");
-    String _allDataTypeValueAsString = this.attoUtil.getAllDataTypeValueAsString(test.getDataTypeValues());
-    _builder.append(_allDataTypeValueAsString);
-    _builder.newLineIfNotEmpty();
-    _builder.append(";;");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  public CharSequence compile(final EList<InputParam> inputParams) {
-    StringConcatenation _builder = new StringConcatenation();
-    {
-      int _size = inputParams.size();
-      ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, _size, true);
-      for(final Integer index : _doubleDotLessThan) {
-        {
-          if (((index).intValue() == 0)) {
-            String _name = inputParams.get((index).intValue()).getName();
-            _builder.append(_name);
-            _builder.newLineIfNotEmpty();
-          } else {
-            _builder.append(", ");
-            String _name_1 = inputParams.get((index).intValue()).getName();
-            _builder.append(_name_1);
-            _builder.newLineIfNotEmpty();
-          }
-        }
-      }
-    }
     return _builder;
   }
   
@@ -295,32 +252,11 @@ public class GeneratorOcaml {
   
   public CharSequence createTypeBuildInExt(final Model model) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("type build_in_ext = ");
+    _builder.append("type \'a objOpt = Nothing | Something of \'a;;");
     _builder.newLine();
-    _builder.append("\t");
-    _builder.append("EXCEPTION of string");
     _builder.newLine();
-    _builder.append("|\tNO_EXN_BOOL of bool");
+    _builder.append("type \'a objExcOpt = Nothing | Something of \'a | Exception of string;;");
     _builder.newLine();
-    _builder.append("|\tNO_EXN_INTEGER of int");
-    _builder.newLine();
-    _builder.append("|\tNO_EXN_FLOAT of float");
-    _builder.newLine();
-    _builder.append("|\tNO_EXN_STRING of string");
-    _builder.newLine();
-    {
-      EList<DefDataType> _datatypes = model.getDatatypes();
-      for(final DefDataType defDataType : _datatypes) {
-        _builder.append("|\tNO_EXN_");
-        String _upperCase = defDataType.getName().toUpperCase();
-        _builder.append(_upperCase);
-        _builder.append(" of ");
-        String _lowerCase = defDataType.getName().toLowerCase();
-        _builder.append(_lowerCase);
-        _builder.newLineIfNotEmpty();
-      }
-    }
-    _builder.append(";;");
     _builder.newLine();
     return _builder;
   }

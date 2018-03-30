@@ -17,15 +17,8 @@ import com.aestheticintegration.atto.itlDsl.Model;
 import com.aestheticintegration.atto.itlDsl.OutputExpression;
 import com.aestheticintegration.atto.itlDsl.Primary;
 import com.aestheticintegration.atto.itlDsl.Primitives;
-import com.aestheticintegration.atto.itlDsl.impl.BooleanImpl;
-import com.aestheticintegration.atto.itlDsl.impl.DataTypeInstanceImpl;
-import com.aestheticintegration.atto.itlDsl.impl.DefDataValueImpl;
 import com.aestheticintegration.atto.itlDsl.impl.DefFunctionImpl;
-import com.aestheticintegration.atto.itlDsl.impl.ExceptionImpl;
 import com.aestheticintegration.atto.itlDsl.impl.ExpOrIfStatementImpl;
-import com.aestheticintegration.atto.itlDsl.impl.FloatImpl;
-import com.aestheticintegration.atto.itlDsl.impl.IntegerImpl;
-import com.aestheticintegration.atto.itlDsl.impl.StringImpl;
 import com.aestheticintegration.atto.util.AttoUtil;
 import com.aestheticintegration.atto.validation.AbstractItlDslValidator;
 import com.google.common.base.Objects;
@@ -45,6 +38,8 @@ import org.eclipse.xtext.xbase.lib.Conversions;
  */
 @SuppressWarnings("all")
 public class ItlDslValidator extends AbstractItlDslValidator {
+  private static String OCAML_OPTION = "Opt";
+  
   @Inject
   private AttoUtil attoUtil;
   
@@ -121,7 +116,7 @@ public class ItlDslValidator extends AbstractItlDslValidator {
   }
   
   @Check
-  public void checkOrder(final DataTypeInstance dataTypeInstance) {
+  public void checDataValueWithDataType(final DataTypeInstance dataTypeInstance) {
     EList<InputParam> dataTypeFields = dataTypeInstance.getDefDataType().getFields();
     int _size = dataTypeFields.size();
     int _size_1 = dataTypeInstance.getLiterals().size();
@@ -133,8 +128,20 @@ public class ItlDslValidator extends AbstractItlDslValidator {
     for (int index = 0; (index < dataTypeInstance.getLiterals().size()); index++) {
       {
         String dataTypeType = this.attoUtil.convertDataTypeToPrimitive(dataTypeFields.get(index).getInputDataType());
+        String dataTypeTypeOpt = dataTypeType;
+        boolean _endsWith = dataTypeType.endsWith(ItlDslValidator.OCAML_OPTION);
+        boolean _not = (!_endsWith);
+        if (_not) {
+          dataTypeTypeOpt = (dataTypeType + ItlDslValidator.OCAML_OPTION);
+        }
         String primaryType = this.attoUtil.convertLiteralToPrimitive(dataTypeInstance.getLiterals().get(index));
-        boolean _notEquals = (!Objects.equal(dataTypeType, primaryType));
+        String primaryTypeOpt = primaryType;
+        boolean _endsWith_1 = primaryType.endsWith(ItlDslValidator.OCAML_OPTION);
+        boolean _not_1 = (!_endsWith_1);
+        if (_not_1) {
+          primaryTypeOpt = (primaryType + ItlDslValidator.OCAML_OPTION);
+        }
+        boolean _notEquals = (!Objects.equal(dataTypeTypeOpt, primaryTypeOpt));
         if (_notEquals) {
           this.error("Wrong type of the arguments in this datavalue", null, ItlDslPackage.DATA_TYPE_INSTANCE);
         }
@@ -154,7 +161,7 @@ public class ItlDslValidator extends AbstractItlDslValidator {
   public void checkBooleanExpressionWithInputDataTypeGreetingStartsWithCapital(final BoolExpression boolExpression) {
     String literalLeftType = this.findInputParamMap(boolExpression, boolExpression.getLiteralLeft());
     if (((boolExpression.getLiteralRight() == null) && 
-      (!Objects.equal(literalLeftType, Primitives.BOOLEAN.getLiteral())))) {
+      (!Objects.equal(literalLeftType, Primitives.BOOL.getLiteral())))) {
       this.error("Wrong type. The left part of the literal should be a boolean", null, ItlDslPackage.BOOL_EXPRESSION);
       return;
     }
@@ -162,7 +169,20 @@ public class ItlDslValidator extends AbstractItlDslValidator {
     if (((literalLeftType == null) || (literalRightType == null))) {
       return;
     }
-    if ((literalLeftType != literalRightType)) {
+    String literalLeftTypeOpt = literalLeftType;
+    boolean _endsWith = literalLeftType.endsWith(ItlDslValidator.OCAML_OPTION);
+    boolean _not = (!_endsWith);
+    if (_not) {
+      literalLeftTypeOpt = (literalLeftType + ItlDslValidator.OCAML_OPTION);
+    }
+    String literalRightTypeOpt = literalRightType;
+    boolean _endsWith_1 = literalRightType.endsWith(ItlDslValidator.OCAML_OPTION);
+    boolean _not_1 = (!_endsWith_1);
+    if (_not_1) {
+      literalRightTypeOpt = (literalRightType + ItlDslValidator.OCAML_OPTION);
+    }
+    if (((!literalLeftTypeOpt.equals(literalRightTypeOpt)) && 
+      (!(Objects.equal(literalRightType, Primitives.NULL.getLiteral()) && literalLeftType.endsWith(ItlDslValidator.OCAML_OPTION))))) {
       this.error("Wrong type. The data types are not the same", null, ItlDslPackage.BOOL_EXPRESSION);
     }
     return;
@@ -176,10 +196,23 @@ public class ItlDslValidator extends AbstractItlDslValidator {
       return;
     }
     DataType funcDateType = this.findFuncReturnDataType(outputExpression);
-    String primFuncReturnType = this.convertDataTypeToPrimitive(funcDateType);
-    String expressReturnType = this.convertOutputExpressionToPrimitive(outputExpression);
-    if (((!Objects.equal(expressReturnType, primFuncReturnType)) && 
-      (!Objects.equal(expressReturnType, Primitives.EXCEPTION.getLiteral())))) {
+    String primFuncReturnType = this.attoUtil.convertDataTypeToPrimitive(funcDateType);
+    String primFuncReturnTypeOpt = primFuncReturnType;
+    boolean _endsWith = primFuncReturnType.endsWith(ItlDslValidator.OCAML_OPTION);
+    boolean _not_1 = (!_endsWith);
+    if (_not_1) {
+      primFuncReturnTypeOpt = (primFuncReturnType + ItlDslValidator.OCAML_OPTION);
+    }
+    String expressReturnType = this.attoUtil.convertOutputExpressionToPrimitive(outputExpression);
+    String expressReturnTypeOpt = expressReturnType;
+    boolean _endsWith_1 = expressReturnType.endsWith(ItlDslValidator.OCAML_OPTION);
+    boolean _not_2 = (!_endsWith_1);
+    if (_not_2) {
+      expressReturnTypeOpt = (expressReturnType + ItlDslValidator.OCAML_OPTION);
+    }
+    if ((((!Objects.equal(expressReturnTypeOpt, primFuncReturnTypeOpt)) && 
+      (!Objects.equal(expressReturnType, Primitives.EXCEPTION.getLiteral()))) && 
+      (!(Objects.equal(expressReturnType, Primitives.NULL.getLiteral()) && primFuncReturnType.endsWith(ItlDslValidator.OCAML_OPTION))))) {
       String funcReturnType = this.attoUtil.convertDataTypeToString(funcDateType);
       this.error((("Wrong type. It should be \'" + funcReturnType) + "\'"), null, ItlDslPackage.OUTPUT_EXPRESSION);
     }
@@ -202,7 +235,7 @@ public class ItlDslValidator extends AbstractItlDslValidator {
         for (final InputParam inputParam : _inputParams) {
           boolean _equals = inputParam.getName().equals(partVariable[0]);
           if (_equals) {
-            literalType = this.convertDataTypeToPrimitive(inputParam.getInputDataType());
+            literalType = this.attoUtil.convertDataTypeToPrimitive(inputParam.getInputDataType());
             final String[] _converted_partVariable = (String[])partVariable;
             int _size = ((List<String>)Conversions.doWrapArray(_converted_partVariable)).size();
             boolean _lessThan = (1 < _size);
@@ -218,7 +251,7 @@ public class ItlDslValidator extends AbstractItlDslValidator {
                   for (final InputParam inputParam2 : _fields) {
                     boolean _equals_2 = inputParam2.getName().equals(partVariable[1]);
                     if (_equals_2) {
-                      literalType = this.convertDataTypeToPrimitive(inputParam2.getInputDataType());
+                      literalType = this.attoUtil.convertDataTypeToPrimitive(inputParam2.getInputDataType());
                     }
                   }
                 }
@@ -241,79 +274,6 @@ public class ItlDslValidator extends AbstractItlDslValidator {
       literalType = this.attoUtil.convertPrimaryToPrimitive(literal.getPrimary());
     }
     return literalType;
-  }
-  
-  private String convertDataTypeToPrimitive(final DataType dataType) {
-    String dataTypeOut = null;
-    if (((dataType.getBoolean() != null) || (dataType.getBooleanObj() != null))) {
-      dataTypeOut = Primitives.BOOLEAN.getLiteral();
-    } else {
-      if (((((((dataType.getShort() != null) || (dataType.getShortObj() != null)) || 
-        (dataType.getInt() != null)) || (dataType.getInteger() != null)) || 
-        (dataType.getLong() != null)) || (dataType.getLongObj() != null))) {
-        dataTypeOut = Primitives.INTEGER.getLiteral();
-      } else {
-        if (((((dataType.getFloat() != null) || (dataType.getFloatObj() != null)) || 
-          (dataType.getDouble() != null)) || (dataType.getDoubleObj() != null))) {
-          dataTypeOut = Primitives.FLOAT.getLiteral();
-        } else {
-          String _string = dataType.getString();
-          boolean _tripleNotEquals = (_string != null);
-          if (_tripleNotEquals) {
-            dataTypeOut = Primitives.STRING.getLiteral();
-          } else {
-            DefDataType _defDataType = dataType.getDefDataType();
-            boolean _tripleNotEquals_1 = (_defDataType != null);
-            if (_tripleNotEquals_1) {
-              dataTypeOut = dataType.getDefDataType().getName();
-            }
-          }
-        }
-      }
-    }
-    return dataTypeOut;
-  }
-  
-  private String convertOutputExpressionToPrimitive(final OutputExpression outputExpression) {
-    String dataTypeOut = null;
-    if ((outputExpression instanceof BooleanImpl)) {
-      dataTypeOut = Primitives.BOOLEAN.getLiteral();
-    } else {
-      if ((outputExpression instanceof IntegerImpl)) {
-        dataTypeOut = Primitives.INTEGER.getLiteral();
-      } else {
-        if ((outputExpression instanceof FloatImpl)) {
-          dataTypeOut = Primitives.FLOAT.getLiteral();
-        } else {
-          if ((outputExpression instanceof StringImpl)) {
-            dataTypeOut = Primitives.STRING.getLiteral();
-          } else {
-            if ((outputExpression instanceof DataTypeInstanceImpl)) {
-              dataTypeOut = ((DataTypeInstanceImpl) outputExpression).getDataTypeInstance().getDefDataType().getName();
-            } else {
-              if ((outputExpression instanceof DefDataValueImpl)) {
-                EList<DefDataValue> datavalues = this.attoUtil.getAllDefDataValues(outputExpression);
-                if (((datavalues != null) && (datavalues.size() != 0))) {
-                  for (final DefDataValue defDataValue : datavalues) {
-                    String _name = defDataValue.getName();
-                    String _name_1 = ((DefDataValueImpl) outputExpression).getValueDataValue().getName();
-                    boolean _equals = Objects.equal(_name, _name_1);
-                    if (_equals) {
-                      dataTypeOut = defDataValue.getDataTypeInstance().getDefDataType().getName();
-                    }
-                  }
-                }
-              } else {
-                if ((outputExpression instanceof ExceptionImpl)) {
-                  dataTypeOut = Primitives.EXCEPTION.getLiteral();
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    return dataTypeOut;
   }
   
   private DataType findFuncReturnDataType(final OutputExpression outputExpression) {

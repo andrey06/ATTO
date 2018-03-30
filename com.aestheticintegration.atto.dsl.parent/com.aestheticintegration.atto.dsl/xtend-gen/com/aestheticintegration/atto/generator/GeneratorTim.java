@@ -159,46 +159,14 @@ public class GeneratorTim {
       int _size = datavalues.size();
       ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, _size, true);
       for(final Integer index : _doubleDotLessThan) {
-        _builder.append("{ \"name\": \"");
-        String _name = datavalues.get((index).intValue()).getName();
-        _builder.append(_name);
-        _builder.append("\",");
+        CharSequence _compile3a = this.compile3a(datavalues.get((index).intValue()));
+        _builder.append(_compile3a);
         _builder.newLineIfNotEmpty();
-        _builder.append("  ");
-        _builder.append("\"datatype\": \"");
-        String _name_1 = datavalues.get((index).intValue()).getDataTypeInstance().getDefDataType().getName();
-        _builder.append(_name_1, "  ");
-        _builder.append("\",");
-        _builder.newLineIfNotEmpty();
-        _builder.append("  ");
-        _builder.append("\"fields\": [");
-        _builder.newLine();
         {
-          int _size_1 = datavalues.get((index).intValue()).getDataTypeInstance().getLiterals().size();
-          ExclusiveRange _doubleDotLessThan_1 = new ExclusiveRange(0, _size_1, true);
-          for(final Integer index2 : _doubleDotLessThan_1) {
-            String _literalValueAsString = this.attoUtil.getLiteralValueAsString(datavalues.get((index).intValue()).getDataTypeInstance().getLiterals().get((index2).intValue()));
-            _builder.append(_literalValueAsString);
-            {
-              int _size_2 = datavalues.get((index).intValue()).getDataTypeInstance().getLiterals().size();
-              int _minus = (_size_2 - 1);
-              boolean _tripleNotEquals = ((index2).intValue() != _minus);
-              if (_tripleNotEquals) {
-                _builder.append(" , ");
-              }
-            }
-            _builder.newLineIfNotEmpty();
-          }
-        }
-        _builder.append("   ");
-        _builder.append("]");
-        _builder.newLine();
-        _builder.append("}");
-        {
-          int _size_3 = datavalues.size();
-          int _minus_1 = (_size_3 - 1);
-          boolean _tripleNotEquals_1 = ((index).intValue() != _minus_1);
-          if (_tripleNotEquals_1) {
+          int _size_1 = datavalues.size();
+          int _minus = (_size_1 - 1);
+          boolean _tripleNotEquals = ((index).intValue() != _minus);
+          if (_tripleNotEquals) {
             _builder.append(" , ");
           }
         }
@@ -207,6 +175,46 @@ public class GeneratorTim {
     }
     _builder.append("],");
     _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence compile3a(final DefDataValue datavalue) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{ \"name\": \"");
+    String _name = datavalue.getName();
+    _builder.append(_name);
+    _builder.append("\",");
+    _builder.newLineIfNotEmpty();
+    _builder.append("  ");
+    _builder.append("\"datatype\": \"");
+    String _name_1 = datavalue.getDataTypeInstance().getDefDataType().getName();
+    _builder.append(_name_1, "  ");
+    _builder.append("\",");
+    _builder.newLineIfNotEmpty();
+    _builder.append("  ");
+    _builder.append("\"fields\": [");
+    _builder.newLine();
+    {
+      int _size = datavalue.getDataTypeInstance().getLiterals().size();
+      ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, _size, true);
+      for(final Integer index2 : _doubleDotLessThan) {
+        String _literalValueAsString = this.attoUtil.getLiteralValueAsString(datavalue.getDataTypeInstance().getLiterals().get((index2).intValue()));
+        _builder.append(_literalValueAsString);
+        {
+          int _size_1 = datavalue.getDataTypeInstance().getLiterals().size();
+          int _minus = (_size_1 - 1);
+          boolean _tripleNotEquals = ((index2).intValue() != _minus);
+          if (_tripleNotEquals) {
+            _builder.append(" , ");
+          }
+        }
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("   ");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("}\t");
     return _builder;
   }
   

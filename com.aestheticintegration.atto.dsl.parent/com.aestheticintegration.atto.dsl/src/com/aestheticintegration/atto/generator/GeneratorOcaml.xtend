@@ -4,11 +4,9 @@ import com.aestheticintegration.atto.itlDsl.BoolExpression
 import com.aestheticintegration.atto.itlDsl.DefDataType
 import com.aestheticintegration.atto.itlDsl.DefDataValue
 import com.aestheticintegration.atto.itlDsl.DefFunction
-import com.aestheticintegration.atto.itlDsl.DefTest
 import com.aestheticintegration.atto.itlDsl.ExpOrIfStatement
 import com.aestheticintegration.atto.itlDsl.FunctionBody
 import com.aestheticintegration.atto.itlDsl.IfStatement
-import com.aestheticintegration.atto.itlDsl.InputParam
 import com.aestheticintegration.atto.itlDsl.Model
 import com.aestheticintegration.atto.util.AttoUtil
 import javax.inject.Inject
@@ -27,13 +25,13 @@ public class GeneratorOcaml {
 
 	def compile(Model model) '''
 		«IF model !== null»
+			«this.createTypeBuildInExt(model)»
 			«FOR defDataType : model.datatypes»
 				«defDataType.compile»
 			«ENDFOR»
 			«FOR defDataValue : model.datavalues»
 				«defDataValue.compile»
 			«ENDFOR»
-			«this.createTypeBuildInExt(model)»
 			«FOR defFunction : model.functions»
 				«defFunction.compile»
 			«ENDFOR»
@@ -45,8 +43,6 @@ public class GeneratorOcaml {
 		«ENDIF»
 	'''
 	def compileExtra(DefFunction defFunction) '''
-		«this.attoUtil.buildPrepToJson(defFunction)»
-		;;
 		let func_name = "«this.attoUtil.nameToOcaml(defFunction.name)»"
 		;;
 		let rs = Decompose.top func_name
@@ -55,7 +51,7 @@ public class GeneratorOcaml {
 		;;
 		System.mod_use "mex.ml"
 		;;
-		List.iter (fun r -> print_string (Decompose.string_of_region r)) rs
+		Caml.List.iter (fun r -> print_string (Decompose.string_of_region r)) rs
 		;;
 		let tcs = List.map Mex.of_region rs
 		;;
@@ -63,7 +59,7 @@ public class GeneratorOcaml {
 	def compile(DefDataType defDataType) '''
 		type «defDataType.name.toLowerCase» = {
 			«FOR inputParam : defDataType.fields»
-				«inputParam.name»: «(this.attoUtil.convertDataTypeToPrimitive(inputParam.inputDataType)).toLowerCase»;
+				«inputParam.name»: «(this.attoUtil.convertDataTypeToOption(inputParam.inputDataType))»;
 			«ENDFOR»
 		}
 		;;
@@ -76,22 +72,6 @@ public class GeneratorOcaml {
 		let «this.attoUtil.nameToOcaml(defFunction.name)»«this.attoUtil.getFunctionParams(defFunction.inputParams)» =
 			«defFunction.functionBody.compile»
 		;;
-	'''
-// Not Used
-	def compile(DefTest test) '''
-		«this.attoUtil.nameToOcaml(test.defFunc.name)» «this.attoUtil.getAllDataTypeValueAsString(test.dataTypeValues)»
-		;;
-	'''
-
-// Not Used
-	def compile(EList<InputParam> inputParams) '''
-		«FOR index : 0 ..< inputParams.size»
-			«IF index == 0»
-				«inputParams.get(index).name»
-			«ELSE»
-				, «inputParams.get(index).name»
-			«ENDIF»
-		«ENDFOR»
 	'''
 	def compile(FunctionBody functionBody) '''
 		«FOR statement : functionBody.statement»
@@ -122,15 +102,9 @@ public class GeneratorOcaml {
 		«this.attoUtil.getBoolExpressionListAsString(boolExpressionList)»		
 	'''
 	def createTypeBuildInExt(Model model) '''
-		type build_in_ext = 
-			EXCEPTION of string
-		|	NO_EXN_BOOL of bool
-		|	NO_EXN_INTEGER of int
-		|	NO_EXN_FLOAT of float
-		|	NO_EXN_STRING of string
-		«FOR defDataType : model.datatypes»
-		|	NO_EXN_«defDataType.name.toUpperCase» of «defDataType.name.toLowerCase»
-		«ENDFOR»
-		;;
+		type 'a objOpt = Nothing | Something of 'a;;
+
+		type 'a objExcOpt = Nothing | Something of 'a | Exception of string;;
+
 	'''
 }

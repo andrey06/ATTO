@@ -21,6 +21,7 @@ import com.aestheticintegration.atto.itlDsl.ItlDslPackage;
 import com.aestheticintegration.atto.itlDsl.Literal;
 import com.aestheticintegration.atto.itlDsl.Literal2;
 import com.aestheticintegration.atto.itlDsl.Model;
+import com.aestheticintegration.atto.itlDsl.Null;
 import com.aestheticintegration.atto.itlDsl.OutputExpression;
 import com.aestheticintegration.atto.itlDsl.Primary;
 import com.aestheticintegration.atto.itlDsl.Primitives;
@@ -202,6 +203,13 @@ public class ItlDslPackageImpl extends EPackageImpl implements ItlDslPackage
    * @generated
    */
   private EClass stringEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nullEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -615,7 +623,7 @@ public class ItlDslPackageImpl extends EPackageImpl implements ItlDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDataType_Integer()
+  public EAttribute getDataType_IntObj()
   {
     return (EAttribute)dataTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1125,6 +1133,26 @@ public class ItlDslPackageImpl extends EPackageImpl implements ItlDslPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getNull()
+  {
+    return nullEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNull_ValueNull()
+  {
+    return (EAttribute)nullEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getException()
   {
     return exceptionEClass;
@@ -1220,7 +1248,7 @@ public class ItlDslPackageImpl extends EPackageImpl implements ItlDslPackage
     createEAttribute(dataTypeEClass, DATA_TYPE__SHORT);
     createEAttribute(dataTypeEClass, DATA_TYPE__SHORT_OBJ);
     createEAttribute(dataTypeEClass, DATA_TYPE__INT);
-    createEAttribute(dataTypeEClass, DATA_TYPE__INTEGER);
+    createEAttribute(dataTypeEClass, DATA_TYPE__INT_OBJ);
     createEAttribute(dataTypeEClass, DATA_TYPE__LONG);
     createEAttribute(dataTypeEClass, DATA_TYPE__LONG_OBJ);
     createEAttribute(dataTypeEClass, DATA_TYPE__FLOAT);
@@ -1287,6 +1315,9 @@ public class ItlDslPackageImpl extends EPackageImpl implements ItlDslPackage
     stringEClass = createEClass(STRING);
     createEAttribute(stringEClass, STRING__VALUE_STRING);
 
+    nullEClass = createEClass(NULL);
+    createEAttribute(nullEClass, NULL__VALUE_NULL);
+
     exceptionEClass = createEClass(EXCEPTION);
     createEAttribute(exceptionEClass, EXCEPTION__VALUE_EXCEPTION);
 
@@ -1333,6 +1364,8 @@ public class ItlDslPackageImpl extends EPackageImpl implements ItlDslPackage
     floatEClass.getESuperTypes().add(this.getOutputExpression());
     stringEClass.getESuperTypes().add(this.getPrimary());
     stringEClass.getESuperTypes().add(this.getOutputExpression());
+    nullEClass.getESuperTypes().add(this.getPrimary());
+    nullEClass.getESuperTypes().add(this.getOutputExpression());
     exceptionEClass.getESuperTypes().add(this.getOutputExpression());
 
     // Initialize classes and features; add operations and parameters
@@ -1376,7 +1409,7 @@ public class ItlDslPackageImpl extends EPackageImpl implements ItlDslPackage
     initEAttribute(getDataType_Short(), ecorePackage.getEString(), "short", null, 0, 1, DataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getDataType_ShortObj(), ecorePackage.getEString(), "shortObj", null, 0, 1, DataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getDataType_Int(), ecorePackage.getEString(), "int", null, 0, 1, DataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getDataType_Integer(), ecorePackage.getEString(), "integer", null, 0, 1, DataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getDataType_IntObj(), ecorePackage.getEString(), "intObj", null, 0, 1, DataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getDataType_Long(), ecorePackage.getEString(), "long", null, 0, 1, DataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getDataType_LongObj(), ecorePackage.getEString(), "longObj", null, 0, 1, DataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getDataType_Float(), ecorePackage.getEString(), "float", null, 0, 1, DataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1443,16 +1476,24 @@ public class ItlDslPackageImpl extends EPackageImpl implements ItlDslPackage
     initEClass(stringEClass, com.aestheticintegration.atto.itlDsl.String.class, "String", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getString_ValueString(), ecorePackage.getEString(), "valueString", null, 0, 1, com.aestheticintegration.atto.itlDsl.String.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(nullEClass, Null.class, "Null", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNull_ValueNull(), ecorePackage.getEString(), "valueNull", null, 0, 1, Null.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(exceptionEClass, com.aestheticintegration.atto.itlDsl.Exception.class, "Exception", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getException_ValueException(), ecorePackage.getEString(), "valueException", null, 0, 1, com.aestheticintegration.atto.itlDsl.Exception.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(primitivesEEnum, Primitives.class, "Primitives");
-    addEEnumLiteral(primitivesEEnum, Primitives.BOOLEAN);
-    addEEnumLiteral(primitivesEEnum, Primitives.INTEGER);
+    addEEnumLiteral(primitivesEEnum, Primitives.BOOL);
+    addEEnumLiteral(primitivesEEnum, Primitives.BOOLOPT);
+    addEEnumLiteral(primitivesEEnum, Primitives.INT);
+    addEEnumLiteral(primitivesEEnum, Primitives.INTOPT);
     addEEnumLiteral(primitivesEEnum, Primitives.FLOAT);
+    addEEnumLiteral(primitivesEEnum, Primitives.FLOATOPT);
     addEEnumLiteral(primitivesEEnum, Primitives.STRING);
+    addEEnumLiteral(primitivesEEnum, Primitives.STRINGOPT);
     addEEnumLiteral(primitivesEEnum, Primitives.EXCEPTION);
+    addEEnumLiteral(primitivesEEnum, Primitives.NULL);
 
     // Create resource
     createResource(eNS_URI);

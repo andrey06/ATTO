@@ -66,6 +66,7 @@ public class ItlDslParser extends AbstractContentAssistParser {
 					put(grammarAccess.getPrimaryAccess().getGroup_1(), "rule__Primary__Group_1__0");
 					put(grammarAccess.getPrimaryAccess().getGroup_2(), "rule__Primary__Group_2__0");
 					put(grammarAccess.getPrimaryAccess().getGroup_3(), "rule__Primary__Group_3__0");
+					put(grammarAccess.getPrimaryAccess().getGroup_4(), "rule__Primary__Group_4__0");
 					put(grammarAccess.getOutputExpressionAccess().getGroup_0(), "rule__OutputExpression__Group_0__0");
 					put(grammarAccess.getOutputExpressionAccess().getGroup_1(), "rule__OutputExpression__Group_1__0");
 					put(grammarAccess.getOutputExpressionAccess().getGroup_2(), "rule__OutputExpression__Group_2__0");
@@ -73,6 +74,7 @@ public class ItlDslParser extends AbstractContentAssistParser {
 					put(grammarAccess.getOutputExpressionAccess().getGroup_4(), "rule__OutputExpression__Group_4__0");
 					put(grammarAccess.getOutputExpressionAccess().getGroup_5(), "rule__OutputExpression__Group_5__0");
 					put(grammarAccess.getOutputExpressionAccess().getGroup_6(), "rule__OutputExpression__Group_6__0");
+					put(grammarAccess.getOutputExpressionAccess().getGroup_7(), "rule__OutputExpression__Group_7__0");
 					put(grammarAccess.getDefTestAccess().getGroup(), "rule__DefTest__Group__0");
 					put(grammarAccess.getDefTestAccess().getGroup_5(), "rule__DefTest__Group_5__0");
 					put(grammarAccess.getDefTestAccess().getGroup_5_1(), "rule__DefTest__Group_5_1__0");
@@ -101,7 +103,7 @@ public class ItlDslParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDataTypeAccess().getShortAssignment_2(), "rule__DataType__ShortAssignment_2");
 					put(grammarAccess.getDataTypeAccess().getShortObjAssignment_3(), "rule__DataType__ShortObjAssignment_3");
 					put(grammarAccess.getDataTypeAccess().getIntAssignment_4(), "rule__DataType__IntAssignment_4");
-					put(grammarAccess.getDataTypeAccess().getIntegerAssignment_5(), "rule__DataType__IntegerAssignment_5");
+					put(grammarAccess.getDataTypeAccess().getIntObjAssignment_5(), "rule__DataType__IntObjAssignment_5");
 					put(grammarAccess.getDataTypeAccess().getLongAssignment_6(), "rule__DataType__LongAssignment_6");
 					put(grammarAccess.getDataTypeAccess().getLongObjAssignment_7(), "rule__DataType__LongObjAssignment_7");
 					put(grammarAccess.getDataTypeAccess().getFloatAssignment_8(), "rule__DataType__FloatAssignment_8");
@@ -131,13 +133,15 @@ public class ItlDslParser extends AbstractContentAssistParser {
 					put(grammarAccess.getPrimaryAccess().getValueIntegerAssignment_1_1(), "rule__Primary__ValueIntegerAssignment_1_1");
 					put(grammarAccess.getPrimaryAccess().getValueFloatAssignment_2_1(), "rule__Primary__ValueFloatAssignment_2_1");
 					put(grammarAccess.getPrimaryAccess().getValueStringAssignment_3_1(), "rule__Primary__ValueStringAssignment_3_1");
+					put(grammarAccess.getPrimaryAccess().getValueNullAssignment_4_1(), "rule__Primary__ValueNullAssignment_4_1");
 					put(grammarAccess.getOutputExpressionAccess().getValueBooleanAssignment_0_1(), "rule__OutputExpression__ValueBooleanAssignment_0_1");
 					put(grammarAccess.getOutputExpressionAccess().getValueIntegerAssignment_1_1(), "rule__OutputExpression__ValueIntegerAssignment_1_1");
 					put(grammarAccess.getOutputExpressionAccess().getValueFloatAssignment_2_1(), "rule__OutputExpression__ValueFloatAssignment_2_1");
 					put(grammarAccess.getOutputExpressionAccess().getValueStringAssignment_3_1(), "rule__OutputExpression__ValueStringAssignment_3_1");
-					put(grammarAccess.getOutputExpressionAccess().getDataTypeInstanceAssignment_4_1(), "rule__OutputExpression__DataTypeInstanceAssignment_4_1");
-					put(grammarAccess.getOutputExpressionAccess().getValueDataValueAssignment_5_1(), "rule__OutputExpression__ValueDataValueAssignment_5_1");
-					put(grammarAccess.getOutputExpressionAccess().getValueExceptionAssignment_6_3(), "rule__OutputExpression__ValueExceptionAssignment_6_3");
+					put(grammarAccess.getOutputExpressionAccess().getValueNullAssignment_4_1(), "rule__OutputExpression__ValueNullAssignment_4_1");
+					put(grammarAccess.getOutputExpressionAccess().getDataTypeInstanceAssignment_5_1(), "rule__OutputExpression__DataTypeInstanceAssignment_5_1");
+					put(grammarAccess.getOutputExpressionAccess().getValueDataValueAssignment_6_1(), "rule__OutputExpression__ValueDataValueAssignment_6_1");
+					put(grammarAccess.getOutputExpressionAccess().getValueExceptionAssignment_7_3(), "rule__OutputExpression__ValueExceptionAssignment_7_3");
 					put(grammarAccess.getDefTestAccess().getNameAssignment_1(), "rule__DefTest__NameAssignment_1");
 					put(grammarAccess.getDefTestAccess().getDefFuncAssignment_3(), "rule__DefTest__DefFuncAssignment_3");
 					put(grammarAccess.getDefTestAccess().getDataTypeValuesAssignment_5_0(), "rule__DefTest__DataTypeValuesAssignment_5_0");

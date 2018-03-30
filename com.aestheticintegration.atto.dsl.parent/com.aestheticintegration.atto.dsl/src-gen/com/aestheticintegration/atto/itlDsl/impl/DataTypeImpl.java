@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link com.aestheticintegration.atto.itlDsl.impl.DataTypeImpl#getShort <em>Short</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.impl.DataTypeImpl#getShortObj <em>Short Obj</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.impl.DataTypeImpl#getInt <em>Int</em>}</li>
- *   <li>{@link com.aestheticintegration.atto.itlDsl.impl.DataTypeImpl#getInteger <em>Integer</em>}</li>
+ *   <li>{@link com.aestheticintegration.atto.itlDsl.impl.DataTypeImpl#getIntObj <em>Int Obj</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.impl.DataTypeImpl#getLong <em>Long</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.impl.DataTypeImpl#getLongObj <em>Long Obj</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.impl.DataTypeImpl#getFloat <em>Float</em>}</li>
@@ -146,24 +146,24 @@ public class DataTypeImpl extends MinimalEObjectImpl.Container implements DataTy
   protected String int_ = INT_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getInteger() <em>Integer</em>}' attribute.
+   * The default value of the '{@link #getIntObj() <em>Int Obj</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getInteger()
+   * @see #getIntObj()
    * @generated
    * @ordered
    */
-  protected static final String INTEGER_EDEFAULT = null;
+  protected static final String INT_OBJ_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getInteger() <em>Integer</em>}' attribute.
+   * The cached value of the '{@link #getIntObj() <em>Int Obj</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getInteger()
+   * @see #getIntObj()
    * @generated
    * @ordered
    */
-  protected String integer = INTEGER_EDEFAULT;
+  protected String intObj = INT_OBJ_EDEFAULT;
 
   /**
    * The default value of the '{@link #getLong() <em>Long</em>}' attribute.
@@ -456,9 +456,9 @@ public class DataTypeImpl extends MinimalEObjectImpl.Container implements DataTy
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getInteger()
+  public String getIntObj()
   {
-    return integer;
+    return intObj;
   }
 
   /**
@@ -466,12 +466,12 @@ public class DataTypeImpl extends MinimalEObjectImpl.Container implements DataTy
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setInteger(String newInteger)
+  public void setIntObj(String newIntObj)
   {
-    String oldInteger = integer;
-    integer = newInteger;
+    String oldIntObj = intObj;
+    intObj = newIntObj;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ItlDslPackage.DATA_TYPE__INTEGER, oldInteger, integer));
+      eNotify(new ENotificationImpl(this, Notification.SET, ItlDslPackage.DATA_TYPE__INT_OBJ, oldIntObj, intObj));
   }
 
   /**
@@ -698,8 +698,8 @@ public class DataTypeImpl extends MinimalEObjectImpl.Container implements DataTy
         return getShortObj();
       case ItlDslPackage.DATA_TYPE__INT:
         return getInt();
-      case ItlDslPackage.DATA_TYPE__INTEGER:
-        return getInteger();
+      case ItlDslPackage.DATA_TYPE__INT_OBJ:
+        return getIntObj();
       case ItlDslPackage.DATA_TYPE__LONG:
         return getLong();
       case ItlDslPackage.DATA_TYPE__LONG_OBJ:
@@ -746,8 +746,8 @@ public class DataTypeImpl extends MinimalEObjectImpl.Container implements DataTy
       case ItlDslPackage.DATA_TYPE__INT:
         setInt((String)newValue);
         return;
-      case ItlDslPackage.DATA_TYPE__INTEGER:
-        setInteger((String)newValue);
+      case ItlDslPackage.DATA_TYPE__INT_OBJ:
+        setIntObj((String)newValue);
         return;
       case ItlDslPackage.DATA_TYPE__LONG:
         setLong((String)newValue);
@@ -802,8 +802,8 @@ public class DataTypeImpl extends MinimalEObjectImpl.Container implements DataTy
       case ItlDslPackage.DATA_TYPE__INT:
         setInt(INT_EDEFAULT);
         return;
-      case ItlDslPackage.DATA_TYPE__INTEGER:
-        setInteger(INTEGER_EDEFAULT);
+      case ItlDslPackage.DATA_TYPE__INT_OBJ:
+        setIntObj(INT_OBJ_EDEFAULT);
         return;
       case ItlDslPackage.DATA_TYPE__LONG:
         setLong(LONG_EDEFAULT);
@@ -853,8 +853,8 @@ public class DataTypeImpl extends MinimalEObjectImpl.Container implements DataTy
         return SHORT_OBJ_EDEFAULT == null ? shortObj != null : !SHORT_OBJ_EDEFAULT.equals(shortObj);
       case ItlDslPackage.DATA_TYPE__INT:
         return INT_EDEFAULT == null ? int_ != null : !INT_EDEFAULT.equals(int_);
-      case ItlDslPackage.DATA_TYPE__INTEGER:
-        return INTEGER_EDEFAULT == null ? integer != null : !INTEGER_EDEFAULT.equals(integer);
+      case ItlDslPackage.DATA_TYPE__INT_OBJ:
+        return INT_OBJ_EDEFAULT == null ? intObj != null : !INT_OBJ_EDEFAULT.equals(intObj);
       case ItlDslPackage.DATA_TYPE__LONG:
         return LONG_EDEFAULT == null ? long_ != null : !LONG_EDEFAULT.equals(long_);
       case ItlDslPackage.DATA_TYPE__LONG_OBJ:
@@ -896,8 +896,8 @@ public class DataTypeImpl extends MinimalEObjectImpl.Container implements DataTy
     result.append(shortObj);
     result.append(", int: ");
     result.append(int_);
-    result.append(", integer: ");
-    result.append(integer);
+    result.append(", intObj: ");
+    result.append(intObj);
     result.append(", long: ");
     result.append(long_);
     result.append(", longObj: ");

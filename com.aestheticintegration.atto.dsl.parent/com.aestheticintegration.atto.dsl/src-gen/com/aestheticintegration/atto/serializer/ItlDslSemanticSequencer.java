@@ -20,6 +20,7 @@ import com.aestheticintegration.atto.itlDsl.ItlDslPackage;
 import com.aestheticintegration.atto.itlDsl.Literal;
 import com.aestheticintegration.atto.itlDsl.Literal2;
 import com.aestheticintegration.atto.itlDsl.Model;
+import com.aestheticintegration.atto.itlDsl.Null;
 import com.aestheticintegration.atto.itlDsl.Statement;
 import com.aestheticintegration.atto.services.ItlDslGrammarAccess;
 import com.google.inject.Inject;
@@ -143,6 +144,16 @@ public class ItlDslSemanticSequencer extends AbstractDelegatingSemanticSequencer
 			case ItlDslPackage.MODEL:
 				sequence_Model(context, (Model) semanticObject); 
 				return; 
+			case ItlDslPackage.NULL:
+				if (rule == grammarAccess.getOutputExpressionRule()) {
+					sequence_OutputExpression(context, (Null) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getPrimaryRule()) {
+					sequence_Primary(context, (Null) semanticObject); 
+					return; 
+				}
+				else break;
 			case ItlDslPackage.STATEMENT:
 				sequence_Statement(context, (Statement) semanticObject); 
 				return; 
@@ -221,7 +232,7 @@ public class ItlDslSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *         short='short' | 
 	 *         shortObj='Short' | 
 	 *         int='int' | 
-	 *         integer='Integer' | 
+	 *         intObj='Integer' | 
 	 *         long='long' | 
 	 *         longObj='Long' | 
 	 *         float='float' | 
@@ -455,7 +466,7 @@ public class ItlDslSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ItlDslPackage.Literals.DATA_TYPE_INSTANCE__DATA_TYPE_INSTANCE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getOutputExpressionAccess().getDataTypeInstanceDataTypeInstanceParserRuleCall_4_1_0(), semanticObject.getDataTypeInstance());
+		feeder.accept(grammarAccess.getOutputExpressionAccess().getDataTypeInstanceDataTypeInstanceParserRuleCall_5_1_0(), semanticObject.getDataTypeInstance());
 		feeder.finish();
 	}
 	
@@ -473,7 +484,7 @@ public class ItlDslSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ItlDslPackage.Literals.DEF_DATA_VALUE__VALUE_DATA_VALUE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getOutputExpressionAccess().getValueDataValueDefDataValueIDTerminalRuleCall_5_1_0_1(), semanticObject.eGet(ItlDslPackage.Literals.DEF_DATA_VALUE__VALUE_DATA_VALUE, false));
+		feeder.accept(grammarAccess.getOutputExpressionAccess().getValueDataValueDefDataValueIDTerminalRuleCall_6_1_0_1(), semanticObject.eGet(ItlDslPackage.Literals.DEF_DATA_VALUE__VALUE_DATA_VALUE, false));
 		feeder.finish();
 	}
 	
@@ -491,7 +502,7 @@ public class ItlDslSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ItlDslPackage.Literals.EXCEPTION__VALUE_EXCEPTION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getOutputExpressionAccess().getValueExceptionSTRINGTerminalRuleCall_6_3_0(), semanticObject.getValueException());
+		feeder.accept(grammarAccess.getOutputExpressionAccess().getValueExceptionSTRINGTerminalRuleCall_7_3_0(), semanticObject.getValueException());
 		feeder.finish();
 	}
 	
@@ -528,6 +539,24 @@ public class ItlDslSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getOutputExpressionAccess().getValueIntegerINTEGERTerminalRuleCall_1_1_0(), semanticObject.getValueInteger());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     OutputExpression returns Null
+	 *
+	 * Constraint:
+	 *     valueNull=NULL
+	 */
+	protected void sequence_OutputExpression(ISerializationContext context, Null semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ItlDslPackage.Literals.NULL__VALUE_NULL) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ItlDslPackage.Literals.NULL__VALUE_NULL));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getOutputExpressionAccess().getValueNullNULLTerminalRuleCall_4_1_0(), semanticObject.getValueNull());
 		feeder.finish();
 	}
 	
@@ -600,6 +629,24 @@ public class ItlDslSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getPrimaryAccess().getValueIntegerINTEGERTerminalRuleCall_1_1_0(), semanticObject.getValueInteger());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Primary returns Null
+	 *
+	 * Constraint:
+	 *     valueNull=NULL
+	 */
+	protected void sequence_Primary(ISerializationContext context, Null semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ItlDslPackage.Literals.NULL__VALUE_NULL) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ItlDslPackage.Literals.NULL__VALUE_NULL));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getPrimaryAccess().getValueNullNULLTerminalRuleCall_4_1_0(), semanticObject.getValueNull());
 		feeder.finish();
 	}
 	

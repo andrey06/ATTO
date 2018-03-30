@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.aestheticintegration.atto.itlDsl.DataType#getShort <em>Short</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.DataType#getShortObj <em>Short Obj</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.DataType#getInt <em>Int</em>}</li>
- *   <li>{@link com.aestheticintegration.atto.itlDsl.DataType#getInteger <em>Integer</em>}</li>
+ *   <li>{@link com.aestheticintegration.atto.itlDsl.DataType#getIntObj <em>Int Obj</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.DataType#getLong <em>Long</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.DataType#getLongObj <em>Long Obj</em>}</li>
  *   <li>{@link com.aestheticintegration.atto.itlDsl.DataType#getFloat <em>Float</em>}</li>
@@ -169,30 +169,30 @@ public interface DataType extends EObject
   void setInt(String value);
 
   /**
-   * Returns the value of the '<em><b>Integer</b></em>' attribute.
+   * Returns the value of the '<em><b>Int Obj</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Integer</em>' attribute isn't clear,
+   * If the meaning of the '<em>Int Obj</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Integer</em>' attribute.
-   * @see #setInteger(String)
-   * @see com.aestheticintegration.atto.itlDsl.ItlDslPackage#getDataType_Integer()
+   * @return the value of the '<em>Int Obj</em>' attribute.
+   * @see #setIntObj(String)
+   * @see com.aestheticintegration.atto.itlDsl.ItlDslPackage#getDataType_IntObj()
    * @model
    * @generated
    */
-  String getInteger();
+  String getIntObj();
 
   /**
-   * Sets the value of the '{@link com.aestheticintegration.atto.itlDsl.DataType#getInteger <em>Integer</em>}' attribute.
+   * Sets the value of the '{@link com.aestheticintegration.atto.itlDsl.DataType#getIntObj <em>Int Obj</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Integer</em>' attribute.
-   * @see #getInteger()
+   * @param value the new value of the '<em>Int Obj</em>' attribute.
+   * @see #getIntObj()
    * @generated
    */
-  void setInteger(String value);
+  void setIntObj(String value);
 
   /**
    * Returns the value of the '<em><b>Long</b></em>' attribute.
