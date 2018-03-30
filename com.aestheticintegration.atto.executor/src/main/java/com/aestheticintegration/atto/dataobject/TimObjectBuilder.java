@@ -43,10 +43,18 @@ public class TimObjectBuilder {
 		return;
 	}
 	
-	public LinkedHashMap<String, Object> readHelpObjectFromString(String str) throws JsonParseException, JsonMappingException, IOException {
+	public LinkedHashMap<String, Object> readHelpObjectFromString2(String str) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		
+		@SuppressWarnings("unchecked")
 		LinkedHashMap<String, Object> helpObject = (LinkedHashMap<String, Object>) objectMapper.readValue(str, Object.class);
+
+		return helpObject;
+	}
+	public Object readHelpObjectFromString(String str) throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		Object helpObject = objectMapper.readValue(str, Object.class);
 
 		return helpObject;
 	}

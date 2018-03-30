@@ -15,13 +15,13 @@ function SimpleProg.myFunc2a(param1: int, param2: String, param3: Boolean): Bool
 		if (param2 = "abc") 
 		then true
 		else 
-			if (param3)
+			if (param3 = true)
 			then true
 			else false
 			endif
 		endif 
 	endif
-}
+}  
 /* 
 docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
 

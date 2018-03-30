@@ -1,4 +1,4 @@
-package com.aestheticintegration.atto.imandraexec.util;
+package com.aestheticintegration.atto.imandraexec;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,13 +17,13 @@ import com.aestheticintegration.atto.dataobject.TimObject.Function;
 import com.aestheticintegration.atto.dataobject.TimObject.Function.TestCase;
 import com.aestheticintegration.atto.dataobject.TimObjectBuilder;
 
-public class ImandraCoreCallUtils {
+public class ImandraCoreCall {
 	private static String TERMINAL_OCAML = ";;";
 	private static char[] TERMINAL_CHAR = {'#', '>'};
 	
 	public void executeSynch(String mlFilePath, TimObject timObject) throws Exception {
         String mlFileContent = new String(Files.readAllBytes(Paths.get(mlFilePath)));
-        String[] mlFilePortions = mlFileContent.split(ImandraCoreCallUtils.TERMINAL_OCAML);
+        String[] mlFilePortions = mlFileContent.split(ImandraCoreCall.TERMINAL_OCAML);
         int mlFilePortionNumber = 0;
          		
 		List<String> commandList = Arrays.asList("/Applications/Docker.app/Contents/Resources/bin/docker", "run", "-i", "eu.gcr.io/imandra-core-env/imandra-pure-bin");
@@ -39,6 +39,7 @@ public class ImandraCoreCallUtils {
 		}
 
         boolean constraintFlag = false;
+        boolean inputFlag = false;
         int functionNumber = 0;
         int regionNumber = -1;					// Test Case Number
 		int regionCommandNumber = -1;
@@ -53,8 +54,8 @@ public class ImandraCoreCallUtils {
 			while ((qty = reader.read(buf,  0, 1024)) != -1) {
 				bufferToAnalys.append(new String(buf, 0, qty));
 				
-				if (buf[qty-2] != ImandraCoreCallUtils.TERMINAL_CHAR[0] && buf[qty-1] != ImandraCoreCallUtils.TERMINAL_CHAR[0] &&
-					buf[qty-2] != ImandraCoreCallUtils.TERMINAL_CHAR[1] && buf[qty-1] != ImandraCoreCallUtils.TERMINAL_CHAR[1]) 
+				if (buf[qty-2] != ImandraCoreCall.TERMINAL_CHAR[0] && buf[qty-1] != ImandraCoreCall.TERMINAL_CHAR[0] &&
+					buf[qty-2] != ImandraCoreCall.TERMINAL_CHAR[1] && buf[qty-1] != ImandraCoreCall.TERMINAL_CHAR[1]) 
 				{
 					continue;
 				}
@@ -63,8 +64,28 @@ public class ImandraCoreCallUtils {
 				
 				if (constraintFlag) {
 					// Reaction on "\nList.iter (fun r" - Read constraints
-					this.analysisConstrains(bufferToAnalys.toString(), timObject, functionNumber);
+					this.extractConstrainsAndOutputExpect(bufferToAnalys.toString(), timObject, functionNumber);
 					constraintFlag = false;
+				}
+				if (inputFlag) {
+					// Reaction on "\nlet tcs = List" - Read the input for testcases (aka regions)
+					this.extractInput(bufferToAnalys.toString(), timObject, functionNumber);
+					inputFlag = false;
+					
+					if (functionNumber == timObject.getFunctions().size() - 1) {
+						// It was a last one
+						// Terminate the process
+						reader.close();
+						writer.close();
+						process.destroy();
+						break;
+					} else {
+						// New function
+						functionNumber++;
+
+						regionCommandNumber = -1;
+					}
+
 				}
 				if (regionCommandNumber == 3) {
 					// Reaction on the 3rd extra command - "Yojson.Basic.pretty_to_channel stdout params_json;;"
@@ -72,7 +93,7 @@ public class ImandraCoreCallUtils {
 					String jsonBuf = bufferToAnalys.substring(0, bufferToAnalys.indexOf("}-") + 1);
 					Function function = timObject.getFunctions().get(functionNumber);
 					
-					LinkedHashMap<String, Object> helpObject = new TimObjectBuilder().readHelpObjectFromString(jsonBuf);
+					LinkedHashMap<String, Object> helpObject = null;		//	new TimObjectBuilder().readHelpObjectFromString(jsonBuf);
 					function.getTestCases().get(regionNumber).setInput(helpObject);
 
 					if (regionNumber < function.getTestCases().size() - 1) {
@@ -99,7 +120,7 @@ public class ImandraCoreCallUtils {
 
 				if (regionCommandNumber == -1) {
 					// Read a next command from the ml-file
-					portion = mlFilePortions[mlFilePortionNumber] + ImandraCoreCallUtils.TERMINAL_OCAML;
+					portion = mlFilePortions[mlFilePortionNumber] + ImandraCoreCall.TERMINAL_OCAML;
 					mlFilePortionNumber++;
 				}
 				
@@ -125,7 +146,7 @@ public class ImandraCoreCallUtils {
 					regionCommandNumber = 3;
 				}
 				
-				if (portion.startsWith("\nList.iter (fun r")) {
+				if (portion.startsWith("\nCaml.List.iter (fun r")) {
 					// Print a string representations of each region
 					// Constraints
 					constraintFlag = true;
@@ -134,7 +155,8 @@ public class ImandraCoreCallUtils {
 					// Extract a test-case from each region, using the model extractor
 					// Test-case inputs
 					regionNumber = 0;
-					regionCommandNumber = 0;
+//					regionCommandNumber = 0;
+					inputFlag = true;
 				}
 				
 				writer.write(portion);
@@ -156,17 +178,20 @@ public class ImandraCoreCallUtils {
 		
 		return;
 	}
-	private void analysisConstrains(String buffer, TimObject timObject, int functionNumber) {
+	private void extractConstrainsAndOutputExpect(String buffer, TimObject timObject, int functionNumber) {
 		System.out.println("*********   analysConstrains start  ****");
 		System.out.println(buffer);
-		System.out.println("*********   analysConstrains end  ****");
 		
 		Function function = timObject.getFunctions().get(functionNumber);
 		
 		String phraseStart = "Constraints:";
 		String phraseEnd   = "Invariant:";
+		
+		buffer = buffer.replaceAll("Exception_[0-9]+", "Exception");
+		buffer = buffer.replaceAll("Something_[0-9]+\\s", "");
 
-		int constrainNumber = 0;
+
+		int constrainNumber = 0;		// aka regionNumber, testNumber
 		int posStart = -1;
 		int posEnd   = -1;
 		while ((posStart = buffer.indexOf(phraseStart)) != -1 &&
@@ -176,7 +201,8 @@ public class ImandraCoreCallUtils {
 				function.getTestCases().add(new TestCase());
 			}
 			String constraints = buffer.substring(posStart + phraseStart.length(), posEnd).replace("\n", "");
-			function.getTestCases().get(constrainNumber).setConstraints(constraints);
+			constraints = constraints.substring(constraints.indexOf("(") + 1, constraints.lastIndexOf(")"));
+			function.getTestCases().get(constrainNumber).setConstraints(constraints.trim());
 
 			String invariant = buffer.substring(posEnd + phraseStart.length());
 			
@@ -193,22 +219,61 @@ public class ImandraCoreCallUtils {
 				{
 					try {
 						Integer value = Integer.valueOf(invariant);
-						function.getTestCases().get(constrainNumber).setOutput_expect(value);
-					} catch (NumberFormatException e) {}
-				} else {
-					function.getTestCases().get(constrainNumber).setOutput_expect(invariant);
+						invariant = value.toString();
+					} catch (NumberFormatException e) {
+						invariant = "";
+					}
 				}
+			} else if (invariant.contains("Exception")) {
+				// Exception starts with " (Exception "
+				//  (Exception_826 "Wrong input for this function")
+				invariant = invariant.substring(invariant.indexOf("Exception"), invariant.indexOf("\")") + 1);
 			} else {
-				// Exception starts with " (EXCEPTION "
-				//  (EXCEPTION "Wrong input for this function")
-				invariant = invariant.substring(invariant.indexOf("EXCEPTION"), invariant.indexOf("\")") + 1);
-				function.getTestCases().get(constrainNumber).setOutput_expect(invariant);
+				invariant = invariant.substring(0, invariant.indexOf("\n"));
+				if (invariant.indexOf("(") != -1) {
+					invariant = invariant.substring(invariant.indexOf("(") + 1, invariant.lastIndexOf(")"));
+				}
 			}
+			function.getTestCases().get(constrainNumber).setOutput_expect(invariant.trim());
 			
 			buffer = buffer.substring(posEnd + phraseEnd.length());
 			constrainNumber++;
 		}
 		
+		System.out.println("*********   analysConstrains end  ****");
 		return;
+	}
+	@SuppressWarnings("unchecked")
+	private void extractInput(String buffer, TimObject timObject, int functionNumber) throws Exception {
+		System.out.println("*********   extractInput start  ****");
+		System.out.println(buffer);
+		
+		Function function = timObject.getFunctions().get(functionNumber);
+
+		String phraseStart = "[";
+		String jsonObj = buffer.substring(buffer.indexOf(phraseStart));
+		jsonObj = jsonObj.substring(0, jsonObj.indexOf("\n>"));
+		
+		jsonObj = jsonObj.replace("\n ", "");					// Remove a new line character
+		jsonObj = jsonObj.replace("Mex.", "");					// Remove the module name
+		jsonObj = jsonObj.replace("Something ", "");				// Remove the options
+		jsonObj = jsonObj.replace("Nothing", "null");			// Replace an option by a real Java null
+		jsonObj = jsonObj.replaceAll("\\};\\s+\\{", "}, {");		// Use a comma to separate items in an array
+		jsonObj = jsonObj.replace(".}", ".0}");					// Add the zero to the end to make a float
+		
+		for (int paramNum = 0; paramNum < function.getInputParams().size(); paramNum++) {
+			String paramName = function.getInputParams().get(paramNum).getName();
+			jsonObj = jsonObj.replace(paramName + " = ", "\"" + paramName + "\" : ");
+		}
+		jsonObj = jsonObj.replace("; \"", ", \"");		// Use a comma to separate items in a json object
+		
+		List<LinkedHashMap<String, Object>> helpObject = (List<LinkedHashMap<String, Object>>) new TimObjectBuilder().readHelpObjectFromString(jsonObj);
+
+		int testNumber = 0;
+		for (LinkedHashMap<String, Object> linkedHashMap : helpObject) {
+			function.getTestCases().get(testNumber).setInput(linkedHashMap);
+			testNumber++;
+		}
+		System.out.println("*********   extractInput end  ****");
 	}
 }

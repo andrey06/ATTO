@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 
 import com.aestheticintegration.atto.dataobject.TimObject;
 import com.aestheticintegration.atto.dataobject.TimObjectBuilder;
-import com.aestheticintegration.atto.imandraexec.util.ImandraCoreCallUtils;
 import com.aestheticintegration.atto.javaexec.JavaExecutor;
 
 import lombok.Getter;
@@ -23,6 +22,7 @@ public class ImandraExecutor {
 	private Properties properties;
 
 	public static void main(String[] args) {
+		System.out.println("***  ImandraExecutor start  ***");
 		ImandraExecutor imandraExecutor = new ImandraExecutor();
 		
 		try {
@@ -31,6 +31,7 @@ public class ImandraExecutor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("***  ImandraExecutor end  ***");
 	}
 	private void prepareAndExec() throws Exception {
 		this.properties = this.readProperties();
@@ -51,7 +52,7 @@ public class ImandraExecutor {
 	
 					try {
 						TimObject timObject = timObjectBuilder.readTimObjectFromFile(timFileName);
-						new ImandraCoreCallUtils().executeSynch(mlFileName, timObject);
+						new ImandraCoreCall().executeSynch(mlFileName, timObject);
 						
 						timObjectBuilder.writeTimObjectToFile(timObject, timFileName);
 					} catch (Exception e) {

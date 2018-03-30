@@ -6,7 +6,7 @@ function SimpleProg.myFunc4 (value: String): String {
 	else "BBBBB"
 	endif 
 }
-/*
+
 function SimpleProg.myFunc4a (value: int): String {
 	if (value = 123)
 	then "QWE111"  
@@ -20,22 +20,22 @@ function SimpleProg.myFunc4b (value1: Boolean, value2: Integer, value3: Float): 
 		then "QWE111"  
 		else 
 			if (value3 <= 0.)
-			then "KU"
+			then "KU"  
 			else "AGU"
-			endif
+			endif 
 		endif
 	else "QWE222"
-	endif 
+	endif   
 }
-*/
-/*
+
+/* 
 docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
 
 
 let simpleProg_myFunc4 (value : string): string =
 	if value  = "ABC" 
 	then "AAA" 
-	else "BBBBB"
+	else "BBBBB" 
 ;;
 let rs = Decompose.top "simpleProg_myFunc4";; 
 Reflect.Mode.program ();;

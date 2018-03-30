@@ -44,7 +44,7 @@ DataType :
 |	short	= 'short'
 |	shortObj= 'Short'
 |	int		= 'int'
-|	integer	= 'Integer'		// Primitive DataType
+|	intObj	= 'Integer'		// Primitive DataType
 |	long		= 'long'
 |	longObj	= 'Long'
 
@@ -97,6 +97,7 @@ Primary:
 |	{Integer} valueInteger=INTEGER
 |	{Float}   valueFloat=FLOAT
 |	{String}  valueString=STRING
+|	{Null}  	  valueNull=NULL
 ;
 
 OutputExpression:
@@ -104,6 +105,7 @@ OutputExpression:
 |	{Integer} valueInteger=INTEGER	
 |	{Float}   valueFloat=FLOAT	
 |	{String}  valueString=STRING	
+|	{Null}  	  valueNull=NULL
 |	{DataTypeInstance} dataTypeInstance=DataTypeInstance
 |	{DefDataValue} valueDataValue = [DefDataValue]
 |	{Exception} 'Exception' '(' valueException=STRING ')'
@@ -118,14 +120,20 @@ DataTypeValue:
 ;
 // OCaml build-in types
 enum Primitives:
-	BOOLEAN = 'bool'
-|	INTEGER = 'int'
-|	FLOAT	= 'float'
-|	STRING	= 'string'
-|	EXCEPTION='exception'
+	BOOL			= 'bool'
+|	BOOLOPT		= 'boolOpt'
+|	INT			= 'int'
+|	INTOPT		= 'intOpt'
+|	FLOAT		= 'float'
+|	FLOATOPT		= 'floatOpt'
+|	STRING		= 'string'
+|	STRINGOPT	= 'stringOpt'
+|	EXCEPTION	= 'exception'
+|	NULL 		= 'Nothing'
 ;
 
 // Java types
+terminal NULL returns ecore::EString: ('null' | 'NULL');
 terminal BOOLEAN returns ecore::EBooleanObject: ('false' | 'true');
 //terminal BYTE returns ecore::EByteObject: ('0'..'9')+;
 //terminal CHARACTER returns ecore::EIntegerObject: ('0'..'9')+;

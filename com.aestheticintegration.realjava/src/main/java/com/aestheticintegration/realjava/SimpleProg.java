@@ -50,20 +50,26 @@ public class SimpleProg {
 		return 0f;
 	}
 	// Integer
-	public long myTest1(int param1, boolean param2) {
-		return (param1 == 0 ? 88 : (param2 ? 44 : 33));
+	public Long myTest1(Integer param1, Boolean param2) {
+		return (param1 == 0 ? 8811L : (param2 ? 44L : 33L));
 	}
-	public long myTest1a(int cityTemp) throws Exception {
+	public long myTest1a(Integer cityTemp)  {
 		if (cityTemp == 0) {
-			throw new Exception("Wrong input for this function");
+			return 8;
 		}
 		return 33;
 	}
-	public long myTest1b(int param1) throws Exception {
+	public long myTest1b(Float param1) throws Exception {
 		if (param1 == 0) {
 			throw new Exception("Wrong input for this function");
 		} else if (param1 == 1) {
 			throw new Exception("Do not use this input");
+		}
+		return 33;
+	}
+	public long myTest1c(Integer cityTemp)  {
+		if (cityTemp == 0) {
+			return 8;
 		}
 		return 33;
 	}

@@ -16,15 +16,8 @@ import com.aestheticintegration.atto.itlDsl.Literal
 import com.aestheticintegration.atto.itlDsl.Model
 import com.aestheticintegration.atto.itlDsl.OutputExpression
 import com.aestheticintegration.atto.itlDsl.Primitives
-import com.aestheticintegration.atto.itlDsl.impl.BooleanImpl
-import com.aestheticintegration.atto.itlDsl.impl.DataTypeInstanceImpl
-import com.aestheticintegration.atto.itlDsl.impl.DefDataValueImpl
 import com.aestheticintegration.atto.itlDsl.impl.DefFunctionImpl
-import com.aestheticintegration.atto.itlDsl.impl.ExceptionImpl
 import com.aestheticintegration.atto.itlDsl.impl.ExpOrIfStatementImpl
-import com.aestheticintegration.atto.itlDsl.impl.FloatImpl
-import com.aestheticintegration.atto.itlDsl.impl.IntegerImpl
-import com.aestheticintegration.atto.itlDsl.impl.StringImpl
 import com.aestheticintegration.atto.util.AttoUtil
 
 import org.eclipse.emf.common.util.EList
@@ -37,6 +30,7 @@ import com.aestheticintegration.atto.itlDsl.ItlDslPackage
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class ItlDslValidator extends AbstractItlDslValidator {
+	private static String OCAML_OPTION = "Opt";
 	@Inject
 	private AttoUtil attoUtil;
 	
@@ -96,7 +90,7 @@ class ItlDslValidator extends AbstractItlDslValidator {
 		}
 	}
 	@Check
-	def checkOrder(DataTypeInstance dataTypeInstance) {
+	def checDataValueWithDataType(DataTypeInstance dataTypeInstance) {
 		var dataTypeFields = dataTypeInstance.defDataType.fields
 		if (dataTypeFields.size < dataTypeInstance.literals.size) {
 			error("Too many arguments in this datavalue", null, ItlDslPackage.DATA_TYPE_INSTANCE)
@@ -104,8 +98,18 @@ class ItlDslValidator extends AbstractItlDslValidator {
 		}
 		for (var index = 0; index < dataTypeInstance.literals.size; index++) {
 			var dataTypeType = this.attoUtil.convertDataTypeToPrimitive(dataTypeFields.get(index).inputDataType)
+			var dataTypeTypeOpt = dataTypeType;
+			if (!dataTypeType.endsWith(OCAML_OPTION)) {
+				dataTypeTypeOpt = dataTypeType + OCAML_OPTION
+			}
+			
 			var primaryType = this.attoUtil.convertLiteralToPrimitive(dataTypeInstance.literals.get(index))
-			if (dataTypeType != primaryType) {
+			var primaryTypeOpt = primaryType;
+			if (!primaryType.endsWith(OCAML_OPTION)) {
+				primaryTypeOpt = primaryType + OCAML_OPTION
+			}
+			
+			if (dataTypeTypeOpt != primaryTypeOpt) {
 				error("Wrong type of the arguments in this datavalue", null, ItlDslPackage.DATA_TYPE_INSTANCE)
 			}
 		}
@@ -123,7 +127,7 @@ class ItlDslValidator extends AbstractItlDslValidator {
 	def checkBooleanExpressionWithInputDataTypeGreetingStartsWithCapital(BoolExpression boolExpression) {
 		var String literalLeftType = this.findInputParamMap(boolExpression, boolExpression.literalLeft);
 		if (boolExpression.literalRight ===  null &&
-			literalLeftType != Primitives.BOOLEAN.literal) 
+			literalLeftType != Primitives.BOOL.literal) 
 		{
 			error("Wrong type. The left part of the literal should be a boolean", null, ItlDslPackage.BOOL_EXPRESSION)
 			return
@@ -134,7 +138,20 @@ class ItlDslValidator extends AbstractItlDslValidator {
 		if (literalLeftType === null || literalRightType === null) {
 			return
 		}
-		if (literalLeftType !== literalRightType) {
+		
+		var literalLeftTypeOpt = literalLeftType;
+		if (!literalLeftType.endsWith(OCAML_OPTION)) {
+			literalLeftTypeOpt = literalLeftType + OCAML_OPTION
+		}
+
+		var literalRightTypeOpt = literalRightType;
+		if (!literalRightType.endsWith(OCAML_OPTION)) {
+			literalRightTypeOpt = literalRightType + OCAML_OPTION
+		}
+		
+		if (!literalLeftTypeOpt.equals(literalRightTypeOpt) &&
+			!(literalRightType == Primitives.NULL.literal && literalLeftType.endsWith(OCAML_OPTION)))
+		{
 			// Verify the type of the right literal
 			error("Wrong type. The data types are not the same", null, ItlDslPackage.BOOL_EXPRESSION)
 		}
@@ -150,12 +167,21 @@ class ItlDslValidator extends AbstractItlDslValidator {
 		}
 		
 		var DataType funcDateType = this.findFuncReturnDataType(outputExpression)
-		var String primFuncReturnType = this.convertDataTypeToPrimitive(funcDateType)
+		var String primFuncReturnType = this.attoUtil.convertDataTypeToPrimitive(funcDateType)
+		var primFuncReturnTypeOpt = primFuncReturnType;
+		if (!primFuncReturnType.endsWith(OCAML_OPTION)) {
+			primFuncReturnTypeOpt = primFuncReturnType + OCAML_OPTION
+		}
 		
-		var String expressReturnType = this.convertOutputExpressionToPrimitive(outputExpression)
+		var String expressReturnType = this.attoUtil.convertOutputExpressionToPrimitive(outputExpression)
+		var expressReturnTypeOpt = expressReturnType;
+		if (!expressReturnType.endsWith(OCAML_OPTION)) {
+			expressReturnTypeOpt = expressReturnType + OCAML_OPTION
+		}
 		
-		if (expressReturnType != primFuncReturnType &&
-			expressReturnType != Primitives.EXCEPTION.literal)
+		if (expressReturnTypeOpt != primFuncReturnTypeOpt &&
+			expressReturnType != Primitives.EXCEPTION.literal &&
+			!(expressReturnType == Primitives.NULL.literal && primFuncReturnType.endsWith(OCAML_OPTION)))
 		{
 			var String funcReturnType = this.attoUtil.convertDataTypeToString(funcDateType)
 			error("Wrong type. It should be '" + funcReturnType + "'", null, ItlDslPackage.OUTPUT_EXPRESSION)
@@ -176,7 +202,7 @@ class ItlDslValidator extends AbstractItlDslValidator {
 				var String[] partVariable = literal.variable.split("\\.")
 				for (InputParam inputParam : defFunc.inputParams) {
 					if (inputParam.name.equals(partVariable.get(0))) {
-						literalType = this.convertDataTypeToPrimitive(inputParam.inputDataType)
+						literalType = this.attoUtil.convertDataTypeToPrimitive(inputParam.inputDataType)
 						if (1 < partVariable.size) {
 							// TODO For now - only 1 level deeper
 							var model = defFunc.eContainer() as Model
@@ -184,7 +210,7 @@ class ItlDslValidator extends AbstractItlDslValidator {
 								if (defDataType.name == literalType) {
 									for (InputParam inputParam2 : defDataType.fields) {
 										if (inputParam2.name.equals(partVariable.get(1))) {
-											literalType = this.convertDataTypeToPrimitive(inputParam2.inputDataType)
+											literalType = this.attoUtil.convertDataTypeToPrimitive(inputParam2.inputDataType)
 										}
 									}
 								}
@@ -203,52 +229,6 @@ class ItlDslValidator extends AbstractItlDslValidator {
 		}
 			
 		return literalType
-	}
-	def private String convertDataTypeToPrimitive(DataType dataType) {
-		var String dataTypeOut = null
-		if (dataType.boolean !== null || dataType.booleanObj !== null) {
-			dataTypeOut = Primitives.BOOLEAN.literal
-		} else if (dataType.short !== null || dataType.shortObj !== null ||
-				   dataType.int !== null || dataType.integer !== null ||
-				   dataType.long !== null || dataType.longObj !== null) {
-			dataTypeOut = Primitives.INTEGER.literal
-		} else if (dataType.float !== null || dataType.floatObj !== null ||
-				   dataType.double !== null || dataType.doubleObj !== null) {
-			dataTypeOut = Primitives.FLOAT.literal
-		} else if (dataType.string !== null) {
-			dataTypeOut = Primitives.STRING.literal
-		} else if (dataType.defDataType !== null) {
-			dataTypeOut = dataType.defDataType.name
-		}
-		return dataTypeOut
-	}
-	def private String convertOutputExpressionToPrimitive(OutputExpression outputExpression) {
-		var String dataTypeOut = null
-
-		if (outputExpression instanceof BooleanImpl) {
-			dataTypeOut = Primitives.BOOLEAN.literal
-		} else if (outputExpression instanceof IntegerImpl) {
-			dataTypeOut = Primitives.INTEGER.literal
-		} else if (outputExpression instanceof FloatImpl) {
-			dataTypeOut = Primitives.FLOAT.literal
-		} else if (outputExpression instanceof StringImpl) {
-			dataTypeOut = Primitives.STRING.literal
-		} else if (outputExpression instanceof DataTypeInstanceImpl) {
-			dataTypeOut = (outputExpression as DataTypeInstanceImpl).dataTypeInstance.defDataType.name
-		} else if (outputExpression instanceof DefDataValueImpl) {
-			var datavalues = this.attoUtil.getAllDefDataValues(outputExpression)
-			if (datavalues !== null && datavalues.size != 0) {
-				for (DefDataValue defDataValue : datavalues) {
-					if (defDataValue.name == (outputExpression as DefDataValueImpl).valueDataValue.name) {
-						dataTypeOut = defDataValue.dataTypeInstance.defDataType.name
-					}
-				}
-			}			
-		} else if (outputExpression instanceof ExceptionImpl) {
-			dataTypeOut = Primitives.EXCEPTION.literal
-		}
-
-		return dataTypeOut
 	}
 	def private DataType findFuncReturnDataType(OutputExpression outputExpression) {
 		var DataType funcReturnType = null

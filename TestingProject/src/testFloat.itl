@@ -28,11 +28,11 @@ let simpleProg_myFunc3 (value : int): float =
 	then 4.44 
 	else if value  = 321  
 	then 88.0 
-	else 3.22 
+	else 3.22  
 ;;
 let simpleProg_myFunc3a (value : bool): float =
 	if value  = true 
-	then if 33  = 321 
+	then if 33  = 321  
 	then 88.0
 	else 3.22 
 	else 0.0

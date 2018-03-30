@@ -4,54 +4,58 @@ import com.aestheticintegration.realjava.dataobject.Pet
 
 datatype Animal {
 	name: String
-	age: Float   
+	age: Float
+	age2: float
 }
-datatype Pet {
-	owner: String
-}  
+//datatype Pet {
+//	owner: String 
+//}  
  
-datavalue animal1 = Animal("My Dog", 10.0)
-datavalue animal2 = Animal("My Cat", 1.22)
+datavalue animal1 = Animal("My Dog", 10.0, 3.0)
+
+/*  datavalue animal2 = Animal("My Cat", 1.22)
 datavalue Pet1 = Pet("Uncle Sam")
 datavalue Pet2 = Pet("Ant Ann")
- 
+*/ 
 function SimpleProg.myTest5 (animal: Animal): Animal {
 	if (animal.age >= 2.0 )   
-	then animal1 
-	else Animal("Your Cat", 1.) 
+	then animal1  
+	else Animal("Your Cat", 1. 88.0) 
 	endif  
 }
+/*
 function SimpleProg.myTest5a(pet: Pet): String {
 	if (pet.owner ="Uncle Sam")   
-	then "USA"  
-	else "UK" 
-	endif  
+	then "USA"    
+	else "UK"  
+	endif   
 }  
-function SimpleProg.myTest5b(param: int): Animal {
+function SimpleProg.myTest5b(param: int): Animal { 
 	if (param = 0)   
 	then Exception("Wrong_param") 
 	else if (param = 1)
 		then Animal("Your Cat", 1.)
-		else animal2
-		endif
-	endif  
-}  
- 
-test test1 = SimpleProg.myTest5(Animal("My Dog Cat", 5.)): animal1
+		else animal2  
+		endif  
+	endif       
+}       
+*/     
+test test1 = SimpleProg.myTest5(Animal("My Dog Cat", 5., 3.0)): animal1
+/*
 test test2 = SimpleProg.myTest5a(Pet1): "USA"
 test test3 = SimpleProg.myTest5a(Pet2): "UK"
 
 test test4 = SimpleProg.myTest5b(0): Exception("Wrong_param") 
 test test5 = SimpleProg.myTest5b(1): Animal("Your Cat", 1.)
 test test6a = SimpleProg.myTest5b(2): animal2
-
+*/ 
 /*     
 docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
 
-type animal = {
+type animal = { 
 	name: string;
-	age: float; 
-}
+	age: float;   
+} 
 ;; 
 type pet = { 
 	owner: string;     
@@ -66,7 +70,7 @@ let pet1 = {owner="Uncle Sam"}
 let pet2 = {owner="Ant Ann"} 
 ;;
 let simpleProg_myTest5 animal =
-	if animal.age  >= 2.0 
+	if animal.age  >= 2.0  
 	then animal1
 	else {name="Your Cat"; age=1.0} 
 ;;

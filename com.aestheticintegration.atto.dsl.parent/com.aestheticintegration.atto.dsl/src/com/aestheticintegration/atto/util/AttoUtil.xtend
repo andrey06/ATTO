@@ -25,6 +25,10 @@ import com.aestheticintegration.atto.itlDsl.IfStatement
 import com.aestheticintegration.atto.itlDsl.ExpOrIfStatement
 import com.aestheticintegration.atto.itlDsl.BoolExpression
 import com.aestheticintegration.atto.itlDsl.impl.IfStatementImpl
+import com.aestheticintegration.atto.itlDsl.impl.DataTypeInstanceImpl
+import com.aestheticintegration.atto.itlDsl.impl.DefDataValueImpl
+import com.aestheticintegration.atto.itlDsl.impl.NullImpl
+import com.aestheticintegration.atto.itlDsl.Null
 
 public class AttoUtil {
 
@@ -36,7 +40,7 @@ public class AttoUtil {
 		if (dataType.short !== null) 		str = 'short'  else
 		if (dataType.shortObj !== null) 		str = 'Short'  else
 		if (dataType.int !== null) 			str = 'int'  else
-		if (dataType.integer !== null) 		str = 'Integer'  else
+		if (dataType.intObj !== null) 		str = 'Integer'  else
 		if (dataType.long !== null) 			str = 'long'  else
 		if (dataType.longObj !== null) 		str = 'Long'  else
 		if (dataType.float !== null) 		str = 'float'  else
@@ -50,19 +54,43 @@ public class AttoUtil {
 	}
 	def String convertDataTypeToPrimitive(DataType dataType) {
 		var String dataTypeOut = null
-		if (dataType.boolean !== null || dataType.booleanObj !== null) {
-			dataTypeOut = Primitives.BOOLEAN.literal
-		} else if (dataType.short !== null || dataType.shortObj !== null ||
-				   dataType.int !== null || dataType.integer !== null ||
-				   dataType.long !== null || dataType.longObj !== null) {
-			dataTypeOut = Primitives.INTEGER.literal
-		} else if (dataType.float !== null || dataType.floatObj !== null ||
-				   dataType.double !== null || dataType.doubleObj !== null) {
+		if (dataType.boolean !== null) {
+			dataTypeOut = Primitives.BOOL.literal
+		} else if (dataType.booleanObj !== null) {
+			dataTypeOut = Primitives.BOOLOPT.literal
+		} else if (dataType.short !== null || dataType.int !== null || dataType.long !== null) {
+			dataTypeOut = Primitives.INT.literal
+		} else if (dataType.shortObj !== null || dataType.intObj !== null || dataType.longObj !== null) {
+			dataTypeOut = Primitives.INTOPT.literal
+		} else if (dataType.float !== null || dataType.double !== null) {
 			dataTypeOut = Primitives.FLOAT.literal
+		} else if (dataType.floatObj !== null || dataType.doubleObj !== null) {
+			dataTypeOut = Primitives.FLOATOPT.literal
 		} else if (dataType.string !== null) {
-			dataTypeOut = Primitives.STRING.literal
+			dataTypeOut = Primitives.STRINGOPT.literal
 		} else if (dataType.defDataType !== null) {
-			dataTypeOut = dataType.defDataType.name.toLowerCase
+			dataTypeOut = dataType.defDataType.name
+		}
+		return dataTypeOut
+	}
+	def String convertDataTypeToOption(DataType dataType) {
+		var String dataTypeOut = null
+		if (dataType.boolean !== null) {
+			dataTypeOut = Primitives.BOOL.literal
+		} else if (dataType.booleanObj !== null) {
+			dataTypeOut = Primitives.BOOL.literal + " objOpt"
+		} else if (dataType.short !== null || dataType.int !== null || dataType.long !== null) {
+			dataTypeOut = Primitives.INT.literal
+		} else if (dataType.shortObj !== null || dataType.intObj !== null || dataType.longObj !== null) {
+			dataTypeOut = Primitives.INT.literal + " objOpt"
+		} else if (dataType.float !== null || dataType.double !== null) {
+			dataTypeOut = Primitives.FLOAT.literal
+		} else if (dataType.floatObj !== null || dataType.doubleObj !== null) {
+			dataTypeOut = Primitives.FLOAT.literal + " objOpt"
+		} else if (dataType.string !== null) {
+			dataTypeOut = Primitives.STRING.literal + " objOpt"
+		} else if (dataType.defDataType !== null) {
+			dataTypeOut = dataType.defDataType.name
 		}
 		return dataTypeOut
 	}
@@ -102,13 +130,15 @@ public class AttoUtil {
 	def String convertPrimaryToPrimitive(Primary primary) {
 		var String primaryType = null
 		if (primary instanceof BooleanImpl) {
-			primaryType = Primitives.BOOLEAN.literal
+			primaryType = Primitives.BOOL.literal
 		} else if (primary instanceof IntegerImpl) {
-			primaryType = Primitives.INTEGER.literal
+			primaryType = Primitives.INT.literal
 		} else if (primary instanceof FloatImpl) {
 			primaryType = Primitives.FLOAT.literal
 		} else if (primary instanceof StringImpl) {
-			primaryType = Primitives.STRING.literal
+			primaryType = Primitives.STRINGOPT.literal
+		} else if (primary instanceof NullImpl) {
+			primaryType = Primitives.NULL.literal
 		}
 		return primaryType
 	}
@@ -166,39 +196,84 @@ public class AttoUtil {
 			primaryValue = (primary as FloatImpl).valueFloat.toString
 		} else if (primary instanceof StringImpl) {
 			primaryValue = '"' + (primary as StringImpl).valueString + '"'
+		} else if (primary instanceof NullImpl) {
+			primaryValue = Primitives.NULL.literal
+			 
 		}
 		return primaryValue
 	}
 	def String getOutputExpressionValueAsString(OutputExpression outputExpression) {
 //		var DefFunction defFunction = this.getDefFunction(outputExpression)
-		var boolean exceptFlag = true		///	this.hasFunctionException(defFunction)
+//		var boolean exceptFlag = true		///	this.hasFunctionException(defFunction)
 		
-		var spec = ""
+//		var spec = ""
 
 		var String outputExpressionValue = ""
-		if (outputExpression instanceof BooleanImpl) {
-			if (exceptFlag) {spec = "NO_EXN_BOOL "}
-			outputExpressionValue = spec + (outputExpression as BooleanImpl).valueBoolean.toString
-		} else if (outputExpression instanceof IntegerImpl) {
-			if (exceptFlag) {spec = "NO_EXN_INTEGER "}
-			outputExpressionValue = spec + (outputExpression as IntegerImpl).valueInteger.toString
-		} else if (outputExpression instanceof FloatImpl) {
-			if (exceptFlag) {spec = "NO_EXN_FLOAT "}
-			outputExpressionValue = spec + (outputExpression as FloatImpl).valueFloat.toString
+		if (outputExpression instanceof ExceptionImpl) {
+			outputExpressionValue = "Exception " + "\"" + (outputExpression as ExceptionImpl).valueException + "\""
+		} else if (outputExpression instanceof NullImpl) {
+			outputExpressionValue = "Nothing"
 		} else if (outputExpression instanceof StringImpl) {
-			if (exceptFlag) {spec = "NO_EXN_STRING "}
-			outputExpressionValue = spec + '"' + (outputExpression as StringImpl).valueString + '"'
-		} else if (outputExpression instanceof DataTypeInstance) {
-			if (exceptFlag) {spec = "NO_EXN_" + (outputExpression as DataTypeInstance).dataTypeInstance.defDataType.name.toUpperCase + " "}
-			outputExpressionValue = spec + this.toOcamlValue((outputExpression as DataTypeInstance).dataTypeInstance)
-		} else if (outputExpression instanceof DefDataValue) {
-			if (exceptFlag) {spec = "NO_EXN_" + (outputExpression as DefDataValue).valueDataValue.dataTypeInstance.defDataType.name.toUpperCase + " "}
-			outputExpressionValue = spec + (outputExpression as DefDataValue).valueDataValue.name
-		} else if (outputExpression instanceof ExceptionImpl) {
-			outputExpressionValue = "EXCEPTION " + "\"" + (outputExpression as ExceptionImpl).valueException + "\""
+				outputExpressionValue = '"' + (outputExpression as StringImpl).valueString + '"'
+		} else {
+			var some = "Something "
+			if (outputExpression instanceof BooleanImpl) {
+				outputExpressionValue = some + (outputExpression as BooleanImpl).valueBoolean.toString
+			} else if (outputExpression instanceof IntegerImpl) {
+				outputExpressionValue = some + (outputExpression as IntegerImpl).valueInteger.toString
+			} else if (outputExpression instanceof FloatImpl) {
+				outputExpressionValue = some + (outputExpression as FloatImpl).valueFloat.toString
+			} else if (outputExpression instanceof DataTypeInstance) {
+				outputExpressionValue = some + this.toOcamlValue((outputExpression as DataTypeInstance).dataTypeInstance)
+			} else if (outputExpression instanceof DefDataValue) {
+				outputExpressionValue = some + (outputExpression as DefDataValue).valueDataValue.name
+			}
 		}
-		
 		return outputExpressionValue
+	}
+	def String convertOutputExpressionToPrimitive(OutputExpression outputExpression) {
+		var String dataTypeOut = null
+
+		if (outputExpression instanceof BooleanImpl) {
+			dataTypeOut = Primitives.BOOL.literal
+		} else if (outputExpression instanceof IntegerImpl) {
+			dataTypeOut = Primitives.INT.literal
+		} else if (outputExpression instanceof FloatImpl) {
+			dataTypeOut = Primitives.FLOAT.literal
+		} else if (outputExpression instanceof StringImpl) {
+			dataTypeOut = Primitives.STRINGOPT.literal
+		} else if (outputExpression instanceof NullImpl) {
+			dataTypeOut = Primitives.NULL.literal
+		} else if (outputExpression instanceof DataTypeInstanceImpl) {
+			dataTypeOut = (outputExpression as DataTypeInstanceImpl).dataTypeInstance.defDataType.name
+		} else if (outputExpression instanceof DefDataValueImpl) {
+			var datavalues = this.getAllDefDataValues(outputExpression)
+			if (datavalues !== null && datavalues.size != 0) {
+				for (DefDataValue defDataValue : datavalues) {
+					if (defDataValue.name == (outputExpression as DefDataValueImpl).valueDataValue.name) {
+						dataTypeOut = defDataValue.dataTypeInstance.defDataType.name
+					}
+				}
+			}			
+		} else if (outputExpression instanceof ExceptionImpl) {
+			dataTypeOut = Primitives.EXCEPTION.literal
+		}
+
+		return dataTypeOut
+	}
+	def String toOcamlType(DataTypeInstance dataTypeInstance) {
+		var str = "{"
+		var dataTypeFields = dataTypeInstance.defDataType.fields
+		var comma = ""
+		for (var index = 0; index < dataTypeFields.size; index++) {
+			var fieldName = dataTypeFields.get(index).name
+			var fieldValue = this.convertDataTypeToOption(dataTypeFields.get(index).inputDataType)
+			str = str + comma + fieldName + "=" + fieldValue 
+			comma = "; "
+		}
+		str += "}"
+		
+		return str;
 	}
 	def String toOcamlValue(DataTypeInstance dataTypeInstance) {
 		var str = "{"
@@ -278,9 +353,20 @@ public class AttoUtil {
 			}
 			str = str + "}"
 		} else if (outputExpression instanceof DefDataValue) {
-			str = outputExpression.valueDataValue.name.toLowerCase
+//			str = outputExpression.valueDataValue.name.toLowerCase
+			var dataTypeInstance = (outputExpression as DefDataValue).valueDataValue.dataTypeInstance
+			str = "{ \"name\": \"" + outputExpression.valueDataValue.name + "\", " +
+		  			"\"datatype\": \"" + dataTypeInstance.defDataType.name + "\", " +
+		  			"\"fields\": ["
+			for (var index2 = 0; index2 < dataTypeInstance.literals.size; index2++) {
+	       		str = str + this.getLiteralValueAsString(dataTypeInstance.literals.get(index2))
+	       		if (index2 !== dataTypeInstance.literals.size -1) {
+	       			str = str + " , "
+	       		}
+			}
+			str = str + "]" + "}"
 		} else if (outputExpression instanceof ExceptionImpl) {
-			str = "\"EXCEPTION " + "\\\"" + (outputExpression as ExceptionImpl).valueException + "\\\"\""
+			str = "\"Exception " + "\\\"" + (outputExpression as ExceptionImpl).valueException + "\\\"\""
 		}
 		
 		return str
@@ -337,8 +423,30 @@ public class AttoUtil {
 	def String getBoolExpressionAsString(BoolExpression boolExpression) {
 		var String str = this.getLiteralValueAsString(boolExpression.literalLeft)
 		if (boolExpression.literalRight !== null) {
-			str = str + " " + boolExpression.sign + " " + this.getLiteralValueAsString(boolExpression.literalRight)
+			str = str + " " + boolExpression.sign + " " + this.getSome(boolExpression, str) + this.getLiteralValueAsString(boolExpression.literalRight)
 		}
+		return str
+	}
+	def String getSome(BoolExpression boolExpression, String paramName) {
+		var str = ""
+		if (boolExpression.literalRight !== null && 
+			boolExpression.literalRight.primary !== null && 
+			boolExpression.literalRight.primary instanceof Null)
+		{
+			return str;
+		}
+		var defFunction = this.getDefFunction(boolExpression)
+		var EList<InputParam> inputParams = defFunction.inputParams
+		for (InputParam inputParam : inputParams) {
+			if (inputParam.name.equals(paramName)){
+				var dataTypeName = this.convertDataTypeToPrimitive(inputParam.inputDataType)
+				if (dataTypeName.endsWith("Opt")) {
+					str = "Something "
+				}
+				return str
+			}
+		}
+		
 		return str
 	}
 	def String nameToOcaml(String name) {
@@ -349,12 +457,12 @@ public class AttoUtil {
 	def String getFunctionParams(EList<InputParam> inputParams) {
 		var String str = ""
 		for (var index = 0; index < inputParams.size; index++) {
-			str = str + " (" + inputParams.get(index).name + ":" + this.convertDataTypeToPrimitive(inputParams.get(index).inputDataType) + ")"
+			str = str + " (" + inputParams.get(index).name + ":" + this.convertDataTypeToOption(inputParams.get(index).inputDataType) + ")"
 		}
 		return str
 	}
 	
-	def String buildPrepToJson(DefFunction defFunction) {
+	def String buildPrepToJson_DEL_ME(DefFunction defFunction) {
 // 		let prep_to_json (param1:int) (param2: bool) = [("param1", `Int param1); ("param2", `Bool param2)]
 		var EList<InputParam> inputParams = defFunction.inputParams
 		var comma = ""
@@ -374,7 +482,7 @@ public class AttoUtil {
 		if (dataType.boolean !== null || dataType.booleanObj !== null) {
 			dataTypeOut = "`Bool"
 		} else if (dataType.short !== null || dataType.shortObj !== null ||
-				   dataType.int !== null || dataType.integer !== null ||
+				   dataType.int !== null || dataType.intObj !== null ||
 				   dataType.long !== null || dataType.longObj !== null) {
 			dataTypeOut = "`Int"
 		} else if (dataType.float !== null || dataType.floatObj !== null ||
