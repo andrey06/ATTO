@@ -52,7 +52,9 @@ public class ImandraExecutor {
 	
 					try {
 						TimObject timObject = timObjectBuilder.readTimObjectFromFile(timFileName);
-						new ImandraCoreCall().executeSynch(mlFileName, timObject);
+						if (timObject.getFunctions().size() !=0) {
+							new ImandraCoreCall().executeSynch(mlFileName, timObject);
+						}
 						
 						timObjectBuilder.writeTimObjectToFile(timObject, timFileName);
 					} catch (Exception e) {

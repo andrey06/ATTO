@@ -12,4 +12,5 @@ import lombok.Setter;
 public class Animal {
 	private String name;
 	private Float age;
+	private float age2;
 }

@@ -62,7 +62,7 @@ FunctionBody :
 ;
 Statement :
 	ifStatement=IfStatement
-|	outputExpression=OutputExpression
+|	outputExpressionTotal=OutputExpressionTotal
 ;
 IfStatement:
     'if' '(' inputBoolExpression+=BoolExpression (sign+=('&&' | '||')  inputBoolExpression+=BoolExpression)* ')'
@@ -71,7 +71,7 @@ IfStatement:
     	'endif'
 ;
 ExpOrIfStatement:
-	outputExpression=OutputExpression 
+	outputExpressionTotal=OutputExpressionTotal 
 |	ifStatement=IfStatement
 ;
 BoolExpression:
@@ -91,6 +91,10 @@ Literal2:
 	variable=QualifiedName
 |	primary=Primary
 ;
+OutputExpressionTotal:
+	primary = Primary
+|	outputExpression = OutputExpression
+;
 // Constqnts in BoolExpression
 Primary:
 	{Boolean} valueBoolean=BOOLEAN
@@ -99,19 +103,13 @@ Primary:
 |	{String}  valueString=STRING
 |	{Null}  	  valueNull=NULL
 ;
-
 OutputExpression:
-	{Boolean} valueBoolean=BOOLEAN
-|	{Integer} valueInteger=INTEGER	
-|	{Float}   valueFloat=FLOAT	
-|	{String}  valueString=STRING	
-|	{Null}  	  valueNull=NULL
-|	{DataTypeInstance} dataTypeInstance=DataTypeInstance
+	{DataTypeInstance} dataTypeInstance=DataTypeInstance
 |	{DefDataValue} valueDataValue = [DefDataValue]
 |	{Exception} 'Exception' '(' valueException=STRING ')'
 ;
 DefTest:
-	'test' name=ID '=' defFunc=[DefFunction | QualifiedName] '(' (dataTypeValues+=DataTypeValue (',' dataTypeValues+=DataTypeValue)*)? ')' ':' outputExpression=OutputExpression
+	'test' name=ID '=' defFunc=[DefFunction | QualifiedName] '(' (dataTypeValues+=DataTypeValue (',' dataTypeValues+=DataTypeValue)*)? ')' ':' outputExpressionTotal=OutputExpressionTotal
 ;
 DataTypeValue:
 	primary=Primary
@@ -137,8 +135,8 @@ terminal NULL returns ecore::EString: ('null' | 'NULL');
 terminal BOOLEAN returns ecore::EBooleanObject: ('false' | 'true');
 //terminal BYTE returns ecore::EByteObject: ('0'..'9')+;
 //terminal CHARACTER returns ecore::EIntegerObject: ('0'..'9')+;
-terminal INTEGER returns ecore::EIntegerObject: ('0'..'9')+;
-terminal FLOAT returns ecore::EFloatObject: (('0'..'9')+ '.') | ('.' ('0'..'9')+) | (('0'..'9')+'.'('0'..'9')+);
+terminal INTEGER returns ecore::EIntegerObject: '-'? ('0'..'9')+;
+terminal FLOAT returns ecore::EFloatObject: '-'? (('0'..'9')+ '.') | ('.' ('0'..'9')+) | (('0'..'9')+'.'('0'..'9')+);
 terminal STRING returns ecore::EString: 
 	'"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"' 
 //|	"'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'"

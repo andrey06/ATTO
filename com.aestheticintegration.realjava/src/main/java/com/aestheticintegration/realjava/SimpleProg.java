@@ -4,8 +4,8 @@ import com.aestheticintegration.realjava.dataobject.Animal;
 import com.aestheticintegration.realjava.dataobject.Pet;
 
 public class SimpleProg {
-	private Animal animal1 = new Animal("My Dog", 10.0f);
-	private Animal animal2 = new Animal("My Cat", 1.22f);
+	private Animal animal1 = new Animal("My Dog", 10.0f, 3.0f);
+	private Animal animal2 = new Animal("My Cat", 1.22f, 9.9f);
 	
 	// Boolean
 	public Boolean myFunc2(boolean param1, boolean param2) {
@@ -19,7 +19,7 @@ public class SimpleProg {
 
 	// Datatype
 	public Animal myTest5(Animal animal) {
-		return (animal.getAge() >= 2.0 ? this.animal1 : new Animal("Your Cat", 1.0f));
+		return (animal.getAge() >= 2.0 ? this.animal1 : new Animal("Your Cat", 1.0f, 88.0f));
 	}
 	public String myTest5a(Pet pet) {
 		return (pet.getOwner().equals("Uncle Sam") ? "USA" : "UK");
@@ -28,7 +28,7 @@ public class SimpleProg {
 		if (param == 0) {
 			throw new Exception("Wrong_param");
 		} else if (param == 1) {
-			return new Animal("Your Cat", 1.0f);
+			return new Animal("Your Cat", 1.0f, 8.0f);
 		}
 		return this.animal2;
 	}
@@ -60,6 +60,14 @@ public class SimpleProg {
 		return 33;
 	}
 	public long myTest1b(Float param1) throws Exception {
+		if (param1 == 0) {
+			throw new Exception("Wrong input for this function");
+		} else if (param1 == 1) {
+			throw new Exception("Do not use this input");
+		}
+		return 33;
+	}
+	public long myTest1c(float param1) throws Exception {
 		if (param1 == 0) {
 			throw new Exception("Wrong input for this function");
 		} else if (param1 == 1) {

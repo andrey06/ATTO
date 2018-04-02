@@ -39,7 +39,7 @@ class ItlDslValidator extends AbstractItlDslValidator {
 	@Check
 	def checkUniqueness(DefDataType defDataType) {
 		// DataType uniqueness
-		var EList<DefDataType> datatypes = attoUtil.getAllDefDataTypes(defDataType)
+		var EList<DefDataType> datatypes = this.attoUtil.getAllDefDataTypes(defDataType)
 		var qty = datatypes.stream.filter[it.name == defDataType.name].count
 
 		if (qty != 1) {

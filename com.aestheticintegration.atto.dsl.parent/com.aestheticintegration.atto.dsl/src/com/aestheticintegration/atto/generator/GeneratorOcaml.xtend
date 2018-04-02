@@ -65,7 +65,7 @@ public class GeneratorOcaml {
 		;;
 	'''
 	def compile(DefDataValue defDataValue) '''
-		let «this.attoUtil.nameToOcaml(defDataValue.name)» = «this.attoUtil.toOcamlValue(defDataValue.dataTypeInstance)»
+		let «this.attoUtil.nameToOcaml(defDataValue.name)» = «this.attoUtil.getDataTypeInstanceToOcaml(defDataValue.dataTypeInstance)»
 		;;
 	'''
 	def compile(DefFunction defFunction) '''
@@ -78,8 +78,8 @@ public class GeneratorOcaml {
 			«IF statement.ifStatement !== null»
 				«statement.ifStatement.compile»
 			«ENDIF»
-			«IF statement.outputExpression !== null»
-				«this.attoUtil.getOutputExpressionValueAsString(statement.outputExpression)»
+			«IF statement.outputExpressionTotal !== null»
+				«this.attoUtil.getOutputExpressionTotalValueAsString(statement.outputExpressionTotal)»
 			«ENDIF»
 		«ENDFOR»
 	'''
@@ -91,8 +91,8 @@ public class GeneratorOcaml {
 		«ENDIF»
 	'''
 	def compile(ExpOrIfStatement expOrIfStatement) '''
-		«IF expOrIfStatement.outputExpression !== null»
-			«this.attoUtil.getOutputExpressionValueAsString(expOrIfStatement.outputExpression)»
+		«IF expOrIfStatement.outputExpressionTotal !== null»
+			«this.attoUtil.getOutputExpressionTotalValueAsString(expOrIfStatement.outputExpressionTotal)»
 		«ENDIF»
 		«IF expOrIfStatement.ifStatement !== null»
 			«expOrIfStatement.ifStatement.compile»
@@ -103,8 +103,13 @@ public class GeneratorOcaml {
 	'''
 	def createTypeBuildInExt(Model model) '''
 		type 'a objOpt = Nothing | Something of 'a;;
-
 		type 'a objExcOpt = Nothing | Something of 'a | Exception of string;;
+
+		let get_value (z: 'a objOpt) (default: 'a) =
+			match z with 
+			| Something c -> c
+			| Nothing -> default
+		;;
 
 	'''
 }

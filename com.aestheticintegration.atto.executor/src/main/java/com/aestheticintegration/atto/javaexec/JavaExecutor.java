@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
@@ -37,15 +38,25 @@ public class JavaExecutor {
 	
 
 	public static void main(String[] args) {
+		System.out.println("***  JavaExecutor start  ***");
 		JavaExecutor javaExecutor = new JavaExecutor();
 		
+		try {
+			javaExecutor.prepareAndExec();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("***  JavaExecutor end  ***");
+	}
+	private void prepareAndExec() {
 		TimObjectBuilder timObjectBuilder = new TimObjectBuilder();
 		
 		try {
-			javaExecutor.properties = javaExecutor.readProperties();
-			String timFilesPath = javaExecutor.getProperties().getProperty("tim.files.path");
+			this.properties = this.readProperties();
+			String timFilesPath = this.getProperties().getProperty("tim.files.path");
 			
-			javaExecutor.addClassPath();
+			this.addClassPath();
 			
 			Files.newDirectoryStream(Paths.get(timFilesPath), path -> path.toString().endsWith(".tim"))
 				.forEach(new Consumer<Path>() {
@@ -57,12 +68,12 @@ public class JavaExecutor {
 							
 							for (Function function : timObject.getFunctions()) {
 								// Run the function from the tim-file
-								javaExecutor.invokeFunction(timObject, function);
+								JavaExecutor.this.invokeFunction(timObject, function);
 							}
 							
 							for (Test test : timObject.getTests()) {
 								// Run the test from the tim-file
-								javaExecutor.invokeTest(timObject, test);
+								JavaExecutor.this.invokeTest(timObject, test);
 							}
 						
 						timObjectBuilder.writeTimObjectToFile(timObject, timFilePath);
@@ -130,6 +141,8 @@ public class JavaExecutor {
 			object = this.createObjectFromDatatype(timObject, linkedHashMap);
 		} else if (linkedHashMap.get("datavalue") != null) {
 			object = this.createObjectFromDatavalue(timObject, linkedHashMap);
+//		} else {
+//			object = linkedHashMap.values();
 		}
 		
 		return object;
@@ -209,6 +222,13 @@ public class JavaExecutor {
 			if (field instanceof LinkedHashMap) {
 				// User Type object
 				input = this.createObject(timObject, (LinkedHashMap<String, ?>) field);
+				if (input == null) {
+					LinkedHashMap<String,Object> linkedHashMap2 = (LinkedHashMap<String,Object>) field;
+					Collection<Object> values = linkedHashMap2.values();
+					if (values.size() != 0) {
+						input = values.toArray()[0];
+					}
+				}
 			}
 			inputParamValue.add(input);
 			inputParamClass.add(input.getClass());
@@ -234,12 +254,21 @@ public class JavaExecutor {
 		Method method = this.buildMethodByFunction(timObject, clazz, function);
 		
 		List<Object> inputParamValue = new ArrayList<Object>(test.getInput().size());
+		int paramNumber = -1;
 		for (Object field : test.getInput()) {
+			paramNumber++;
 			Object input = field;
 			if (field instanceof LinkedHashMap) {
 				// User Type object
 				input = this.createObject(timObject, (LinkedHashMap<String, ?>) field);
 			}
+			if (input instanceof Double && function.getInputParams().get(paramNumber).getType().equals("Float")) {
+				input = (Float)((Double) input).floatValue();
+			}
+			if (input instanceof Double && function.getInputParams().get(paramNumber).getType().equals("float")) {
+				input = (float)((Double) input).floatValue();
+			}
+			
 			inputParamValue.add(input);
 		}
 		Object[] inputParamValues = inputParamValue.toArray(new Object[0]);
@@ -282,6 +311,9 @@ public class JavaExecutor {
 				String functionInputWrapperType = this.convertTypeNameToWrapperClassName(functionInputType);
 				Object input = test.getInput().get(index);
 				String testInputType = this.getInputType(timObject, input);
+				if (functionInputWrapperType.contains("Float")) {
+					testInputType = testInputType.replace("Double", "Float");		// Json has Double, not Float
+				}
 				if (!testInputType.endsWith("." + functionInputWrapperType) &&
 					!testInputType.equals(functionInputWrapperType)	) 
 				{

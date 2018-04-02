@@ -65,9 +65,7 @@ public class GeneratorTim {
 		{ "name": "«datavalue.name»",
 		  "datatype": "«datavalue.dataTypeInstance.defDataType.name»",
 		  "fields": [
-			«FOR index2 : 0 ..< datavalue.dataTypeInstance.literals.size»
-		       «this.attoUtil.getLiteralValueAsString(datavalue.dataTypeInstance.literals.get(index2))»«IF index2 !== datavalue.dataTypeInstance.literals.size -1 » , «ENDIF»
-			«ENDFOR»
+		       «this.attoUtil.getDataTypeInstanceAsJson(datavalue.dataTypeInstance)»
 		   ]
 		}	'''
 	def compile4(EList<DefFunction> functions) '''
@@ -123,7 +121,7 @@ public class GeneratorTim {
 				«ENDIF»
 			«ENDFOR»
 				 ],
-				  	   "output_expect" : «this.attoUtil.getOutputExpressionAsString(tests.get(index).outputExpression)»,
+				  	   "output_expect" : «this.attoUtil.getOutputExpressionTotalAsJson(tests.get(index).outputExpressionTotal)»,
 				  	   "output_actual": null
 				}«IF index !== tests.size -1 » , «ENDIF»
 		«ENDFOR»
