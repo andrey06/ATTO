@@ -22,33 +22,4 @@ function SimpleProg.myFunc3a (value: Boolean): float {
 }
 /*
 docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
-
-let simpleProg_myFunc3 (value : int): float =
-	if value  = 123 
-	then 4.44 
-	else if value  = 321  
-	then 88.0 
-	else 3.22  
-;;
-let simpleProg_myFunc3a (value : bool): float =
-	if value  = true 
-	then if 33  = 321  
-	then 88.0
-	else 3.22 
-	else 0.0
-;; 
-   
-let rs = Decompose.top "simpleProg_myFunc3a";; 
-Reflect.Mode.program ();;
-Extract.to_file ~signature:"simpleProg_myFunc3a" ~filename:"mex.ml" ();;
-System.mod_use "mex.ml";;
-List.iter (fun r -> print_string (Decompose.string_of_region r)) rs;;
-let tcs = List.map Mex.of_region rs;;
-
-
-:load_ocaml /home/imandra/temp/prFloat_myFunc3.ml;;
- 
-:testgen simpleProg_myFunc3 with_printer prFloat_myFunc3;;
-:testgen simpleProg_myFunc3a with_printer prFloat_myFunc3a;;
-
 */
