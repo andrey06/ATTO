@@ -1,0 +1,30 @@
+// RestfullAPIFormTest.testFormId()
+
+datatype FormDescription {
+	formId: int
+	formStatus: String
+}
+datatype RestfullAPIFormOutput {
+	returnCode: String
+	returnMsg: String
+	formDescription: FormDescription
+}
+
+datavalue formDescription4 = FormDescription(4, "NOT FOUND")
+datavalue formDescription140 = FormDescription(140, "Active-Mapped")
+
+datavalue outputForm4 = RestfullAPIFormOutput("SUCCESS", "", formDescription4)
+datavalue outputForm140 = RestfullAPIFormOutput("SUCCESS", "", formDescription140)
+
+function RestfullAPIFormTest.testFormId(): RestfullAPIFormOutput {
+	outputForm140
+}
+function RestfullAPIFormTest.testFormId(formId: int): RestfullAPIFormOutput {
+	if (formId = 4)
+	then outputForm4
+	else outputForm140
+	endif
+}
+
+test test4 =  RestfullAPIFormTest.testFormId(4): outputForm4
+test test140 =  RestfullAPIFormTest.testFormId(140): outputForm140
