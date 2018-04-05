@@ -39,6 +39,7 @@ public class ImandraCoreCall {
 
         boolean constraintFlag = false;
         boolean inputFlag = false;
+        boolean runFunctionFlag = false;
         int functionNumber = 0;
         String portion = null;
 
@@ -69,20 +70,31 @@ public class ImandraCoreCall {
 					this.extractInput(bufferToAnalys.toString(), timObject, functionNumber);
 					inputFlag = false;
 					
-					if (functionNumber == timObject.getFunctions().size() - 1) {
-						// It was a last one
-						// Terminate the process
-						reader.close();
-						writer.close();
-						process.destroy();
-						break;
-					} else {
+					if (functionNumber < timObject.getFunctions().size()) {
 						// New function
 						functionNumber++;
 					}
-
+				}
+				if (runFunctionFlag) {
+					// Reaction on "\nlet tcs = List" - Read the input for testcases (aka regions)
+					this.extractFunctionReturn(bufferToAnalys.toString(), timObject, functionNumber);
+					runFunctionFlag = false;
+					
+					if (functionNumber < timObject.getFunctions().size() - 1) {
+						// New function
+						functionNumber++;
+					}
+				}
+				if (mlFilePortionNumber == mlFilePortions.length) {
+					// It was a last one
+					// Terminate the process
+					reader.close();
+					writer.close();
+					process.destroy();
+					break;
 				}
 				// Read a next command from the ml-file
+				
 				portion = mlFilePortions[mlFilePortionNumber] + ImandraCoreCall.TERMINAL_OCAML;
 				mlFilePortionNumber++;
 				
@@ -95,6 +107,11 @@ public class ImandraCoreCall {
 					// Extract a test-case from each region, using the model extractor
 					// Test-case inputs
 					inputFlag = true;
+				}
+				if (portion.startsWith("\n(* Run function *)")) {
+					// Extract a test-case from each region, using the model extractor
+					// Test-case inputs
+					runFunctionFlag = true;
 				}
 				
 				writer.write(portion);
@@ -207,5 +224,42 @@ public class ImandraCoreCall {
 			testNumber++;
 		}
 		System.out.println("*********   extractInput end  ****");
+	}
+	private void extractFunctionReturn(String buffer, TimObject timObject, int functionNumber) throws Exception {
+		System.out.println("*********   extractFunctionReturn start  ****");
+		System.out.println(buffer);
+		
+		Function function = timObject.getFunctions().get(functionNumber);
+
+		String phraseStart = "=\n";
+		String jsonObj = buffer.substring(buffer.indexOf(phraseStart) + phraseStart.length());
+		jsonObj = jsonObj.substring(0, jsonObj.indexOf("\n>"));
+		
+		jsonObj = jsonObj.replace("Something\n ", "");			// Remove the options
+		jsonObj = jsonObj.replace("\n ", "");					// Remove a new line character
+		jsonObj = jsonObj.replace("Mex.", "");					// Remove the module name
+		jsonObj = jsonObj.replace("Something ", "");				// Remove the options
+		jsonObj = jsonObj.replace("Nothing", "null");			// Replace an option by a real Java null
+		jsonObj = jsonObj.replaceAll("\\};\\s+\\{", "}, {");		// Use a comma to separate items in an array
+		jsonObj = jsonObj.replace(".}", ".0}");					// Add the zero to the end to make a float
+		jsonObj = jsonObj.replace(".;", ".0;");					// Add the zero to the end to make a float
+		
+		// Name's parameters in quotes
+		jsonObj = jsonObj.replace("{", "{\"");		// Name's parameters in quotes
+		jsonObj = jsonObj.replace("; ", "; \"");		// Name's parameters in quotes
+		jsonObj = jsonObj.replace(" = ", "\" : ");		// Name's parameters in quotes
+				
+		jsonObj = jsonObj.replace("; \"", ", \"");		// Use a comma to separate items in a json object
+		
+		Object helpObject = new TimObjectBuilder().readHelpObjectFromString(jsonObj);
+		function.getTestCases().get(0).setOutput_expect(helpObject);
+
+/*		int testNumber = 0;
+		for (LinkedHashMap<String, Object> linkedHashMap : helpObject) {
+			function.getTestCases().get(testNumber).setInput(linkedHashMap);
+			testNumber++;
+		}
+*/
+		System.out.println("*********   extractFunctionReturn end  ****");
 	}
 }

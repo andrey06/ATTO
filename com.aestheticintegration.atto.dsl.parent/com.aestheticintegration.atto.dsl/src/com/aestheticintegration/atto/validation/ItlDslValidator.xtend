@@ -92,18 +92,18 @@ class ItlDslValidator extends AbstractItlDslValidator {
 	@Check
 	def checDataValueWithDataType(DataTypeInstance dataTypeInstance) {
 		var dataTypeFields = dataTypeInstance.defDataType.fields
-		if (dataTypeFields.size < dataTypeInstance.literals.size) {
+		if (dataTypeFields.size < dataTypeInstance.literal2s.size) {
 			error("Too many arguments in this datavalue", null, ItlDslPackage.DATA_TYPE_INSTANCE)
 			return
 		}
-		for (var index = 0; index < dataTypeInstance.literals.size; index++) {
+		for (var index = 0; index < dataTypeInstance.literal2s.size; index++) {
 			var dataTypeType = this.attoUtil.convertDataTypeToPrimitive(dataTypeFields.get(index).inputDataType)
 			var dataTypeTypeOpt = dataTypeType;
 			if (!dataTypeType.endsWith(OCAML_OPTION)) {
 				dataTypeTypeOpt = dataTypeType + OCAML_OPTION
 			}
 			
-			var primaryType = this.attoUtil.convertLiteralToPrimitive(dataTypeInstance.literals.get(index))
+			var primaryType = this.attoUtil.convertLiteral2ToPrimitive(dataTypeInstance.literal2s.get(index))
 			var primaryTypeOpt = primaryType;
 			if (!primaryType.endsWith(OCAML_OPTION)) {
 				primaryTypeOpt = primaryType + OCAML_OPTION

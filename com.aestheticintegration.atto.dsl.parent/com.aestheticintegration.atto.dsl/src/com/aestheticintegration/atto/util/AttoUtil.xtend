@@ -31,8 +31,14 @@ import com.aestheticintegration.atto.itlDsl.impl.NullImpl
 import com.aestheticintegration.atto.itlDsl.Null
 import com.aestheticintegration.atto.itlDsl.OutputExpressionTotal
 import java.util.Optional
+import com.aestheticintegration.atto.itlDsl.Literal2
 
 public class AttoUtil {
+	
+	def public AttoUtil() {
+		
+	}
+
 
 	def public String convertDataTypeToString(DataType dataType) {
 		var String str = null
@@ -92,7 +98,7 @@ public class AttoUtil {
 		} else if (dataType.string !== null) {
 			dataTypeOut = Primitives.STRING.literal + " objOpt"
 		} else if (dataType.defDataType !== null) {
-			dataTypeOut = dataType.defDataType.name.toLowerCase
+			dataTypeOut = dataType.defDataType.name.toLowerCase + " objOpt"
 		}
 		return dataTypeOut
 	}
@@ -124,6 +130,14 @@ public class AttoUtil {
 				}
 			}
 			return ""
+			
+		} else if (literal.primary !== null) {
+			return this.convertPrimaryToPrimitive(literal.primary)
+		}
+	}
+	def String convertLiteral2ToPrimitive(Literal2 literal) {
+		if (literal.dataValue !== null) {
+			return literal.dataValue.dataTypeInstance.defDataType.name
 			
 		} else if (literal.primary !== null) {
 			return this.convertPrimaryToPrimitive(literal.primary)
@@ -186,6 +200,13 @@ public class AttoUtil {
 			return literal.variable
 		} else if (literal.primary !== null) {
 			return this.getPrimaryValueAsString(literal.primary)
+		}
+	}
+	def String getLiteral2ValueAsOcaml(Literal2 literal2) {
+		if (literal2.dataValue !== null) {
+			return getDataTypeInstanceToOcaml(literal2.dataValue.dataTypeInstance)
+		} else if (literal2.primary !== null) {
+			return this.getPrimaryValueAsString(literal2.primary)
 		}
 	}
 	def String getPrimaryValueAsString(Primary primary) {
@@ -325,7 +346,7 @@ public class AttoUtil {
 		var comma = ""
 		for (var index = 0; index < dataTypeFields.size; index++) {
 			var fieldName = dataTypeFields.get(index).name
-			var fieldValue = this.getLiteralValueAsString(dataTypeInstance.literals.get(index))
+			var fieldValue = this.getLiteral2ValueAsOcaml(dataTypeInstance.literal2s.get(index))
 			
 			var dataTypeName = this.convertDataTypeToPrimitive(dataTypeFields.get(index).inputDataType)
 			var some = ""
@@ -350,9 +371,9 @@ public class AttoUtil {
 			} else if (dataTypeValue.dataTypeInstance !== null) {
 				var comma2 = ""
 				str = str + "{"
-				for (var index2 = 0; index2 < dataTypeValue.dataTypeInstance.literals.size; index2++) {
+				for (var index2 = 0; index2 < dataTypeValue.dataTypeInstance.literal2s.size; index2++) {
 					str = str + comma2 + dataTypeValue.dataTypeInstance.defDataType.fields.get(index2).name + "="
-					str = str + this.getLiteralValueAsString(dataTypeValue.dataTypeInstance.literals.get(index2))
+					str = str + this.getLiteral2ValueAsOcaml(dataTypeValue.dataTypeInstance.literal2s.get(index2))
 					comma2 = "; "
 				}
 				str = str + "}"
@@ -364,32 +385,13 @@ public class AttoUtil {
 		
 		return str
 	}
-	def String getDataTypeValueAsString_DELME(DataTypeValue dataTypeValue) {
-		var String str = ""
-		if (dataTypeValue.primary !== null) {
-			str = this.getPrimaryValueAsString(dataTypeValue.primary)
-		} else if (dataTypeValue.dataTypeInstance !== null) {
-			var comma2 = ""
-			str = str + "{"
-			for (var index2 = 0; index2 < dataTypeValue.dataTypeInstance.literals.size; index2++) {
-				str = str + comma2 + dataTypeValue.dataTypeInstance.defDataType.fields.get(index2).name + "="
-				str = str + this.getLiteralValueAsString(dataTypeValue.dataTypeInstance.literals.get(index2))
-				comma2 = "; "
-			}
-			str = str + "}"
-		} else if (dataTypeValue.defDataValue !== null) {
-			str = dataTypeValue.defDataValue.name.toLowerCase
-		}
-		
-		return str
-	}
 	def String getOutputExpressionAsOcaml(OutputExpression outputExpression) {
 		var String str = ""
 		
  		if (outputExpression instanceof DataTypeInstance) {
  			str = this.getDataTypeInstanceToOcaml(outputExpression as DataTypeInstance)
 		} else if (outputExpression instanceof DefDataValue) {
-			str = outputExpression.valueDataValue.name.toLowerCase
+			str = outputExpression.valueDataValue.name
 		} else if (outputExpression instanceof ExceptionImpl) {
 			str = "Exception " + "\"" + (outputExpression as ExceptionImpl).valueException + "\""
 		}
@@ -573,66 +575,4 @@ public class AttoUtil {
 		}
 		return dataTypeOut
 	}
-//
-// Utils for OCAML
-//
-
-
-//
-// Utils for JSON
-//
-	def String getDataTypeInstanceAsJson(DataTypeInstance dataTypeInstance) {
-		var str = ""
-		var comma = ""
-		for (var index = 0; index < dataTypeInstance.literals.size; index++) {
-			str = str + comma + 
-			"{" +
-				"\"" + dataTypeInstance.defDataType.fields.get(index).name + "\"" +  ": " +
-				this.getLiteralValueAsString(dataTypeInstance.literals.get(index)) +
-			"}"
-			comma = ", "
-		}
-		return str
-	}
-	def String getOutputExpressionTotalAsJson(OutputExpressionTotal outputExpressionTotal) {
-		var String str = ""
-		
-		if (outputExpressionTotal.primary !== null) {
-			str = this.getPrimaryValueAsString(outputExpressionTotal.primary)
-		} else if (outputExpressionTotal.outputExpression !== null) {
-			str = this.getOutputExpressionAsJson(outputExpressionTotal.outputExpression)
-		}
-		
-		return str
-	}
-	def String getOutputExpressionAsJson(OutputExpression outputExpression) {
-		var String str = ""
-		
- 		if (outputExpression instanceof DataTypeInstance) {
-// 			str = this.toOcamlValue(outputExpression as DataTypeInstance)
-			
-			var comma2 = ""
-			str = str + "{"
-			for (var index2 = 0; index2 < outputExpression.dataTypeInstance.literals.size; index2++) {
-				str = str + comma2 + "\"" + outputExpression.dataTypeInstance.defDataType.fields.get(index2).name + "\": "
-				str = str + this.getLiteralValueAsString(outputExpression.dataTypeInstance.literals.get(index2))
-				comma2 = ", "
-			}
-			str = str + "}"
-		} else if (outputExpression instanceof DefDataValue) {
-//			str = outputExpression.valueDataValue.name.toLowerCase
-
-			var dataTypeInstance = (outputExpression as DefDataValue).valueDataValue.dataTypeInstance
-			str = "{ \"name\": \"" + outputExpression.valueDataValue.name + "\", " +
-		  			"\"datatype\": \"" + dataTypeInstance.defDataType.name + "\", " + 
-		  			"\"fields\": ["
-		  	str = str + this.getDataTypeInstanceAsJson(dataTypeInstance)
-			str = str + "]" + "}"
-		} else if (outputExpression instanceof ExceptionImpl) {
-			str = "\"Exception " + "\\\"" + (outputExpression as ExceptionImpl).valueException + "\\\"\""
-		}
-		
-		return str
-	}
-	
 }

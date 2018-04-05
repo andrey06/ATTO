@@ -27,7 +27,7 @@ function SimpleProg.myTest5a(pet: Pet): String {
 	then "USA"           
 	else "UK"         
 	endif     
-}
+} 
 function SimpleProg.myTest5b(param: int): Animal {  
 	if (param = 0)   
 	then Exception("Wrong_param") 

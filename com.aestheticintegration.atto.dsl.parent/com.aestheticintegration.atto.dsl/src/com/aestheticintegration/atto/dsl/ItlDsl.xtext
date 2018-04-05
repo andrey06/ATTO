@@ -20,16 +20,13 @@ DefDataValue:
 	'datavalue' name=ID '=' dataTypeInstance=DataTypeInstance
 ;
 DataTypeInstance:
-	defDataType=[DefDataType] '(' (literals+=Literal (',' literals+=Literal)*)*  ')'
+	defDataType=[DefDataType] '(' (literal2s+=Literal2 (',' literal2s+=Literal2)*)*  ')'
 ;
 DefFunction:
 	'function' name=QualifiedName2 '(' (inputParams+=InputParam (','inputParams+=InputParam)*)? ')' ':' outputDataType=DataType'{'
 		functionBody=FunctionBody
 	'}'
 ;
-//ClassName: 
-//	'className' className=ID ('.' ID)*
-//;
 InputParam:
 	name=ID ':' inputDataType=DataType
 ;
@@ -80,28 +77,14 @@ BoolExpression:
 Literal:
 	variable=QualifiedName
 |	primary=Primary
-;
-QualifiedName:
-	ID('.' ID)*
-;
-QualifiedName2:
-	ID('.' ID)+
-;
+; 
 Literal2:
-	variable=QualifiedName
+	dataValue = [DefDataValue]
 |	primary=Primary
-;
+; 
 OutputExpressionTotal:
 	primary = Primary
 |	outputExpression = OutputExpression
-;
-// Constqnts in BoolExpression
-Primary:
-	{Boolean} valueBoolean=BOOLEAN
-|	{Integer} valueInteger=INTEGER
-|	{Float}   valueFloat=FLOAT
-|	{String}  valueString=STRING
-|	{Null}  	  valueNull=NULL
 ;
 OutputExpression:
 	{DataTypeInstance} dataTypeInstance=DataTypeInstance
@@ -116,6 +99,14 @@ DataTypeValue:
 |	dataTypeInstance=DataTypeInstance
 |	defDataValue=[DefDataValue]
 ;
+// Constqnts in BoolExpression
+Primary:
+	{Boolean} valueBoolean=BOOLEAN
+|	{Integer} valueInteger=INTEGER
+|	{Float}   valueFloat=FLOAT
+|	{String}  valueString=STRING
+|	{Null}  	  valueNull=NULL
+;
 // OCaml build-in types
 enum Primitives:
 	BOOL			= 'bool'
@@ -128,6 +119,12 @@ enum Primitives:
 |	STRINGOPT	= 'stringOpt'
 |	EXCEPTION	= 'exception'
 |	NULL 		= 'Nothing'
+;
+QualifiedName:
+	ID('.' ID)*
+;
+QualifiedName2:
+	ID('.' ID)+
 ;
 
 // Java types

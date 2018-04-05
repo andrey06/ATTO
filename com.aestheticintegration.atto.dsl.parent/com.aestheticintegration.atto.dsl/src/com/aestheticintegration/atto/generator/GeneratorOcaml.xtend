@@ -38,7 +38,11 @@ public class GeneratorOcaml {
 			Reflect.Mode.program ()
 			;;
 			«FOR defFunction : model.functions»
-			   «compileExtra(defFunction)»
+				«IF defFunction.inputParams.size != 0»
+			   		«compileExtra(defFunction)»
+			   	«ELSE»
+			   		«compileExtraNoInput(defFunction)»
+				«ENDIF»
 			«ENDFOR»
 		«ENDIF»
 	'''
@@ -54,6 +58,10 @@ public class GeneratorOcaml {
 		Caml.List.iter (fun r -> print_string (Decompose.string_of_region r)) rs
 		;;
 		let tcs = List.map Mex.of_region rs
+		;;
+	'''
+	def compileExtraNoInput(DefFunction defFunction) '''
+		(* Run function *) «this.attoUtil.nameToOcaml(defFunction.name)»
 		;;
 	'''
 	def compile(DefDataType defDataType) '''

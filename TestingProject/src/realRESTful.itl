@@ -16,7 +16,7 @@ datavalue formDescription140 = FormDescription(140, "Active-Mapped")
 datavalue outputForm4 = RestfullAPIFormOutput("SUCCESS", "", formDescription4)
 datavalue outputForm140 = RestfullAPIFormOutput("SUCCESS", "", formDescription140)
 
-function RestfullAPIFormTest.testFormId(): RestfullAPIFormOutput {
+function RestfullAPIFormTest.test2(): RestfullAPIFormOutput {
 	outputForm140
 }
 function RestfullAPIFormTest.testFormId(formId: int): RestfullAPIFormOutput {

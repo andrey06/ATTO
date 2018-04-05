@@ -40,7 +40,7 @@ function SimpleProg.myTest1c(param2: Integer): long {
 		endif  
 	endif      
 }  
- 
+
 test test13 = SimpleProg.myTest1(0, true):  88 
 test test14 = SimpleProg.myTest1(23, false): 33
 test test15 = SimpleProg.myTest1b(1.0): Exception("Do not use this input")
