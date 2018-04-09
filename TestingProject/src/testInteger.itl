@@ -15,7 +15,7 @@ function SimpleProg.myTest1a(param1: Integer): long {
 	then 1  
 	else     
 		if (param1 = null)  
-		then Exception("Do not use this input")
+		then Exception("Do not use this input") 
 		else 22
 		endif 
 	endif      
@@ -30,7 +30,7 @@ function SimpleProg.myTest1b(param1: Float): long {
 		endif    
 	endif       
 }    
-function SimpleProg.myTest1c(param2: Integer): long { 
+function SimpleProg.myTest1c(param2: Integer): Long { 
 	if (param2 = null)
 	then Exception("Do not use this input")
 	else
@@ -45,4 +45,3 @@ test test13 = SimpleProg.myTest1(0, true):  88
 test test14 = SimpleProg.myTest1(23, false): 33
 test test15 = SimpleProg.myTest1b(1.0): Exception("Do not use this input")
 test test16 = SimpleProg.myTest1c(-2): -1
-    

@@ -144,7 +144,7 @@ public class ImandraCoreCall {
 		String phraseInvariantEnd   = "-----";
 		
 		buffer = buffer.replaceAll("Exception_[0-9]+", "Exception");
-		buffer = buffer.replaceAll("Something_[0-9]+\\s", "");
+		buffer = buffer.replaceAll("Some_[0-9]+\\s", "");
 
 
 		int constrainNumber = 0;		// aka regionNumber, testNumber
@@ -196,8 +196,8 @@ public class ImandraCoreCall {
 		
 		jsonObj = jsonObj.replace("\n ", "");					// Remove a new line character
 		jsonObj = jsonObj.replace("Mex.", "");					// Remove the module name
-		jsonObj = jsonObj.replace("Something ", "");				// Remove the options
-		jsonObj = jsonObj.replace("Nothing", "null");			// Replace an option by a real Java null
+		jsonObj = jsonObj.replace("Some ", "");				// Remove the options
+		jsonObj = jsonObj.replace("None", "null");			// Replace an option by a real Java null
 		jsonObj = jsonObj.replaceAll("\\};\\s+\\{", "}, {");		// Use a comma to separate items in an array
 		jsonObj = jsonObj.replace(".}", ".0}");					// Add the zero to the end to make a float
 		jsonObj = jsonObj.replace(".;", ".0;");					// Add the zero to the end to make a float
@@ -235,11 +235,11 @@ public class ImandraCoreCall {
 		String jsonObj = buffer.substring(buffer.indexOf(phraseStart) + phraseStart.length());
 		jsonObj = jsonObj.substring(0, jsonObj.indexOf("\n>"));
 		
-		jsonObj = jsonObj.replace("Something\n ", "");			// Remove the options
+		jsonObj = jsonObj.replace("Some\n ", "");			// Remove the options
 		jsonObj = jsonObj.replace("\n ", "");					// Remove a new line character
 		jsonObj = jsonObj.replace("Mex.", "");					// Remove the module name
-		jsonObj = jsonObj.replace("Something ", "");				// Remove the options
-		jsonObj = jsonObj.replace("Nothing", "null");			// Replace an option by a real Java null
+		jsonObj = jsonObj.replace("Some ", "");				// Remove the options
+		jsonObj = jsonObj.replace("None", "null");			// Replace an option by a real Java null
 		jsonObj = jsonObj.replaceAll("\\};\\s+\\{", "}, {");		// Use a comma to separate items in an array
 		jsonObj = jsonObj.replace(".}", ".0}");					// Add the zero to the end to make a float
 		jsonObj = jsonObj.replace(".;", ".0;");					// Add the zero to the end to make a float

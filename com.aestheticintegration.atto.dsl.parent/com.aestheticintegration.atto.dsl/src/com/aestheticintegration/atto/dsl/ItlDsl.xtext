@@ -80,6 +80,7 @@ Literal:
 ; 
 Literal2:
 	dataValue = [DefDataValue]
+|	dataTypeInstance = DataTypeInstance
 |	primary=Primary
 ; 
 OutputExpressionTotal:
@@ -118,7 +119,7 @@ enum Primitives:
 |	STRING		= 'string'
 |	STRINGOPT	= 'stringOpt'
 |	EXCEPTION	= 'exception'
-|	NULL 		= 'Nothing'
+|	NULL 		= 'None'
 ;
 QualifiedName:
 	ID('.' ID)*

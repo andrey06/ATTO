@@ -12,6 +12,9 @@ import com.aestheticintegration.atto.util.AttoUtil
 import javax.inject.Inject
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.resource.Resource
+import com.aestheticintegration.atto.itlDsl.InputParam
+import com.aestheticintegration.atto.itlDsl.DataType
+import com.aestheticintegration.atto.itlDsl.Primitives
 
 public class GeneratorOcaml {
 	@Inject
@@ -67,17 +70,19 @@ public class GeneratorOcaml {
 	def compile(DefDataType defDataType) '''
 		type «defDataType.name.toLowerCase» = {
 			«FOR inputParam : defDataType.fields»
-				«inputParam.name»: «(this.attoUtil.convertDataTypeToOption(inputParam.inputDataType))»;
+				«inputParam.name»: «(this.getDataTypeAsPrimitiveLiteral(inputParam.inputDataType))»;
 			«ENDFOR»
 		}
 		;;
+		let «defDataType.name.toLowerCase»_default = «this.buildDefaultDatavalue(defDataType)»
+		;;
 	'''
 	def compile(DefDataValue defDataValue) '''
-		let «this.attoUtil.nameToOcaml(defDataValue.name)» = «this.attoUtil.getDataTypeInstanceToOcaml(defDataValue.dataTypeInstance)»
+		let «this.attoUtil.nameToOcaml(defDataValue.name)»: «defDataValue.dataTypeInstance.defDataType.name.toLowerCase» option = «this.attoUtil.getDataTypeInstanceToOcaml(defDataValue.dataTypeInstance)»
 		;;
 	'''
 	def compile(DefFunction defFunction) '''
-		let «this.attoUtil.nameToOcaml(defFunction.name)»«this.attoUtil.getFunctionParams(defFunction.inputParams)» =
+		let «this.attoUtil.nameToOcaml(defFunction.name)»«this.getFunctionParams(defFunction.inputParams)» =
 			«defFunction.functionBody.compile»
 		;;
 	'''
@@ -110,14 +115,81 @@ public class GeneratorOcaml {
 		«this.attoUtil.getBoolExpressionListAsString(boolExpressionList)»		
 	'''
 	def createTypeBuildInExt(Model model) '''
-		type 'a objOpt = Nothing | Something of 'a;;
-		type 'a objExcOpt = Nothing | Something of 'a | Exception of string;;
+		type 'a optionOut = Something of ('a option) | Exception of string;;
 
-		let get_value (z: 'a objOpt) (default: 'a) =
+		let get_value (z: 'a option) (default: 'a) =
 			match z with 
-			| Something c -> c
-			| Nothing -> default
+			| Some c -> c
+			| None -> default
 		;;
 
 	'''
+	def private String buildDefaultDatavalue(DefDataType defDataType) {
+		var comma = ""
+		var str = "{"
+		for (InputParam inputParam : defDataType.fields) {
+			str = str + comma + this.buildDefaulForDataType(inputParam)
+			comma = "; "
+		}
+		str = str + "}"
+		return str
+	}
+	def String buildDefaulForDataType(InputParam inputParam) {
+		var DataType dataType = inputParam.inputDataType
+		var String str = inputParam.name + " = "
+		var some = ""
+		if (dataType.booleanObj !== null || 
+			dataType.shortObj !== null || dataType.intObj !== null || dataType.longObj !== null ||
+			dataType.floatObj !== null || dataType.doubleObj !== null ||
+			dataType.string !== null ||
+			dataType.defDataType !== null) 
+		{
+			some = "Some "		
+		}
+		
+		if (dataType.boolean !== null || dataType.booleanObj !== null) {
+			str = str + some + "false"
+		} else if (dataType.short !== null || dataType.int !== null || dataType.long !== null ||
+			       dataType.shortObj !== null || dataType.intObj !== null || dataType.longObj !== null) {
+			str = str + some + "0"
+		} else if (dataType.float !== null || dataType.double !== null || 
+				   dataType.floatObj !== null || dataType.doubleObj !== null ) {
+			str = str + some + "0.0"
+		} else if (dataType.string !== null) {
+			str = str + some + "\"\""
+		} else if (dataType.defDataType !== null) {
+			str = str + some + this.buildDefaultDatavalue(dataType.defDataType)
+		}
+		return str
+	}
+	def String getFunctionParams(EList<InputParam> inputParams) {
+		var String str = ""
+		for (var index = 0; index < inputParams.size; index++) {
+			str = str + " (" + inputParams.get(index).name + ":" + this.getDataTypeAsPrimitiveLiteral(inputParams.get(index).inputDataType) + ")"
+		}
+		return str
+	}
+	def String getDataTypeAsPrimitiveLiteral(DataType dataType) {
+		var String optionStr = " option"
+		var String dataTypeOut = null
+		if (dataType.boolean !== null) {
+			dataTypeOut = Primitives.BOOL.literal
+		} else if (dataType.booleanObj !== null) {
+			dataTypeOut = Primitives.BOOL.literal + optionStr
+		} else if (dataType.short !== null || dataType.int !== null || dataType.long !== null) {
+			dataTypeOut = Primitives.INT.literal
+		} else if (dataType.shortObj !== null || dataType.intObj !== null || dataType.longObj !== null) {
+			dataTypeOut = Primitives.INT.literal + optionStr
+		} else if (dataType.float !== null || dataType.double !== null) {
+			dataTypeOut = Primitives.FLOAT.literal
+		} else if (dataType.floatObj !== null || dataType.doubleObj !== null) {
+			dataTypeOut = Primitives.FLOAT.literal + optionStr
+		} else if (dataType.string !== null) {
+			dataTypeOut = Primitives.STRING.literal + optionStr
+		} else if (dataType.defDataType !== null) {
+			dataTypeOut = dataType.defDataType.name.toLowerCase + optionStr
+		}
+		return dataTypeOut
+	}
+
 }

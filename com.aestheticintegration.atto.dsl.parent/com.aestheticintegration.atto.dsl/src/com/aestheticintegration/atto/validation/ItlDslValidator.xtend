@@ -23,6 +23,7 @@ import com.aestheticintegration.atto.util.AttoUtil
 import org.eclipse.emf.common.util.EList
 import com.aestheticintegration.atto.itlDsl.InputParam
 import com.aestheticintegration.atto.itlDsl.ItlDslPackage
+import org.eclipse.emf.ecore.EObject
 
 /**
  * This class contains custom validation rules. 
@@ -96,23 +97,31 @@ class ItlDslValidator extends AbstractItlDslValidator {
 			error("Too many arguments in this datavalue", null, ItlDslPackage.DATA_TYPE_INSTANCE)
 			return
 		}
-		for (var index = 0; index < dataTypeInstance.literal2s.size; index++) {
+		if (dataTypeInstance.literal2s.size < dataTypeFields.size) {
+			error("Too less arguments in this datavalue", null, ItlDslPackage.DATA_TYPE_INSTANCE)
+			return
+		}
+		for (var index = 0; index < dataTypeFields.size; index++) {
+			// dataType
 			var dataTypeType = this.attoUtil.convertDataTypeToPrimitive(dataTypeFields.get(index).inputDataType)
 			var dataTypeTypeOpt = dataTypeType;
 			if (!dataTypeType.endsWith(OCAML_OPTION)) {
 				dataTypeTypeOpt = dataTypeType + OCAML_OPTION
 			}
 			
+			// instance
 			var primaryType = this.attoUtil.convertLiteral2ToPrimitive(dataTypeInstance.literal2s.get(index))
 			var primaryTypeOpt = primaryType;
 			if (!primaryType.endsWith(OCAML_OPTION)) {
 				primaryTypeOpt = primaryType + OCAML_OPTION
 			}
 			
+			// comparison
 			if (dataTypeTypeOpt != primaryTypeOpt) {
 				error("Wrong type of the arguments in this datavalue", null, ItlDslPackage.DATA_TYPE_INSTANCE)
 			}
 		}
+		return
 	}
 	
 	// TODO verify that the function with these input really exists.
@@ -190,34 +199,25 @@ class ItlDslValidator extends AbstractItlDslValidator {
 	}
 	def private String findInputParamMap(BoolExpression boolExpression, Literal literal) {
 		var String literalType = null
-		var eContainer = boolExpression.eContainer()
 		
 		if (literal.variable !== null) {
-			// Determine the type based on the input param type
-			while (eContainer !== null && !(eContainer instanceof DefFunctionImpl)) {
-				eContainer = eContainer.eContainer()
-			}
-			if (eContainer !== null) {
-				var defFunc = eContainer as DefFunction
-				var String[] partVariable = literal.variable.split("\\.")
-				for (InputParam inputParam : defFunc.inputParams) {
-					if (inputParam.name.equals(partVariable.get(0))) {
-						literalType = this.attoUtil.convertDataTypeToPrimitive(inputParam.inputDataType)
-						if (1 < partVariable.size) {
-							// TODO For now - only 1 level deeper
-							var model = defFunc.eContainer() as Model
-							for (DefDataType defDataType : model.datatypes) {
-								if (defDataType.name == literalType) {
-									for (InputParam inputParam2 : defDataType.fields) {
-										if (inputParam2.name.equals(partVariable.get(1))) {
-											literalType = this.attoUtil.convertDataTypeToPrimitive(inputParam2.inputDataType)
-										}
-									}
-								}
-							}
-						}
-					}
+			var String[] partVariable = literal.variable.split("\\.")
+			var InputParam inputParam3 = null
+			
+			for (var index = 0; index < partVariable.size; index++) {
+				var String paramName = partVariable.get(index)
+				if (index === 0) {
+					inputParam3 = this.attoUtil.getInputParamFromFunction(boolExpression, paramName)
+				} else {
+					inputParam3 = this.attoUtil.getInputParamFromDataType(inputParam3, paramName)
 				}
+				if (inputParam3.inputDataType.defDataType === null ||
+					index == partVariable.size - 1) 
+				{
+					literalType = this.attoUtil.convertDataTypeToPrimitive(inputParam3.inputDataType)
+					return literalType
+				}
+			
 			}
 			if (literalType === null) {
 				error("The variable '" + literal.variable + "' is unknown", null, ItlDslPackage.LITERAL__VARIABLE)
