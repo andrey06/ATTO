@@ -44,12 +44,12 @@ public class ImandraCoreCall {
         String portion = null;
 
 		StringBuilder bufferToAnalys = new StringBuilder("");;
-		char[] buf = new char[1024];
+		char[] buf = new char[10000];
 		int qty = -1;
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) 
 		{
-			while ((qty = reader.read(buf,  0, 1024)) != -1) {
+			while ((qty = reader.read(buf,  0, 10000)) != -1) {
 				bufferToAnalys.append(new String(buf, 0, qty));
 				
 				if (buf[qty-2] != ImandraCoreCall.TERMINAL_CHAR[0] && buf[qty-1] != ImandraCoreCall.TERMINAL_CHAR[0] &&
@@ -134,7 +134,7 @@ public class ImandraCoreCall {
 		return;
 	}
 	private void extractConstrainsAndOutputExpect(String buffer, TimObject timObject, int functionNumber) {
-		System.out.println("*********   analysConstrains start  ****");
+		System.out.println("*********   extractConstrains start  ****");
 		System.out.println(buffer);
 		
 		Function function = timObject.getFunctions().get(functionNumber);
@@ -180,7 +180,7 @@ public class ImandraCoreCall {
 			constrainNumber++;
 		}
 		
-		System.out.println("*********   analysConstrains end  ****");
+		System.out.println("*********   extractConstrains end  ****");
 		return;
 	}
 	@SuppressWarnings("unchecked")
@@ -233,9 +233,10 @@ public class ImandraCoreCall {
 
 		String phraseStart = "=\n";
 		String jsonObj = buffer.substring(buffer.indexOf(phraseStart) + phraseStart.length());
-		jsonObj = jsonObj.substring(0, jsonObj.indexOf("\n>"));
+		jsonObj = jsonObj.substring(0, jsonObj.indexOf(")\n>"));
 		
-		jsonObj = jsonObj.replace("Some\n ", "");			// Remove the options
+		jsonObj = jsonObj.replace("Something\n ", "");			// Remove the options
+		jsonObj = jsonObj.replace("(Some\n ", "");			// Remove the options
 		jsonObj = jsonObj.replace("\n ", "");					// Remove a new line character
 		jsonObj = jsonObj.replace("Mex.", "");					// Remove the module name
 		jsonObj = jsonObj.replace("Some ", "");				// Remove the options
@@ -246,6 +247,7 @@ public class ImandraCoreCall {
 		
 		// Name's parameters in quotes
 		jsonObj = jsonObj.replace("{", "{\"");		// Name's parameters in quotes
+		jsonObj = jsonObj.replace(";   ", "; ");		// Name's parameters in quotes
 		jsonObj = jsonObj.replace("; ", "; \"");		// Name's parameters in quotes
 		jsonObj = jsonObj.replace(" = ", "\" : ");		// Name's parameters in quotes
 				

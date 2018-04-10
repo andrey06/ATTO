@@ -122,7 +122,11 @@ public class GeneratorOcaml {
 			| Some c -> c
 			| None -> default
 		;;
-
+		let bool_default = false;;
+		let int_default = 0;;
+		let float_default = 0.0;;
+		let string_default = "";;
+		
 	'''
 	def private String buildDefaultDatavalue(DefDataType defDataType) {
 		var comma = ""

@@ -19,7 +19,7 @@ function SimpleProg.myTest1a(param1: Integer): long {
 		else 22
 		endif 
 	endif      
-} 
+}
 function SimpleProg.myTest1b(param1: Float): long {
 	if (param1 <= 0.0)
 	then Exception("Wrong input for this function")
@@ -38,8 +38,8 @@ function SimpleProg.myTest1c(param2: Integer): Long {
 		then -1
 		else 2   
 		endif  
-	endif      
-}  
+	endif
+}
 
 test test13 = SimpleProg.myTest1(0, true):  88 
 test test14 = SimpleProg.myTest1(23, false): 33

@@ -220,57 +220,21 @@ public class AttoUtil {
 	}
 	
 	def String getOutputExpressionTotalValueAsString(OutputExpressionTotal outputExpressionTotal) {
-		var String outputExpressionValue = ""
+		var String str = "Something ("
 		if (outputExpressionTotal.primary !== null) {
-			outputExpressionValue = "Something (" + this.getPrimaryValueAsOcaml(outputExpressionTotal.primary) + ")"
+			str = str + this.getPrimaryValueAsOcaml(outputExpressionTotal.primary)  + ")"
 		} else if (outputExpressionTotal.outputExpression !== null) {
-			outputExpressionValue = this.getOutputExpressionAsOcaml(outputExpressionTotal.outputExpression)		}
-		return outputExpressionValue
-	}
-	def String getOutputExpressionValueAsString(OutputExpression outputExpression) {
-		var String str = ""
-		if (outputExpression instanceof DataTypeInstance) {
-			str = this.getDataTypeInstanceToOcaml((outputExpression as DataTypeInstance).dataTypeInstance)
-		} else if (outputExpression instanceof DefDataValue) {
-			str = "Some " + (outputExpression as DefDataValue).valueDataValue.name
-		} else if (outputExpression instanceof ExceptionImpl) {
-			str = "Exception " + "\"" + (outputExpression as ExceptionImpl).valueException + "\""
-		}
-		return str
-	}
-	def String getOutputExpressionValueAsString_DEL_ME(OutputExpressionTotal outputExpressionTotal) {
-		var String outputExpressionValue = ""
-		if (outputExpressionTotal instanceof ExceptionImpl) {
-			outputExpressionValue = "Exception " + "\"" + (outputExpressionTotal as ExceptionImpl).valueException + "\""
-		} else if (outputExpressionTotal instanceof NullImpl) {
-			outputExpressionValue = "None"
-		} else if (outputExpressionTotal instanceof StringImpl) {
-				outputExpressionValue = '"' + (outputExpressionTotal as StringImpl).valueString + '"'
-		} else {
-			var some = "Some "
-			if (outputExpressionTotal instanceof BooleanImpl) {
-				outputExpressionValue = some + (outputExpressionTotal as BooleanImpl).valueBoolean.toString
-			} else if (outputExpressionTotal instanceof IntegerImpl) {
-				var integerValue = (outputExpressionTotal as IntegerImpl).valueInteger
-				if (integerValue < 0) {
-					outputExpressionValue = some + "(" + integerValue.toString + ")"
-				} else {
-					outputExpressionValue = some + integerValue.toString
-				}
-			} else if (outputExpressionTotal instanceof FloatImpl) {
-				var floatValue = (outputExpressionTotal as FloatImpl).valueFloat
-				if (floatValue < 0.0) {
-					outputExpressionValue = some + "(" + floatValue.toString + ")"
-				} else {
-					outputExpressionValue = some + floatValue.toString
-				}
-			} else if (outputExpressionTotal instanceof DataTypeInstance) {
-				outputExpressionValue = some + this.getDataTypeInstanceToOcaml((outputExpressionTotal as DataTypeInstance).dataTypeInstance)
-			} else if (outputExpressionTotal instanceof DefDataValue) {
-				outputExpressionValue = some + (outputExpressionTotal as DefDataValue).valueDataValue.name
+			var OutputExpression outputExpression = outputExpressionTotal.outputExpression
+		
+	 		if (outputExpression instanceof DataTypeInstance) {
+	 			str = str + this.getDataTypeInstanceToOcaml(outputExpression as DataTypeInstance)  + ")"
+			} else if (outputExpression instanceof DefDataValue) {
+				str = str + outputExpression.valueDataValue.name  + ")"
+			} else if (outputExpression instanceof ExceptionImpl) {
+				str = "Exception " + "\"" + (outputExpression as ExceptionImpl).valueException + "\""
 			}
 		}
-		return outputExpressionValue
+		return str
 	}
 	def String convertOutputExpressionToPrimitive(OutputExpression outputExpression) {
 		var String dataTypeOut = null
@@ -302,27 +266,17 @@ public class AttoUtil {
 
 		return dataTypeOut
 	}
-	def String toOcamlType_NOT_USED(DataTypeInstance dataTypeInstance) {
-		var str = "{"
-		var dataTypeFields = dataTypeInstance.defDataType.fields
-		var comma = ""
-		for (var index = 0; index < dataTypeFields.size; index++) {
-			var fieldName = dataTypeFields.get(index).name
-			var fieldValue = ""	//	this.getDataTypeAsPrimitiveLiteral(dataTypeFields.get(index).inputDataType)
-			str = str + comma + fieldName + "=" + fieldValue 
-			comma = "; "
-		}
-		str += "}"
-		
-		return str;
-	}
 	def String getDataTypeInstanceToOcaml(DataTypeInstance dataTypeInstance2) {
 		var dataTypeInstance = dataTypeInstance2
 		if (dataTypeInstance.dataTypeInstance !== null) {
 			dataTypeInstance = dataTypeInstance.dataTypeInstance
 		}
 		
-		var str = "Some {"
+		var str = "Some {"		// DataType is ('a option)
+//		if (dataTypeInstance2.eContainer instanceof OutputExpressionTotal) {
+//			str = "Something {"
+//		}
+		
 		var dataTypeFields = dataTypeInstance.defDataType.fields
 		var comma = ""
 		for (var index = 0; index < dataTypeFields.size; index++) {
@@ -341,30 +295,6 @@ public class AttoUtil {
 		str += "}"
 		
 		return str;
-	}
-	def String getAllDataTypeValueAsString_DELME(EList<DataTypeValue> dataTypeValues) {
-		var String str = ""
-		var comma = ""
-		for (var index = 0; index < dataTypeValues.size; index++) {
-			var dataTypeValue = dataTypeValues.get(index)
-			if (dataTypeValue.primary !== null) {
-				str = str + comma + this.getPrimaryValueAsString(dataTypeValue.primary)
-			} else if (dataTypeValue.dataTypeInstance !== null) {
-				var comma2 = ""
-				str = str + "{"
-				for (var index2 = 0; index2 < dataTypeValue.dataTypeInstance.literal2s.size; index2++) {
-					str = str + comma2 + dataTypeValue.dataTypeInstance.defDataType.fields.get(index2).name + "="
-					str = str + this.getLiteral2ValueAsOcaml(dataTypeValue.dataTypeInstance.literal2s.get(index2))
-					comma2 = "; "
-				}
-				str = str + "}"
-			} else if (dataTypeValue.defDataValue !== null) {
-				str = str + comma + dataTypeValue.defDataValue.name.toLowerCase
-			}
-			comma = ", "
-		}
-		
-		return str
 	}
 	def String getOutputExpressionAsOcaml(OutputExpression outputExpression) {
 		var String str = ""
@@ -424,18 +354,14 @@ public class AttoUtil {
 				var String sign = (boolExpression.eContainer as IfStatementImpl).sign.get(index-1)
 				str = str + " " + sign + " "
 			}
-			str = str + this.getBoolExpressionAsString(boolExpression)
+			str = str + this.getParamComplecated(boolExpression.literalLeft, boolExpression.literalRight)
+			if (boolExpression.literalRight !== null) {
+				str = str + " " + boolExpression.sign + " " + this.getParamComplecated(boolExpression.literalRight, boolExpression.literalLeft)
+			}
 		}
 		return str
 	}
-	def String getBoolExpressionAsString(BoolExpression boolExpression) {
-		var String str = this.getParamComplecated2(boolExpression.literalLeft, boolExpression.literalRight)
-		if (boolExpression.literalRight !== null) {
-			str = str + " " + boolExpression.sign + " " + this.getParamComplecated2(boolExpression.literalRight, boolExpression.literalLeft)
-		}
-		return str
-	}
-	def String getParamComplecated2(Literal literal, Literal literalOposite) {
+	def String getParamComplecated(Literal literal, Literal literalOposite) {
 		var String exp = ""
 		
 		if (literal.variable !== null) {
@@ -450,8 +376,18 @@ public class AttoUtil {
 				} else {
 					inputParam3 = this.getInputParamFromDataType(inputParam3, paramName)
 				}
-				if (inputParam3.inputDataType.defDataType !== null) {
-					exp = "(get_value " + exp + comma + paramName + " " + inputParam3.inputDataType.defDataType.name.toLowerCase + "_default)"
+				var DataType dataType = inputParam3.inputDataType
+				var String typeName2 = this.convertDataTypeToPrimitive(dataType)
+				if (inputParam3.inputDataType.defDataType !== null || 
+					typeName2.endsWith("Opt")) 
+				{
+					var typeName = ""
+					if (dataType.defDataType !== null) {
+						typeName = dataType.defDataType.name.toLowerCase + "_default"
+					} else {
+						typeName = typeName2.replace("Opt", "_default")
+					}
+					exp = "(get_value " + exp + comma + paramName + " " + typeName + ")"
 				} else {
 					exp = exp + comma + paramName
 				}
@@ -465,122 +401,23 @@ public class AttoUtil {
 		return exp
 
 	}
-	def String getInputParamByName2(String paramName) {
-		
-	}
-	def String getParamComplecated(Literal literal, Literal literalOposite) {
-		var paramName = this.getLiteralValueAsString(literal)
-		var paramNameOpos = this.getLiteralValueAsString(literalOposite)
-		
-		var str = paramName
-		if (paramNameOpos === null || paramNameOpos == Primitives.NULL.literal) {
-			return str
-		}
-		
-		var defFunction = this.getDefFunction(literal)
-		var EList<InputParam> inputParams = defFunction.inputParams
-		for (InputParam inputParam : inputParams) {
-			if (paramName.startsWith(inputParam.name + ".")) {
-				var EList<DefDataType> datatypes = this.getAllDefDataTypes(defFunction)
-				var Optional<DefDataType> defDataType = datatypes.stream.filter[it.name.equalsIgnoreCase(inputParam.name)].findFirst
-				if (defDataType !== null) {
-					var paramName2 = paramName.substring(paramName.indexOf(".")+1)
-					for (InputParam inputParam2 : defDataType.get.fields) {
-						if (paramName2.equals(inputParam2.name)){
-							var dataTypeName = this.convertDataTypeToPrimitive(inputParam2.inputDataType)
-							if (dataTypeName.endsWith("Opt")) {
-								str = "(get_value " + inputParam.name + " " + inputParam.inputDataType.defDataType.name.toLowerCase + "_default)." + paramName2
-							}
-							return str
-						}
-					}
-				}
-			}
-			if (paramName.equals(inputParam.name)){
-				var dataTypeName = this.convertDataTypeToPrimitive(inputParam.inputDataType)
-				if (dataTypeName.endsWith("Opt")) {
-					str = "get_value " + paramName + " " + this.getDefalutValue(dataTypeName)
-				}
-				return str
-			}
-		}
-		
-		return str
-	}
-	def String getDefalutValue(String dataTypeName) {
+	def String getDefalutValue_NOT_USED(String dataTypeName) {
 		var defaultValue = ""
 		if (dataTypeName.startsWith("bool")) {
 			defaultValue = "false"
 		} else if (dataTypeName.startsWith("int")) {
-			defaultValue = "4611686018427387903"
+			defaultValue = "0"
 		} else if (dataTypeName.startsWith("float")) {
-			defaultValue = "1.99999999999999999"				//	"1.79769313486231571e+308"
+			defaultValue = "0.0"	
 		} else if (dataTypeName.startsWith("string")) {
-			defaultValue = '"qwertyuiop[]asdfghjkl;zxcvbnm,../"'
+			defaultValue = '""'
 		}
 		return defaultValue
-	}
-	def String getSome_NotUsed(BoolExpression boolExpression, String paramName, Literal literal) {
-		var str = ""
-		if (literal !== null && 
-			literal.primary !== null && 
-			literal.primary instanceof Null)
-		{
-			return str;
-		}
-
-		var defFunction = this.getDefFunction(literal)
-		var EList<InputParam> inputParams = defFunction.inputParams
-		for (InputParam inputParam : inputParams) {
-			if (inputParam.name.equals(paramName)){
-				var dataTypeName = this.convertDataTypeToPrimitive(inputParam.inputDataType)
-				if (dataTypeName.endsWith("Opt")) {
-					str = "get_value "
-				}
-				return str
-			}
-		}
-
-		return str
 	}
 	def String nameToOcaml(String name) {
 		var str = name.substring(0,1).toLowerCase + name.substring(1)
 		str = str.replace(".", "_")
 		return str
-	}
-	
-	def String buildPrepToJson_DEL_ME(DefFunction defFunction) {
-// 		let prep_to_json (param1:int) (param2: bool) = [("param1", `Int param1); ("param2", `Bool param2)]
-		var EList<InputParam> inputParams = defFunction.inputParams
-		var comma = ""
-		var str = "let prep_" + this.nameToOcaml(defFunction.name) + " " + ""	//	this.getFunctionParams(inputParams) + " = "
-		str = str + "["
-		for (var index = 0; index < inputParams.size; index++) {
-			str = str + comma + " (\"" + inputParams.get(index).name + "\", " + 
-				this.convertDataTypeToJsonType(inputParams.get(index).inputDataType) + " " + inputParams.get(index).name + ")"
-			comma = "; "
-		}
-		str = str + "]"
-		
-		return str		
-	}
-	def String convertDataTypeToJsonType(DataType dataType) {
-		var String dataTypeOut = null
-		if (dataType.boolean !== null || dataType.booleanObj !== null) {
-			dataTypeOut = "`Bool"
-		} else if (dataType.short !== null || dataType.shortObj !== null ||
-				   dataType.int !== null || dataType.intObj !== null ||
-				   dataType.long !== null || dataType.longObj !== null) {
-			dataTypeOut = "`Int"
-		} else if (dataType.float !== null || dataType.floatObj !== null ||
-				   dataType.double !== null || dataType.doubleObj !== null) {
-			dataTypeOut = "`Float"
-		} else if (dataType.string !== null) {
-			dataTypeOut = "`String"
-		} else if (dataType.defDataType !== null) {
-			dataTypeOut = "`NotDoneYet"
-		}
-		return dataTypeOut
 	}
 	def InputParam getInputParamFromFunction(EObject eObject, String paramName) {
 		var defFunc = this.getDefFunction(eObject)
