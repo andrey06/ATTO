@@ -28,6 +28,6 @@ function SimpleProg.myFunc4b (value1: Boolean, value2: Integer, value3: Float): 
 	endif   
 }
 
-/* 
+/*
 docker run -it eu.gcr.io/imandra-core-env/imandra-pure-bin
 */

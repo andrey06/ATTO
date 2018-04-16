@@ -16,6 +16,8 @@ import com.aestheticintegration.atto.itlDsl.OutputExpression
 import com.aestheticintegration.atto.itlDsl.impl.ExceptionImpl
 import com.aestheticintegration.atto.itlDsl.OutputExpressionTotal
 import com.aestheticintegration.atto.itlDsl.Literal2
+import com.aestheticintegration.atto.itlDsl.Primary
+import com.aestheticintegration.atto.itlDsl.Primitives
 
 public class GeneratorTim {
 	@Inject
@@ -108,7 +110,7 @@ public class GeneratorTim {
 			«FOR index2 : 0 ..< tests.get(index).dataTypeValues.size»
 				«var dataTypeValue = tests.get(index).dataTypeValues.get(index2)»
 				«IF dataTypeValue.primary !== null»
-					«this.attoUtil.getPrimaryValueAsString(dataTypeValue.primary)»«IF index2 !== tests.get(index).dataTypeValues.size -1 » , «ENDIF»
+					«this.getPrimaryValueAsJson(dataTypeValue.primary)»«IF index2 !== tests.get(index).dataTypeValues.size -1 » , «ENDIF»
 				«ENDIF»
 				«IF dataTypeValue.dataTypeInstance !== null»
 					{
@@ -154,25 +156,6 @@ public class GeneratorTim {
 			comma = ", "
 		}
 		str = str + "}"
-		return str
-	}
-	def String getDataTypeValueAsJson(DataTypeValue dataTypeValue) {
-		var String str = ""
-		if (dataTypeValue.primary !== null) {
-			str = this.attoUtil.getPrimaryValueAsString(dataTypeValue.primary)
-		} else if (dataTypeValue.dataTypeInstance !== null) {
-			var comma2 = ""
-			str = str + "{"
-			for (var index2 = 0; index2 < dataTypeValue.dataTypeInstance.literal2s.size; index2++) {
-				str = str + comma2 + dataTypeValue.dataTypeInstance.defDataType.fields.get(index2).name + "="
-				str = str + this.getLiteral2ValueAsJson(dataTypeValue.dataTypeInstance.literal2s.get(index2))
-				comma2 = "; "
-			}
-			str = str + "}"
-		} else if (dataTypeValue.defDataValue !== null) {
-			str = dataTypeValue.defDataValue.name.toLowerCase
-		}
-		
 		return str
 	}
 	def String getOutputExpressionTotalAsJson(OutputExpressionTotal outputExpressionTotal) {
@@ -221,6 +204,13 @@ public class GeneratorTim {
 		} else if (literal2.primary !== null) {
 			return this.attoUtil.getPrimaryValueAsString(literal2.primary)
 		}
+	}
+	def String getPrimaryValueAsJson(Primary primary) {
+		var String primaryValue = this.attoUtil.getPrimaryValueAsString(primary)
+		if (primaryValue.equals(Primitives.NULL.literal)) {
+			primaryValue = "null"
+		}
+		return primaryValue
 	}
 
 }

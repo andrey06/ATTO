@@ -174,7 +174,7 @@ public class AttoUtil {
 		return (eContainer as ModelImpl).tests
 	}
 	
-	def String getLiteralValueAsString(Literal literal) {
+	def String getLiteralValueAsString_DELME(Literal literal) {
 		if (literal.variable !== null) {
 			return literal.variable
 		} else if (literal.primary !== null) {

@@ -144,7 +144,7 @@ public class ImandraCoreCall {
 		String phraseInvariantEnd   = "-----";
 		
 		buffer = buffer.replaceAll("Exception_[0-9]+", "Exception");
-		buffer = buffer.replaceAll("Some_[0-9]+\\s", "");
+		buffer = buffer.replaceAll("Something_[0-9]+\\s", "");
 
 
 		int constrainNumber = 0;		// aka regionNumber, testNumber

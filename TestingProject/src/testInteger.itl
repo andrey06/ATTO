@@ -1,5 +1,5 @@
 import com.aestheticintegration.realjava.SimpleProg
-
+/*
 function SimpleProg.myTest1(param1: Integer, param2: Boolean): Long {
 	if (param1 = 0)
 	then 8811  
@@ -23,13 +23,14 @@ function SimpleProg.myTest1a(param1: Integer): long {
 function SimpleProg.myTest1b(param1: Float): long {
 	if (param1 <= 0.0)
 	then Exception("Wrong input for this function")
-	else  
+	else
 		if (param1 < 1.)  
 		then Exception("Do not use this input") 
 		else 33
 		endif    
 	endif       
-}    
+}
+*/ 
 function SimpleProg.myTest1c(param2: Integer): Long { 
 	if (param2 = null)
 	then Exception("Do not use this input")
@@ -40,8 +41,9 @@ function SimpleProg.myTest1c(param2: Integer): Long {
 		endif  
 	endif
 }
-
-test test13 = SimpleProg.myTest1(0, true):  88 
-test test14 = SimpleProg.myTest1(23, false): 33
-test test15 = SimpleProg.myTest1b(1.0): Exception("Do not use this input")
+  
+//test test13 = SimpleProg.myTest1(0, true):  88  
+//test test14 = SimpleProg.myTest1(23, false): 33
+//test test15 = SimpleProg.myTest1b(1.0): Exception("Do not use this input")
 test test16 = SimpleProg.myTest1c(-2): -1
+test test17 = SimpleProg.myTest1c(null): Exception("Do not use this input")
