@@ -1,0 +1,45 @@
+import com.aestheticintegration.realjava.SimpleProg
+import com.aestheticintegration.realjava.dataobject.Animal
+import com.aestheticintegration.realjava.dataobject.Pet
+
+datatype WildAnimal {
+	breed: String
+	ageOrig: Integer
+}
+datatype Animal {
+	name: String
+	age: Integer
+	age2: int
+	wildAnimal : WildAnimal
+}
+datatype Pet {
+	owner: String
+	animal: Animal
+}  
+
+datavalue wildAnimal1 = new WildAnimal("wolf", 1)
+
+datavalue animal1 = new Animal("My Dog", 10, 3, wildAnimal1)
+datavalue animal1a = new Animal("My Dog", 10, 3, new WildAnimal("wolf2", 2))
+datavalue animal2 = new Animal("My Cat", 1, 9, wildAnimal1)
+
+datavalue pet1 = new Pet("Uncle Sam", animal1a)   
+datavalue pet2 = new Pet("Ant Ann", animal2)       
+
+function SimpleProg.myTest6c (): int {
+	2
+}
+function SimpleProg.myTest6b (pet: Pet): int {
+	if (pet.animal.age2 >= 2 )   
+	then 1			// Exception ("Wrong value")
+	else 2
+	endif  
+}
+function SimpleProg.myTest6a (pet: Pet): int {
+	if (pet.animal.age2 >= 2 )   
+	then Exception ("Wrong value")
+	else 33				//SimpleProg.myTest6c()
+	endif  
+}
+
+test test1 = SimpleProg.myTest5(new Animal("My Dog Cat", 5, 3, wildAnimal1)): animal1

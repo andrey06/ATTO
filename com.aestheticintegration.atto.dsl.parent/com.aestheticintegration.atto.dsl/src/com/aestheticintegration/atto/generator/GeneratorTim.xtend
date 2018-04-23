@@ -10,7 +10,6 @@ import com.aestheticintegration.atto.util.AttoUtil
 import javax.inject.Inject
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.resource.Resource
-import com.aestheticintegration.atto.itlDsl.DataTypeValue
 import com.aestheticintegration.atto.itlDsl.DataTypeInstance
 import com.aestheticintegration.atto.itlDsl.OutputExpression
 import com.aestheticintegration.atto.itlDsl.impl.ExceptionImpl

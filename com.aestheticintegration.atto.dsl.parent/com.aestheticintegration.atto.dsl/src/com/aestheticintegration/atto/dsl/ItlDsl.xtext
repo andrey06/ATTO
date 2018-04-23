@@ -20,7 +20,7 @@ DefDataValue:
 	'datavalue' name=ID '=' dataTypeInstance=DataTypeInstance
 ;
 DataTypeInstance:
-	defDataType=[DefDataType] '(' (literal2s+=Literal2 (',' literal2s+=Literal2)*)*  ')'
+	'new' defDataType=[DefDataType] '(' (literal2s+=Literal2 (',' literal2s+=Literal2)*)*  ')'
 ;
 DefFunction:
 	'function' name=QualifiedName2 '(' (inputParams+=InputParam (','inputParams+=InputParam)*)? ')' ':' outputDataType=DataType'{'
