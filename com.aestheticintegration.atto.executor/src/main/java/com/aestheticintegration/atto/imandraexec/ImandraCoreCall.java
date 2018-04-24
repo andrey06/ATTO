@@ -167,7 +167,8 @@ public class ImandraCoreCall {
 			if (invariant.contains("Exception")) {
 				// Exception starts with " (Exception "
 				//  (Exception_826 "Wrong input for this function")
-				invariant = invariant.substring(invariant.indexOf("Exception"), invariant.indexOf("\")") + 1);
+				invariant = invariant.substring(invariant.indexOf("Exception"));
+				invariant = invariant.substring(0, invariant.indexOf("\")") + 1);
 			} else {
 				invariant = invariant.substring(0, invariant.indexOf(phraseInvariantEnd));
 				if (invariant.indexOf("(") != -1) {
@@ -231,12 +232,15 @@ public class ImandraCoreCall {
 		
 		Function function = timObject.getFunctions().get(functionNumber);
 
-		String phraseStart = "=\n";
+		String phraseStart_Old = "=\n";
+		String phraseStart = "optionOut =";
 		String jsonObj = buffer.substring(buffer.indexOf(phraseStart) + phraseStart.length());
 		jsonObj = jsonObj.substring(0, jsonObj.indexOf(")\n>"));
 		
 		jsonObj = jsonObj.replace("Something\n ", "");			// Remove the options
+		jsonObj = jsonObj.replace("Something", "");			// Remove the options
 		jsonObj = jsonObj.replace("(Some\n ", "");			// Remove the options
+		jsonObj = jsonObj.replace("(Some", "");			// Remove the options
 		jsonObj = jsonObj.replace("\n ", "");					// Remove a new line character
 		jsonObj = jsonObj.replace("Mex.", "");					// Remove the module name
 		jsonObj = jsonObj.replace("Some ", "");				// Remove the options

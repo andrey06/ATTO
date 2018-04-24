@@ -92,4 +92,15 @@ public class SimpleProg {
 	public String myFunc4b(Boolean value1, Integer value2, Float value3) {
 		return (value1 == true ? (value2 == 1 ? "QWE111" : (value3 <= 0.0 ? "KU" : "AGU")) : "QWE222");
 	}
+	
+	// testOutput
+	public Animal myTest6c() {
+		return animal1;
+	}
+	public int myTest6c2() {
+		return 2;
+	}
+	public Animal myTest6c3() {
+		return this.myTest6c();
+	}
 }

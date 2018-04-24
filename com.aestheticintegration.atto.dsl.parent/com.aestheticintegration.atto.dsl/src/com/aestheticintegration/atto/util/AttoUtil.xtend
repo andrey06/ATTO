@@ -32,6 +32,7 @@ import com.aestheticintegration.atto.itlDsl.Null
 import com.aestheticintegration.atto.itlDsl.OutputExpressionTotal
 import java.util.Optional
 import com.aestheticintegration.atto.itlDsl.Literal2
+import com.aestheticintegration.atto.itlDsl.FunctionCall
 
 public class AttoUtil {
 	
@@ -230,6 +231,8 @@ public class AttoUtil {
 	 			str = str + this.getDataTypeInstanceToOcaml(outputExpression as DataTypeInstance)  + ")"
 			} else if (outputExpression instanceof DefDataValue) {
 				str = str + outputExpression.valueDataValue.name  + ")"
+			} else if (outputExpression instanceof FunctionCall) {
+				str = this.nameToOcaml(outputExpression.functionCall.defFunction.name)
 			} else if (outputExpression instanceof ExceptionImpl) {
 				str = "Exception " + "\"" + (outputExpression as ExceptionImpl).valueException + "\""
 			}

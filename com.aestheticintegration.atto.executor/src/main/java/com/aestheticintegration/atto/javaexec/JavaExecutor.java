@@ -108,21 +108,23 @@ public class JavaExecutor {
 		Object instance = clazz.newInstance();
 		for (TestCase testCase : function.getTestCases()) {
 			LinkedHashMap<String, Object> inputMap = testCase.getInput();
-			int index1 = 0;
-			Object[] inputParamValues = new Object[inputMap.size()];
-			for (Object input : inputMap.values()) {
-				Object input2 = input;
-				if (input instanceof LinkedHashMap) {
-					// User Type object
-					input2 = this.createObject(timObject, (LinkedHashMap<String, ?>) input);
-				} else {
-					String inputType = function.getInputParams().get(index1).getType();
-					Class<?> valueClass = this.createClassFromClassName(timObject.getImports(), inputType);
-					input2 = this.convertFromJsonValue(valueClass, input);
+			Object[] inputParamValues = null;
+			if (inputMap != null) {
+				int index1 = 0;
+				inputParamValues = new Object[inputMap.size()];
+				for (Object input : inputMap.values()) {
+					Object input2 = input;
+					if (input instanceof LinkedHashMap) {
+						// User Type object
+						input2 = this.createObject(timObject, (LinkedHashMap<String, ?>) input);
+					} else {
+						String inputType = function.getInputParams().get(index1).getType();
+						Class<?> valueClass = this.createClassFromClassName(timObject.getImports(), inputType);
+						input2 = this.convertFromJsonValue(valueClass, input);
+					}
+					inputParamValues[index1++] = input2;
 				}
-				inputParamValues[index1++] = input2;
 			}
-		
 			Object returnObj = null;
 			try {
 				returnObj = method.invoke(instance, inputParamValues);
@@ -250,6 +252,10 @@ public class JavaExecutor {
 
 		// Find the function based on the test.function
 		Function function = this.findFunctionByTest(timObject, test);
+		if (function == null) {
+			// F-n was not found - it is wrong
+			return null;
+		}
 		
 		Method method = this.buildMethodByFunction(timObject, clazz, function);
 		

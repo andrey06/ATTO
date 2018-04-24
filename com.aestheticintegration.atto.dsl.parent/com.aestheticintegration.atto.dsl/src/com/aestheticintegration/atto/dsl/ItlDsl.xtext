@@ -20,12 +20,15 @@ DefDataValue:
 	'datavalue' name=ID '=' dataTypeInstance=DataTypeInstance
 ;
 DataTypeInstance:
-	'new' defDataType=[DefDataType] '(' (literal2s+=Literal2 (',' literal2s+=Literal2)*)*  ')'
+	'new' defDataType=[DefDataType] '(' (literal2s+=Literal2 (',' literal2s+=Literal2)*)* ')'
 ;
 DefFunction:
 	'function' name=QualifiedName2 '(' (inputParams+=InputParam (','inputParams+=InputParam)*)? ')' ':' outputDataType=DataType'{'
 		functionBody=FunctionBody
 	'}'
+;
+FunctionCall:
+	defFunction=[DefFunction | QualifiedName] '(' (literal2s+=Literal2 (',' literal2s+=Literal2)*)* ')'
 ;
 InputParam:
 	name=ID ':' inputDataType=DataType
@@ -90,11 +93,13 @@ OutputExpressionTotal:
 OutputExpression:
 	{DataTypeInstance} dataTypeInstance=DataTypeInstance
 |	{DefDataValue} valueDataValue = [DefDataValue]
+|	{FunctionCall} functionCall = FunctionCall
 |	{Exception} 'Exception' '(' valueException=STRING ')'
 ;
 DefTest:
 	'test' name=ID '=' defFunc=[DefFunction | QualifiedName] '(' (dataTypeValues+=DataTypeValue (',' dataTypeValues+=DataTypeValue)*)? ')' ':' outputExpressionTotal=OutputExpressionTotal
 ;
+// Similar to Literal2
 DataTypeValue:
 	primary=Primary
 |	dataTypeInstance=DataTypeInstance
